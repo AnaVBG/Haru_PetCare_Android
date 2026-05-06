@@ -19,7 +19,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/logo_haru"
+            android:src="@drawable/haru_logo2"
             android:layout_marginBottom="8dp"
             android:contentDescription="Logo Haru"/>
 
