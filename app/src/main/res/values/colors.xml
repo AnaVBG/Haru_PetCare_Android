@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores por defecto de Android Studio — no borrar -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- ── Paleta Haru (extraída del logo) ──────────────────────────── -->
+    <color name="haru_teal">#4BBFBF</color>
+    <color name="haru_teal_dark">#2E9494</color>
+    <color name="haru_teal_light">#E0F5F5</color>
+    <color name="haru_brown">#5C2018</color>
+    <color name="haru_brown_light">#8B4A3A</color>
+    <color name="haru_white">#FFFFFF</color>
+    <color name="haru_surface">#F5FAFA</color>
+    <color name="haru_grey">#B0BFBF</color>
+    <color name="haru_text_primary">#1A1A1A</color>
+    <color name="haru_text_secondary">#5C6B6B</color>
+</resources>

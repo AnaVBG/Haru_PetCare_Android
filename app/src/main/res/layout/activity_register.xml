@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/haru_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center">
+
+        <!-- Cabecera -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HARU"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/haru_brown"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crea tu cuenta"
+            android:textSize="16sp"
+            android:textColor="@color/haru_teal_dark"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- Nombre -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNombre"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre completo"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="@color/haru_teal"
+            app:hintTextColor="@color/haru_teal_dark">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="@color/haru_teal"
+            app:hintTextColor="@color/haru_teal_dark">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Teléfono -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTelefono"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Teléfono"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="@color/haru_teal"
+            app:hintTextColor="@color/haru_teal_dark">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:imeOptions="actionNext"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="@color/haru_teal"
+            app:hintTextColor="@color/haru_teal_dark"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/haru_teal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:imeOptions="actionNext"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Confirmar password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilConfirmarPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirmar contraseña"
+            android:layout_marginBottom="24dp"
+            app:boxStrokeColor="@color/haru_teal"
+            app:hintTextColor="@color/haru_teal_dark"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/haru_teal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmarPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--
+            Selector de rol con ToggleButton.
+            El usuario elige si es Dueño o Veterinario.
+            MaterialButtonToggleGroup garantiza que solo uno esté
+            seleccionado a la vez (singleSelection=true).
+        -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de cuenta"
+            android:textSize="13sp"
+            android:textColor="@color/haru_teal_dark"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroupRol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRolDueno"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🐾 Dueño"
+                android:textColor="@color/haru_teal_dark"
+                app:strokeColor="@color/haru_teal"
+                app:cornerRadius="8dp"
+                android:checked="true"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRolVeterinario"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🩺 Veterinario"
+                android:textColor="@color/haru_teal_dark"
+                app:strokeColor="@color/haru_teal"
+                app:cornerRadius="8dp"/>
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <!-- Botón registrar -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear cuenta"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/haru_teal"
+            android:textColor="@color/haru_white"
+            app:cornerRadius="12dp"/>
+
+        <!-- Volver al login -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVolver"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Ya tienes cuenta? Inicia sesión"
+            android:textColor="@color/haru_brown"/>
+
+        <ProgressBar
+            android:id="@+id/progressBarRegistro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:indeterminateTint="@color/haru_teal"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</ScrollView>
