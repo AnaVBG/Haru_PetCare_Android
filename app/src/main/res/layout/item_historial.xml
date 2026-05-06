@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Cada registro del historial médico.
+    Diseño de línea de tiempo: línea vertical teal a la izquierda
+    y el contenido a la derecha.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp">
+
+    <!-- Línea de tiempo -->
+    <LinearLayout
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginEnd="12dp">
+
+        <!-- Punto circular -->
+        <View
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/bg_timeline_dot"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Línea vertical -->
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/haru_teal_light"
+            android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
+
+    <!-- Contenido del registro -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <!-- Chip con el tipo de registro -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTipoRegistro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp"
+            style="@style/Widget.Material3.Chip.Assist"/>
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/tvDescripcionHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/haru_text_primary"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Fecha -->
+        <TextView
+            android:id="@+id/tvFechaHistorial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/haru_grey"/>
+
+    </LinearLayout>
+</LinearLayout>

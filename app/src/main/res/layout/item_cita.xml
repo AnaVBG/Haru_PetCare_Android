@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Card de cada cita.
+    La franja de color a la izquierda cambia según el estado:
+    - PENDIENTE  → teal
+    - COMPLETADA → verde
+    - CANCELADA  → marrón/rojo
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:strokeColor="@color/haru_teal_light"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--
+            Franja de color lateral: indica el estado visualmente
+            sin necesidad de leer el texto.
+        -->
+        <View
+            android:id="@+id/viewEstadoColor"
+            android:layout_width="6dp"
+            android:layout_height="match_parent"
+            android:background="@color/haru_teal"/>
+
+        <!-- Contenido -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Cabecera: nombre mascota + chip de estado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tvNombreMascotaCita"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/haru_brown"/>
+
+                <!-- Chip de estado -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEstadoCita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    style="@style/Widget.Material3.Chip.Assist"
+                    android:clickable="false"/>
+
+            </LinearLayout>
+
+            <!-- Motivo de la cita -->
+            <TextView
+                android:id="@+id/tvMotivoCita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/haru_text_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Separador -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/haru_teal_light"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Pie: fecha + veterinario -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Fecha -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha"
+                        android:textSize="11sp"
+                        android:textColor="@color/haru_grey"/>
+
+                    <TextView
+                        android:id="@+id/tvFechaCita"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/haru_teal_dark"/>
+
+                </LinearLayout>
+
+                <!-- Veterinario -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Veterinario"
+                        android:textSize="11sp"
+                        android:textColor="@color/haru_grey"/>
+
+                    <TextView
+                        android:id="@+id/tvVeterinarioCita"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/haru_teal_dark"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--
+                Botones de acción: SOLO visibles para el veterinario.
+                Los ocultamos desde el Adapter según el rol.
+            -->
+            <LinearLayout
+                android:id="@+id/layoutBotonesVeterinario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCompletar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="Completar"
+                    android:textSize="12sp"
+                    android:textColor="@color/haru_teal_dark"
+                    app:strokeColor="@color/haru_teal"
+                    app:cornerRadius="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCancelar"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="Cancelar"
+                    android:textSize="12sp"
+                    android:textColor="@color/haru_brown"
+                    app:strokeColor="@color/haru_brown"
+                    app:cornerRadius="8dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

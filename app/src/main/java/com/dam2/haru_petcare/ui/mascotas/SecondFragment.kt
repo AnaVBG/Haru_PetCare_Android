@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.FragmentSecondBinding
 
 /**
