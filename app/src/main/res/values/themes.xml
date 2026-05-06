@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.HaruPetcare" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Color principal de la app: teal del logo -->
         <item name="colorPrimary">@color/haru_teal</item>
@@ -13,6 +14,12 @@
         <item name="colorOnPrimary">@color/haru_white</item>
         <item name="colorOnSecondary">@color/haru_white</item>
         <!-- Estilo de las ventanas de diálogo -->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        </item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HaruPetcare" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

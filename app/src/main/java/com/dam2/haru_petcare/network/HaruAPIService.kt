@@ -30,7 +30,7 @@ interface HaruApiService {
 
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")
-    fun getHistorial(@Path("id") idMascota: Long): Call<List<Any>>
+    fun getHistorial(@Path("id") idMascota: Long): Call<List<HistorialMedicoDTO>>
 
     // ── CITAS ─────────────────────────────────────────────────────────────
     @GET("api/citas/dueno/{id}")

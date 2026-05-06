@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--
+        Exponemos el directorio de caché de la app.
+        El FileProvider usará esta ruta para generar URIs seguros
+        que otras apps puedan leer temporalmente.
+    -->
+    <cache-path name="pdfs" path="."/>
+</paths>
