@@ -8,9 +8,10 @@
 
     <!-- Toolbar con título dinámico según el rol -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundColor="@color/haru_teal"
+        android:background="@color/haru_teal"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
