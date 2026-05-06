@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    BottomSheet: panel que sube desde abajo al pulsar un pin en el mapa.
+    Muestra la información del pin y el botón de borrar si es del usuario.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/haru_white">
+
+    <!-- Handle visual del BottomSheet -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@color/haru_grey"
+        android:backgroundTint="@color/haru_grey"/>
+
+    <!-- Emoji + tipo de pin -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tvEmojiPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:layout_marginEnd="12dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTipoPin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/haru_brown"/>
+
+            <TextView
+                android:id="@+id/tvUsuarioPin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/haru_text_secondary"
+                android:layout_marginTop="2dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Descripción -->
+    <TextView
+        android:id="@+id/tvDescripcionPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/haru_text_primary"
+        android:layout_marginBottom="20dp"
+        android:minHeight="40dp"/>
+
+    <!-- Separador -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/haru_teal_light"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botón de borrar: solo visible si el pin es del usuario -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBorrarPin"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar este pin"
+        android:textColor="@color/haru_brown"
+        app:strokeColor="@color/haru_brown"
+        app:cornerRadius="12dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

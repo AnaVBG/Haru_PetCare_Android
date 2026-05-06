@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<!--
+    FrameLayout como raíz: el mapa ocupa toda la pantalla
+    y los controles flotan encima con elevation.
+    Es el patrón estándar para mapas en Android.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.mapa.MapaFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- El mapa ocupa toda la pantalla -->
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent"/>
 
-</FrameLayout>
+    <!--
+        Panel superior flotante: título + leyenda de colores.
+        Usa elevation para flotar sobre el mapa con sombra.
+    -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:layout_anchor="@id/mapFragment"
+        app:layout_anchorGravity="top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@color/haru_white">
+
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mapa comunitario"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/haru_brown"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Leyenda de tipos de pin -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="💧 Fuente"
+                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="🗑️ Papelera"
+                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="⚠️ Peligro"
+                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="🌳 Parque"
+                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- FAB para añadir pin nuevo -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAnadirPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="Añadir pin"
+        app:backgroundTint="@color/haru_brown"
+        app:tint="@color/haru_white"/>
+
+    <!-- FAB secundario: centrar en mi ubicación -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMiUbicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="92dp"
+        app:fabSize="mini"
+        android:src="@android:drawable/ic_menu_mylocation"
+        android:contentDescription="Mi ubicación"
+        app:backgroundTint="@color/haru_teal"
+        app:tint="@color/haru_white"/>
+
+    <!-- ProgressBar mientras carga los pines -->
+    <ProgressBar
+        android:id="@+id/progressBarMapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/haru_teal"
+        android:visibility="gone"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
