@@ -1,73 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Cada registro del historial médico.
-    Diseño de línea de tiempo: línea vertical teal a la izquierda
-    y el contenido a la derecha.
--->
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingVertical="8dp">
+    android:layout_height="match_parent"
+    android:background="@color/haru_surface">
 
-    <!-- Línea de tiempo -->
-    <LinearLayout
-        android:layout_width="24dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_marginEnd="12dp">
+    <!--
+        CollapsingToolbarLayout: la toolbar se colapsa al hacer scroll.
+        La foto de la mascota ocupa toda la cabecera y se encoge
+        al desplazarse hacia arriba. Efecto visual muy profesional.
+    -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@color/haru_teal">
 
-        <!-- Punto circular -->
-        <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/bg_timeline_dot"
-            android:layout_marginTop="4dp"/>
-
-        <!-- Línea vertical -->
-        <View
-            android:layout_width="2dp"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/haru_teal_light"
-            android:layout_marginTop="4dp"/>
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/haru_teal"
+            app:collapsedTitleTextColor="@color/haru_white"
+            app:expandedTitleTextColor="@color/haru_white"
+            app:expandedTitleMarginStart="16dp"
+            app:expandedTitleMarginBottom="16dp">
 
-    </LinearLayout>
+            <!-- Foto de la mascota (fondo teal si no hay foto) -->
+            <ImageView
+                android:id="@+id/ivFotoMascota"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/haru_teal"
+                app:layout_collapseMode="parallax"
+                android:contentDescription="Foto de la mascota"/>
 
-    <!-- Contenido del registro -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingBottom="16dp">
+            <!-- Overlay oscuro sobre la foto para que el texto sea legible -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000"
+                app:layout_collapseMode="parallax"/>
 
-        <!-- Chip con el tipo de registro -->
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipTipoRegistro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:layout_marginBottom="4dp"
-            style="@style/Widget.MaterialComponents.Chip.Assist"/>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbarDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/haru_white"
+                app:layout_collapseMode="pin"/>
 
-        <!-- Descripción -->
-        <TextView
-            android:id="@+id/tvDescripcionHistorial"
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido con scroll -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/haru_text_primary"
-            android:layout_marginBottom="4dp"/>
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- Fecha -->
-        <TextView
-            android:id="@+id/tvFechaHistorial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/haru_grey"/>
+            <!-- ── CARD: Datos básicos ─────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/haru_teal_light"
+                app:strokeWidth="1dp">
 
-    </LinearLayout>
-</LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de la mascota"
+                        android:textSize="14sp"
+                        android:textColor="@color/haru_teal_dark"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Fila: especie -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Especie"
+                            android:textColor="@color/haru_text_secondary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tvDetalleEspecie"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/haru_brown"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:gravity="end"/>
+                    </LinearLayout>
+
+                    <!-- Separador -->
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/haru_teal_light" android:layout_marginBottom="12dp"/>
+
+                    <!-- Fila: raza -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Raza"
+                            android:textColor="@color/haru_text_secondary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tvDetalleRaza"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/haru_brown"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:gravity="end"/>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/haru_teal_light" android:layout_marginBottom="12dp"/>
+
+                    <!-- Fila: fecha de nacimiento -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Fecha de nacimiento"
+                            android:textColor="@color/haru_text_secondary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tvDetalleFechaNac"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/haru_brown"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:gravity="end"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── CARD: Historial médico ──────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/haru_teal_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Cabecera del historial -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Historial médico"
+                            android:textSize="14sp"
+                            android:textColor="@color/haru_teal_dark"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.1"/>
+
+                        <!-- Botón descargar PDF -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDescargarPdf"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PDF"
+                            android:textSize="12sp"
+                            android:textColor="@color/haru_teal_dark"
+                            app:strokeColor="@color/haru_teal"
+                            app:iconTint="@color/haru_teal"
+                            android:paddingHorizontal="12dp"/>
+
+                    </LinearLayout>
+
+                    <!-- ProgressBar del historial -->
+                    <ProgressBar
+                        android:id="@+id/progressBarHistorial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/haru_teal"
+                        android:visibility="gone"/>
+
+                    <!-- Lista de registros (sin scroll propio, dentro del NestedScrollView) -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvHistorial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+
+                    <!-- Estado vacío del historial -->
+                    <TextView
+                        android:id="@+id/tvSinHistorial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No hay registros médicos todavía"
+                        android:textColor="@color/haru_grey"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:padding="24dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── BOTONES de acción ───────────────────────────────── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerCitas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="Ver citas veterinarias"
+                android:backgroundTint="@color/haru_teal"
+                android:textColor="@color/haru_white"
+                android:padding="14dp"
+                app:cornerRadius="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnActivarAlerta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="🚨 Activar alerta de pérdida"
+                android:backgroundTint="@color/haru_brown"
+                android:textColor="@color/haru_white"
+                android:padding="14dp"
+                app:cornerRadius="12dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
