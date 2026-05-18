@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/haru_white">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@color/haru_grey"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🚨 Activar alerta de pérdida"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/haru_brown"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Se notificará a todos los usuarios en un radio de 5km"
+        android:textSize="13sp"
+        android:textColor="@color/haru_text_secondary"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Selector de mascota -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Qué mascota se ha perdido?"
+        android:textSize="13sp"
+        android:textColor="@color/haru_teal_dark"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Spinner para elegir la mascota -->
+    <Spinner
+        android:id="@+id/spinnerMascota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_spinner"
+        android:padding="12dp"/>
+
+    <!-- Mensaje adicional -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMensajeAlerta"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción adicional (collar, zona donde se perdió...)"
+        android:layout_marginBottom="20dp"
+        app:boxStrokeColor="@color/haru_brown"
+        app:hintTextColor="@color/haru_brown">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMensajeAlerta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:maxLines="3"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmarAlerta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enviar alerta ahora"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:padding="14dp"
+        android:backgroundTint="@color/haru_brown"
+        android:textColor="@color/haru_white"
+        app:cornerRadius="12dp"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancelarAlerta"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:textColor="@color/haru_text_secondary"/>
+
+</LinearLayout>

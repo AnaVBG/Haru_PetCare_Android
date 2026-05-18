@@ -1,14 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.alertas.AlertasFragment">
+    android:background="@color/haru_surface">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/haru_brown"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarAlertas"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/haru_brown"
+            app:title="Alertas de pérdida"
+            app:titleTextColor="@color/haru_white"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!--
+                Card del botón de emergencia.
+                Color marrón intenso para transmitir urgencia.
+                Es el elemento más importante de esta pantalla.
+            -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:strokeColor="@color/haru_brown"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🚨"
+                        android:textSize="48sp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¿Se ha perdido tu mascota?"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/haru_brown"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pulsa el botón para alertar a los vecinos en un radio de 5km"
+                        android:textSize="13sp"
+                        android:textColor="@color/haru_text_secondary"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEmergencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ACTIVAR ALERTA DE PÉRDIDA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:padding="16dp"
+                        android:backgroundTint="@color/haru_brown"
+                        android:textColor="@color/haru_white"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_dialog_alert"
+                        app:iconTint="@color/haru_white"
+                        app:iconGravity="textStart"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Cabecera de la lista -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alertas activas en tu zona"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/haru_brown"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- ProgressBar -->
+            <ProgressBar
+                android:id="@+id/progressBarAlertas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/haru_brown"
+                android:visibility="gone"/>
+
+            <!-- Estado vacío -->
+            <LinearLayout
+                android:id="@+id/layoutSinAlertas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✅"
+                    android:textSize="48sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No hay mascotas perdidas cerca"
+                    android:textSize="15sp"
+                    android:textColor="@color/haru_text_secondary"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Lista de alertas -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAlertas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

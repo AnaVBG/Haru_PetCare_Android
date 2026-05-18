@@ -10,5 +10,6 @@ data class AlertaPerdidaDTO(
     val nombreMascota: String?,
     val fotoUrlMascota: String?,
     val nombreDueno: String?,
-    val telefonoDueno: String?
+    val telefonoDueno: String?,
+    val idUsuario: Long?
 )

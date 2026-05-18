@@ -68,4 +68,8 @@ interface HaruApiService {
     // ── PDF ───────────────────────────────────────────────────────────────
     @GET("api/pdf/historial/{id}")
     fun descargarHistorialPdf(@Path("id") idMascota: Long): Call<ResponseBody>
+
+    @GET("api/mascotas/{id}")
+    fun getMascotaPorId(@Path("id") id: Long): Call<MascotaDTO>
+
 }

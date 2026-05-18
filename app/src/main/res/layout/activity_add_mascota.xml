@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/haru_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarAddMascota"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/haru_teal"
+            app:title="Nueva mascota"
+            app:titleTextColor="@color/haru_white"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/haru_white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Nombre -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNombreMascota"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de la mascota"
+                android:layout_marginBottom="16dp"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombreMascota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionNext"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Especie -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEspecie"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Especie (Perro, Gato...)"
+                android:layout_marginBottom="16dp"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEspecie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:imeOptions="actionNext"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Raza -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilRaza"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Raza (opcional)"
+                android:layout_marginBottom="16dp"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etRaza"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:imeOptions="actionNext"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Fecha de nacimiento -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFechaNacimiento"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha de nacimiento"
+                android:layout_marginBottom="32dp"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark"
+                app:endIconMode="custom"
+                app:endIconDrawable="@android:drawable/ic_menu_my_calendar"
+                app:endIconTint="@color/haru_teal">
+
+                <!--
+                    El campo es solo lectura (focusable=false).
+                    Al pulsar se abre el DatePicker del sistema.
+                    Evitamos que el usuario escriba fechas con formato incorrecto.
+                -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFechaNacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:hint="Selecciona una fecha"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Botón guardar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardarMascota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar mascota"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:backgroundTint="@color/haru_teal"
+                android:textColor="@color/haru_white"
+                app:cornerRadius="12dp"/>
+
+            <ProgressBar
+                android:id="@+id/progressBarAniadir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:indeterminateTint="@color/haru_teal"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -16,16 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaruPetcare"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.mascotas.AddMascotaActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}"/>
+            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".ui.mascotas.DetalleMascotaActivity"
             android:exported="false"
-            android:theme="@style/Theme.HaruPetcare" />
-        <!-- CAMBIO 1: A true para que funcione tu IP local -->
+            android:theme="@style/Theme.HaruPetcare" /> <!-- CAMBIO 1: A true para que funcione tu IP local -->
         <!--
  IMPORTANTE: He quitado android:name=".HaruApp" temporalmente.
              Si ya tienes esa clase creada, vuélvela a poner. Si no, la app crashea nada más abrir.
@@ -53,8 +55,27 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- Servicio FCM -->
+        <service
+            android:name=".service.HaruFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <!-- Canal de notificaciones por defecto -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="haru_alertas_channel"/>
+
+        <!-- Color e icono por defecto de las notificaciones -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/haru_brown"/>
     </application>
 
 </manifest>

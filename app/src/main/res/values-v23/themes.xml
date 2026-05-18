@@ -1,9 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="Theme.HaruPetcare" parent="Base.Theme.HaruPetcare">
-        <!-- Transparent system bars for edge-to-edge. -->
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HaruPetcare"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/haru_teal</item>
+        <item name="colorPrimaryVariant">@color/haru_teal_dark</item>
+        <item name="colorSecondary">@color/haru_brown</item>
+        <item name="colorSecondaryVariant">@color/haru_brown_light</item>
+        <item name="android:colorBackground">@color/haru_surface</item>
+        <item name="colorOnPrimary">@color/haru_white</item>
+        <item name="colorOnSecondary">@color/haru_white</item>
+        <item name="colorSurface">@color/haru_white</item>
+        <item name="colorOnSurface">@color/haru_text_primary</item>
     </style>
 </resources>

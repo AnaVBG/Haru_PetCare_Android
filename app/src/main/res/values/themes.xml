@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.HaruPetcare" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Color principal de la app: teal del logo -->
+    <style name="Theme.HaruPetcare"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/haru_teal</item>
         <item name="colorPrimaryVariant">@color/haru_teal_dark</item>
-        <!-- Color de acento/secundario: marrón del logo -->
         <item name="colorSecondary">@color/haru_brown</item>
         <item name="colorSecondaryVariant">@color/haru_brown_light</item>
-        <!-- Fondo general de pantallas -->
         <item name="android:colorBackground">@color/haru_surface</item>
-        <!-- Color del texto sobre superficies primarias (barra superior, botones) -->
         <item name="colorOnPrimary">@color/haru_white</item>
         <item name="colorOnSecondary">@color/haru_white</item>
-        <!-- Estilo de las ventanas de diálogo -->
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        <item name="colorSurface">@color/haru_white</item>
+        <item name="colorOnSurface">@color/haru_text_primary</item>
+        <item name="materialAlertDialogTheme">
+            @style/ThemeOverlay.MaterialComponents.Dialog.Alert
         </item>
-    </style>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.HaruPetcare" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

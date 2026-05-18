@@ -1,11 +1,13 @@
 package com.dam2.haru_petcare.ui.mascotas
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dam2.haru_petcare.databinding.FragmentMascotasBinding
@@ -18,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MascotasFragment : Fragment() {
+class MascotaFragment : Fragment() {
 
     private var _binding: FragmentMascotasBinding? = null
     private val binding get() = _binding!!
@@ -26,8 +28,29 @@ class MascotasFragment : Fragment() {
     private lateinit var sessionManager: SessionManager
     private lateinit var adapter: MascotaAdapter
 
+    /**
+     * Launcher para abrir AddMascotaActivity y recibir el resultado.
+     *
+     * ActivityResultContracts.StartActivityForResult es la forma moderna
+     * de manejar resultados entre Activities — reemplaza al deprecado
+     * startActivityForResult() + onActivityResult().
+     *
+     * Cuando AddMascotaActivity llama a setResult(RESULT_OK) y finish(),
+     * este launcher recibe el resultado y recarga la lista de mascotas.
+     */
+    private val addMascotaLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // La mascota se guardó correctamente — recargamos la lista
+            cargarMascotas()
+        }
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMascotasBinding.inflate(inflater, container, false)
         return binding.root
@@ -41,18 +64,15 @@ class MascotasFragment : Fragment() {
         cargarMascotas()
 
         binding.fabAnadirMascota.setOnClickListener {
-            // Vertical futura: añadir mascota
-            Toast.makeText(requireContext(), "Próximamente: añadir mascota", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), AddMascotaActivity::class.java)
+            addMascotaLauncher.launch(intent)
         }
     }
 
     private fun configurarRecyclerView() {
         adapter = MascotaAdapter { mascota ->
-            // Al tocar una mascota, abrimos DetalleMascotaActivity
-            // y le pasamos el ID mediante Intent
             val intent = Intent(requireContext(), DetalleMascotaActivity::class.java).apply {
                 putExtra(Constants.EXTRA_MASCOTA_ID, mascota.id)
-                // También pasamos el nombre para mostrarlo en la toolbar del detalle
                 putExtra("mascota_nombre", mascota.nombre)
             }
             startActivity(intent)
@@ -60,8 +80,7 @@ class MascotasFragment : Fragment() {
 
         binding.rvMascotas.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@MascotasFragment.adapter
-            // Animación de entrada suave al cargar
+            adapter = this@MascotaFragment.adapter
             itemAnimator?.changeDuration = 0
         }
     }
@@ -87,7 +106,6 @@ class MascotasFragment : Fragment() {
                         val lista = response.body() ?: emptyList()
                         adapter.setMascotas(lista)
 
-                        // Mostramos el estado vacío si no hay mascotas
                         binding.layoutSinMascotas.visibility =
                             if (lista.isEmpty()) View.VISIBLE else View.GONE
                         binding.rvMascotas.visibility =

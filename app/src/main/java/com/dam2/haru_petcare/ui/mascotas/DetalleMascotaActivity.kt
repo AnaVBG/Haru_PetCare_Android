@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ActivityDetalleMascotaBinding
 import com.dam2.haru_petcare.model.HistorialMedicoDTO
+import com.dam2.haru_petcare.model.MascotaDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
 import com.dam2.haru_petcare.util.Constants
@@ -99,14 +100,46 @@ class DetalleMascotaActivity : AppCompatActivity() {
      * Por ahora mostramos los datos básicos y cargamos la foto si hay URL.
      */
     private fun cargarDatosMascota() {
-        // Los datos básicos ya los tenemos del Fragment anterior
-        // Solo necesitamos cargar la foto con Glide si hay URL
-        // En la siguiente iteración añadiremos GET /api/mascotas/{id}
+        val api = RetrofitClient
+            .getClient(sessionManager.getToken())
+            .create(HaruApiService::class.java)
 
-        // Placeholder: emoji de pata como fondo de la imagen
-        binding.ivFotoMascota.setBackgroundColor(
-            resources.getColor(R.color.haru_teal, theme)
-        )
+        api.getMascotaPorId(idMascota).enqueue(object : Callback<MascotaDTO> {
+
+            override fun onResponse(
+                call: Call<MascotaDTO>,
+                response: Response<MascotaDTO>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let { mascota ->
+                        binding.tvDetalleEspecie.text   = mascota.especie ?: "—"
+                        binding.tvDetalleRaza.text      = mascota.raza    ?: "—"
+                        binding.tvDetalleFechaNac.text  = formatearFecha(mascota.fechaNacimiento)
+                        binding.collapsingToolbar.title = mascota.nombre  ?: nombreMascota
+
+                        // Cargar foto con Glide si hay URL
+                        if (!mascota.fotoUrl.isNullOrBlank()) {
+                            Glide.with(this@DetalleMascotaActivity)
+                                .load(mascota.fotoUrl)
+                                .centerCrop()
+                                .into(binding.ivFotoMascota)
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MascotaDTO>, t: Throwable) {
+                // Los datos básicos ya los tenemos del Intent — no es crítico
+            }
+        })
+    }
+
+    private fun formatearFecha(fechaIso: String?): String {
+        if (fechaIso == null) return "—"
+        return try {
+            val partes = fechaIso.split("-")
+            "${partes[2]}/${partes[1]}/${partes[0]}"
+        } catch (e: Exception) { fechaIso }
     }
 
     /**
