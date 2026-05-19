@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbarMain)
-        binding.toolbarMain.inflateMenu(R.menu.menu_main)
+        //binding.toolbarMain.inflateMenu(R.menu.menu_main)
         pedirPermisoNotificaciones()
 
         if (savedInstanceState == null) cargarFragment(fragmentoMascotas())
@@ -159,6 +159,11 @@ class MainActivity : AppCompatActivity() {
                 permisosNotificacionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
 
     override fun onDestroy() { super.onDestroy() }
