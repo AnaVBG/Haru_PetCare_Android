@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ActivityMainBinding
+import com.dam2.haru_petcare.databinding.DialogPerfilBinding
 import com.dam2.haru_petcare.ui.alertas.AlertasFragment
 import com.dam2.haru_petcare.ui.citas.CitasFragment
 import com.dam2.haru_petcare.ui.mapa.MapaFragment
@@ -20,6 +21,7 @@ import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import com.dam2.haru_petcare.ui.auth.LoginActivity
 import com.dam2.haru_petcare.util.ThemeManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbarMain)
+        binding.toolbarMain.inflateMenu(R.menu.menu_main)
         pedirPermisoNotificaciones()
 
         if (savedInstanceState == null) cargarFragment(fragmentoMascotas())
@@ -53,7 +56,69 @@ class MainActivity : AppCompatActivity() {
         if (tabDestino != -1) binding.bottomNavView.selectedItemId = tabDestino
     }
 
-    // DUENO ve sus propias mascotas; VETERINARIO y CLINICA ven todas las mascotas
+    private fun configurarMenu() {
+        binding.toolbarMain.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_perfil -> { mostrarPerfilSheet(); true }
+                else -> false
+            }
+        }
+    }
+
+    private fun mostrarPerfilSheet() {
+        val sheet = BottomSheetDialog(this)
+        val sheetBinding = DialogPerfilBinding.inflate(layoutInflater)
+        sheet.setContentView(sheetBinding.root)
+
+        // Rellenar datos
+        val nombre = sessionManager.getNombre()
+        sheetBinding.tvInicialAvatar.text  = nombre.firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+        sheetBinding.tvNombrePerfil.text   = nombre
+        sheetBinding.tvEmailPerfil.text    = sessionManager.getEmail()
+        sheetBinding.tvRolPerfil.text      = when (sessionManager.getRol()) {
+            Constants.ROL_VETERINARIO -> "Veterinario/a"
+            Constants.ROL_CLINICA     -> "Clínica"
+            else                      -> "Dueño/a"
+        }
+
+        // Marcar el tema activo
+        val modoActual = ThemeManager.getModoGuardado(this)
+        val botonActivo = when (modoActual) {
+            ThemeManager.MODO_CLARO  -> sheetBinding.btnTemaClaro.id
+            ThemeManager.MODO_OSCURO -> sheetBinding.btnTemaOscuro.id
+            else                     -> sheetBinding.btnTemaSistema.id
+        }
+        sheetBinding.toggleTema.check(botonActivo)
+
+        // Cambio de tema
+        sheetBinding.toggleTema.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            val modo = when (checkedId) {
+                sheetBinding.btnTemaClaro.id  -> ThemeManager.MODO_CLARO
+                sheetBinding.btnTemaOscuro.id -> ThemeManager.MODO_OSCURO
+                else                          -> ThemeManager.MODO_SISTEMA
+            }
+            ThemeManager.cambiarModo(this, modo)
+        }
+
+        // Cerrar sesión
+        sheetBinding.btnCerrarSesionPerfil.setOnClickListener {
+            sheet.dismiss()
+            mostrarDialogoCerrarSesion()
+        }
+
+        sheet.show()
+    }
+
+    private fun mostrarDialogoCerrarSesion() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Cerrar sesión")
+            .setMessage("¿Seguro que quieres salir?")
+            .setPositiveButton("Salir") { _, _ -> cerrarSesion() }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
     private fun fragmentoMascotas(): Fragment =
         if (sessionManager.getRol() == Constants.ROL_DUENO) MascotaFragment()
         else VetMascotasFragment()
@@ -72,49 +137,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun configurarMenu() {
-        binding.toolbarMain.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_tema          -> { mostrarDialogoTema(); true }
-                R.id.action_cerrar_sesion -> { mostrarDialogoCerrarSesion(); true }
-                else -> false
-            }
-        }
-    }
-
-    private fun mostrarDialogoTema() {
-        val opciones = arrayOf("Seguir ajuste del sistema", "Modo claro", "Modo oscuro")
-        val modoActual = ThemeManager.getModoGuardado(this)
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Apariencia")
-            .setSingleChoiceItems(opciones, modoActual) { dialog, which ->
-                ThemeManager.cambiarModo(this, which)
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
-    private fun mostrarDialogoCerrarSesion() {
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Cerrar sesión")
-            .setMessage("¿Seguro que quieres salir?")
-            .setPositiveButton("Salir") { _, _ -> cerrarSesion() }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
-    private fun pedirPermisoNotificaciones() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                permisosNotificacionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-
     private fun cargarFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
@@ -126,6 +148,17 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         })
+    }
+
+    private fun pedirPermisoNotificaciones() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permisosNotificacionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     override fun onDestroy() { super.onDestroy() }

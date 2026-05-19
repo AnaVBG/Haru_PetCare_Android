@@ -3,15 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_tema"
-        android:title="Cambiar tema"
-        android:icon="@drawable/ic_tema"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/action_cerrar_sesion"
-        android:title="Cerrar sesión"
-        android:icon="@android:drawable/ic_lock_power_off"
-        app:showAsAction="never"/>
+        android:id="@+id/action_perfil"
+        android:title="Mi perfil"
+        android:icon="@drawable/ic_person"
+        app:showAsAction="always"/>
 
 </menu>

@@ -51,7 +51,7 @@ class SessionManager(context: Context) {
     fun getNombre(): String   = prefs.getString(KEY_NOMBRE, "") ?: ""
     fun getRol(): String      = prefs.getString(KEY_ROL, "") ?: ""
     fun estaLogueado(): Boolean = prefs.getBoolean(KEY_LOGUEADO, false)
-
+    fun getEmail(): String = prefs.getString(KEY_EMAIL, "") ?: ""
     fun cerrarSesion() {
         prefs.edit().clear().apply()
     }
