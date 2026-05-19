@@ -106,7 +106,7 @@ class CrearCitaActivity : AppCompatActivity() {
             fechaCita    = fechaHoraSeleccionada!!,
             motivo       = motivo,
             idMascota    = idMascota,
-            idVeterinario = sessionManager.getId(),
+            idVeterinario = sessionManager.getIdUsuario(),
             idDueno      = idDueno
         )
 
