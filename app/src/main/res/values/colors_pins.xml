@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── FUENTE DE AGUA ──────────────────────────────────────────────── -->
+    <color name="pin_fuente">#4BBFBF</color>
+    <color name="pin_fuente_bg">#E0F5F5</color>
+
+    <!-- ── PARQUE ──────────────────────────────────────────────────────── -->
+    <color name="pin_parque">#5C8A3A</color>
+    <color name="pin_parque_bg">#EAF3DE</color>
+
+    <!-- ── PAPELERA ────────────────────────────────────────────────────── -->
+    <color name="pin_papelera">#E8A030</color>
+    <color name="pin_papelera_bg">#FDF3E0</color>
+
+    <!-- ── ZONA DE PELIGRO ─────────────────────────────────────────────── -->
+    <color name="pin_peligro">#C0392B</color>
+    <color name="pin_peligro_bg">#FDECEA</color>
+
+    <!-- ── Selectores de chips (background según estado checked) ──────── -->
+    <color name="chip_bg_fuente">#E0F5F5</color>
+    <color name="chip_stroke_fuente">#4BBFBF</color>
+    <color name="chip_icon_fuente">#2E9494</color>
+
+    <color name="chip_bg_parque">#EAF3DE</color>
+    <color name="chip_stroke_parque">#5C8A3A</color>
+    <color name="chip_icon_parque">#3B6D11</color>
+
+    <color name="chip_bg_papelera">#FDF3E0</color>
+    <color name="chip_stroke_papelera">#E8A030</color>
+    <color name="chip_icon_papelera">#8B5E10</color>
+
+    <color name="chip_bg_peligro">#FDECEA</color>
+    <color name="chip_stroke_peligro">#C0392B</color>
+    <color name="chip_icon_peligro">#8B1E1E</color>
+</resources>

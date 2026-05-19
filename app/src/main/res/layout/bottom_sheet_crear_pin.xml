@@ -8,7 +8,7 @@
     android:padding="24dp"
     android:background="@color/haru_white">
 
-    <!-- Handle -->
+    <!-- Handle visual -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir pin en mi ubicación"
+        android:text="Añadir punto en el mapa"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/haru_brown"
@@ -34,105 +34,145 @@
         android:textColor="@color/haru_text_secondary"
         android:layout_marginBottom="20dp"/>
 
-    <!-- Selector de tipo con ChipGroup -->
+    <!-- Selector de tipo con iconos bonitos -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tipo de punto"
+        android:text="¿Qué tipo de punto es?"
         android:textSize="13sp"
         android:textColor="@color/haru_teal_dark"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="10dp"/>
 
+    <!--
+        ChipGroup en modo grilla 2x2 para que los chips sean más grandes
+        y visibles. app:chipIconTint tiñe el icono con el color correcto
+        cuando el chip NO está seleccionado.
+    -->
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupTipoPin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         app:singleSelection="true"
         app:selectionRequired="true">
 
+        <!-- FUENTE DE AGUA -->
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFuente"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="💧 Fuente"
+            android:layout_height="48dp"
+            android:text="Fuente de agua"
+            android:textSize="13sp"
             android:checked="true"
-            app:chipBackgroundColor="@color/haru_teal_light"
-            app:chipStrokeColor="@color/haru_teal"
-            app:chipStrokeWidth="1dp"/>
+            app:chipIcon="@drawable/ic_pin_fuente"
+            app:chipIconTint="@color/chip_icon_fuente"
+            app:chipIconSize="20dp"
+            app:chipBackgroundColor="@color/chip_bg_fuente"
+            app:chipStrokeColor="@color/chip_stroke_fuente"
+            app:chipStrokeWidth="1.5dp"
+            app:checkedIconVisible="false"/>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipPapelera"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🗑️ Papelera"
-            app:chipBackgroundColor="@color/haru_teal_light"
-            app:chipStrokeColor="@color/haru_teal"
-            app:chipStrokeWidth="1dp"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipPeligro"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⚠️ Peligro"
-            app:chipBackgroundColor="@color/haru_teal_light"
-            app:chipStrokeColor="@color/haru_teal"
-            app:chipStrokeWidth="1dp"/>
-
+        <!-- PARQUE -->
         <com.google.android.material.chip.Chip
             android:id="@+id/chipParque"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🌳 Parque"
-            app:chipBackgroundColor="@color/haru_teal_light"
-            app:chipStrokeColor="@color/haru_teal"
-            app:chipStrokeWidth="1dp"/>
+            android:layout_height="48dp"
+            android:text="Parque"
+            android:textSize="13sp"
+            app:chipIcon="@drawable/ic_pin_parque"
+            app:chipIconTint="@color/chip_icon_parque"
+            app:chipIconSize="20dp"
+            app:chipBackgroundColor="@color/chip_bg_parque"
+            app:chipStrokeColor="@color/chip_stroke_parque"
+            app:chipStrokeWidth="1.5dp"
+            app:checkedIconVisible="false"/>
+
+        <!-- PAPELERA -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPapelera"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Papelera"
+            android:textSize="13sp"
+            app:chipIcon="@drawable/ic_pin_papelera"
+            app:chipIconTint="@color/chip_icon_papelera"
+            app:chipIconSize="20dp"
+            app:chipBackgroundColor="@color/chip_bg_papelera"
+            app:chipStrokeColor="@color/chip_stroke_papelera"
+            app:chipStrokeWidth="1.5dp"
+            app:checkedIconVisible="false"/>
+
+        <!-- ZONA DE PELIGRO -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPeligro"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Zona de peligro"
+            android:textSize="13sp"
+            app:chipIcon="@drawable/ic_pin_peligro"
+            app:chipIconTint="@color/chip_icon_peligro"
+            app:chipIconSize="20dp"
+            app:chipBackgroundColor="@color/chip_bg_peligro"
+            app:chipStrokeColor="@color/chip_stroke_peligro"
+            app:chipStrokeWidth="1.5dp"
+            app:checkedIconVisible="false"/>
 
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Descripción opcional -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilDescripcionPin"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Descripción (opcional)"
-        android:layout_marginBottom="20dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp"
         app:boxStrokeColor="@color/haru_teal"
-        app:hintTextColor="@color/haru_teal_dark">
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginBottom="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etDescripcionPin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
+            android:lines="2"
             android:maxLines="3"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Botones -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCrearPin"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Colocar pin"
-        android:backgroundTint="@color/haru_teal"
-        android:textColor="@color/haru_white"
-        android:padding="14dp"
-        app:cornerRadius="12dp"
-        android:layout_marginBottom="8dp"/>
+        android:orientation="horizontal"
+        android:gravity="end">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCancelarPin"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancelar"
-        android:textColor="@color/haru_text_secondary"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelarPin"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Cancelar"
+            android:layout_marginEnd="10dp"
+            app:strokeColor="@color/haru_grey"
+            android:textColor="@color/haru_text_secondary"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCrearPin"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Añadir pin"
+            android:backgroundTint="@color/haru_teal"
+            app:cornerRadius="12dp"
+            android:textColor="@color/haru_white"/>
+
+    </LinearLayout>
 
 </LinearLayout>

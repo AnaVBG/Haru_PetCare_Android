@@ -17,6 +17,9 @@
         android:theme="@style/Theme.HaruPetcare"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.citas.CrearCitaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.mascotas.AddMascotaActivity"
             android:exported="false" />
 
@@ -56,26 +59,20 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
-
-        <!-- Servicio FCM -->
+        </provider> <!-- Servicio FCM -->
         <service
             android:name=".service.HaruFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!-- Canal de notificaciones por defecto -->
+        </service> <!-- Canal de notificaciones por defecto -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="haru_alertas_channel"/>
-
-        <!-- Color e icono por defecto de las notificaciones -->
+            android:value="haru_alertas_channel" /> <!-- Color e icono por defecto de las notificaciones -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/haru_brown"/>
+            android:resource="@color/haru_brown" />
     </application>
 
 </manifest>

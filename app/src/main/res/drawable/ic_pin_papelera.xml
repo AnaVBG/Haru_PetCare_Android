@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <!-- Tapa de la papelera -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M8,11 L24,11"/>
+
+    <!-- Asa de la tapa -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M13,11 L13,9 L19,9 L19,11"/>
+
+    <!-- Cuerpo de la papelera -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M9.5,11 L10.5,27
+            C10.5,27.6 11,28 11.5,28
+            L20.5,28
+            C21,28 21.5,27.6 21.5,27
+            L22.5,11 Z"/>
+
+    <!-- Línea izquierda interior -->
+    <path
+        android:strokeColor="#E8A030"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M13.5,14 L14,25"/>
+
+    <!-- Línea central interior -->
+    <path
+        android:strokeColor="#E8A030"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M16,14 L16,25"/>
+
+    <!-- Línea derecha interior -->
+    <path
+        android:strokeColor="#E8A030"
+        android:strokeWidth="1.4"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M18.5,14 L18,25"/>
+
+</vector>

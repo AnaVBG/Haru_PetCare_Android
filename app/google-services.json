@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157585321603",
+    "project_id": "harupetcare-9d712",
+    "storage_bucket": "harupetcare-9d712.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157585321603:android:542754c7b4cfe4ca9eb5b6",
+        "android_client_info": {
+          "package_name": "com.dam2.haru_petcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7H_C_sjDBrMMRx6gnV8BlV1SQ_kx9SLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,9 +18,19 @@ interface HaruApiService {
     @PUT("api/auth/fcm/{idUsuario}")
     fun actualizarTokenFcm(@Path("idUsuario") id: Long, @Body token: String): Call<Void>
 
+    // ── CLÍNICAS ──────────────────────────────────────────────────────────
+    @GET("api/usuarios/clinicas")
+    fun getClincias(): Call<List<ClinicaDTO>>
+
     // ── MASCOTAS ──────────────────────────────────────────────────────────
     @GET("api/mascotas/dueno/{id}")
     fun getMascotasPorDueno(@Path("id") idDueno: Long): Call<List<MascotaDTO>>
+
+    @GET("api/mascotas/todas")
+    fun buscarTodasMascotas(
+        @Query("especie") especie: String?,
+        @Query("buscar") buscar: String?
+    ): Call<List<MascotaDTO>>
 
     @POST("api/mascotas/inserta")
     fun insertarMascota(@Body dto: MascotaInsertarDTO): Call<MascotaDTO>
@@ -47,7 +57,7 @@ interface HaruApiService {
     fun getAgendaVeterinario(@Path("id") idVeterinario: Long): Call<List<CitaDTO>>
 
     @POST("api/citas")
-    fun crearCita(@Body dto: CitaDTO): Call<CitaDTO>
+    fun crearCita(@Body dto: CitaInsertarDTO): Call<CitaDTO>
 
     @PUT("api/citas/{id}/estado")
     fun cambiarEstadoCita(@Path("id") idCita: Long, @Body estado: String): Call<CitaDTO>

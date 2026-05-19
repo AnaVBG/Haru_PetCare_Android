@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    FrameLayout como raíz: el mapa ocupa toda la pantalla
-    y los controles flotan encima con elevation.
-    Es el patrón estándar para mapas en Android.
--->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,10 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <!--
-        Panel superior flotante: título + leyenda de colores.
-        Usa elevation para flotar sobre el mapa con sombra.
-    -->
+    <!-- Panel superior flotante: título + leyenda con iconos SVG -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,43 +29,122 @@
             android:padding="12dp"
             android:background="@color/haru_white">
 
-            <!-- Título -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mapa comunitario"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="10dp"/>
 
-            <!-- Leyenda de tipos de pin -->
+            <!-- Leyenda: 4 columnas con icono + texto para cada tipo de pin -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="💧 Fuente"
-                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+                <!-- FUENTE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="🗑️ Papelera"
-                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_pin_fuente"
+                        android:contentDescription="Fuente"
+                        app:tint="@color/pin_fuente"
+                        android:layout_marginEnd="4dp"/>
 
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="⚠️ Peligro"
-                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fuente"
+                        android:textSize="11sp"
+                        android:textColor="@color/haru_text_secondary"/>
+                </LinearLayout>
 
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="🌳 Parque"
-                    android:textSize="12sp" android:textColor="@color/haru_text_secondary"/>
+                <!-- PARQUE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_pin_parque"
+                        android:contentDescription="Parque"
+                        app:tint="@color/pin_parque"
+                        android:layout_marginEnd="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parque"
+                        android:textSize="11sp"
+                        android:textColor="@color/haru_text_secondary"/>
+                </LinearLayout>
+
+                <!-- PAPELERA -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_pin_papelera"
+                        android:contentDescription="Papelera"
+                        app:tint="@color/pin_papelera"
+                        android:layout_marginEnd="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Papelera"
+                        android:textSize="11sp"
+                        android:textColor="@color/haru_text_secondary"/>
+                </LinearLayout>
+
+                <!-- PELIGRO -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_pin_peligro"
+                        android:contentDescription="Peligro"
+                        app:tint="@color/pin_peligro"
+                        android:layout_marginEnd="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Peligro"
+                        android:textSize="11sp"
+                        android:textColor="@color/haru_text_secondary"/>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- FAB para añadir pin nuevo -->
+    <!-- FAB añadir pin -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAnadirPin"
         android:layout_width="wrap_content"
@@ -85,7 +156,7 @@
         app:backgroundTint="@color/haru_brown"
         app:tint="@color/haru_white"/>
 
-    <!-- FAB secundario: centrar en mi ubicación -->
+    <!-- FAB mi ubicación -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMiUbicacion"
         android:layout_width="wrap_content"

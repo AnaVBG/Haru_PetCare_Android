@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <!-- Copa superior (triángulo pequeño) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,4 L25,17 L7,17 Z"/>
+
+    <!-- Copa inferior (triángulo grande solapado, da forma de pino) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,11 L27,26 L5,26 Z"/>
+
+    <!-- Tronco: rectángulo dibujado como path M(x,y) h(ancho) v(alto) h(-ancho) Z -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8"
+        android:pathData="M13,26 h6 v4 h-6 Z"/>
+
+</vector>

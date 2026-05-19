@@ -5,5 +5,6 @@ data class UsuarioRegistroDTO(
     val email: String,
     val password: String,
     val rol: String,
-    val telefono: String
+    val telefono: String,
+    val idClinica: Long? = 0
 )

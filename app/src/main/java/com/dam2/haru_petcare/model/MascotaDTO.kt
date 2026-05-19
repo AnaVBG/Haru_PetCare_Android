@@ -7,10 +7,9 @@ data class MascotaDTO(
     val nombre: String?,
     val especie: String?,
     val raza: String?,
-    // @SerializedName: cuando el nombre del campo JSON no coincide
-    // con el nombre de la propiedad Kotlin (camelCase vs snake_case)
     @SerializedName("fechaNacimiento")
     val fechaNacimiento: String?,
     val fotoUrl: String?,
-    val duenoId: Long?
+    val duenoId: Long?,
+    val nombreDueno: String?   // nombre del dueño, usado en la vista del veterinario
 )

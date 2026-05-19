@@ -14,7 +14,6 @@
         android:padding="32dp"
         android:gravity="center">
 
-        <!-- Cabecera -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +31,6 @@
             android:textColor="@color/haru_teal_dark"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Nombre -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNombre"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -42,17 +40,14 @@
             android:layout_marginBottom="16dp"
             app:boxStrokeColor="@color/haru_teal"
             app:hintTextColor="@color/haru_teal_dark">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:imeOptions="actionNext"/>
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -62,17 +57,14 @@
             android:layout_marginBottom="16dp"
             app:boxStrokeColor="@color/haru_teal"
             app:hintTextColor="@color/haru_teal_dark">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionNext"/>
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Teléfono -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTelefono"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -82,17 +74,14 @@
             android:layout_marginBottom="16dp"
             app:boxStrokeColor="@color/haru_teal"
             app:hintTextColor="@color/haru_teal_dark">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:imeOptions="actionNext"/>
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -104,17 +93,14 @@
             app:hintTextColor="@color/haru_teal_dark"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/haru_teal">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:imeOptions="actionNext"/>
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Confirmar password -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilConfirmarPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -126,22 +112,14 @@
             app:hintTextColor="@color/haru_teal_dark"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/haru_teal">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirmarPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:imeOptions="actionDone"/>
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!--
-            Selector de rol con ToggleButton.
-            El usuario elige si es Dueño o Veterinario.
-            MaterialButtonToggleGroup garantiza que solo uno esté
-            seleccionado a la vez (singleSelection=true).
-        -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,7 +133,7 @@
             android:id="@+id/toggleGroupRol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             app:singleSelection="true"
             app:selectionRequired="true">
 
@@ -166,6 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🐾 Dueño"
+                android:textSize="12sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:cornerRadius="8dp"
@@ -178,13 +157,54 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🩺 Veterinario"
+                android:textSize="12sp"
+                android:textColor="@color/haru_teal_dark"
+                app:strokeColor="@color/haru_teal"
+                app:cornerRadius="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRolClinica"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🏥 Clínica"
+                android:textSize="12sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:cornerRadius="8dp"/>
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <!-- Botón registrar -->
+        <!-- Solo visible para VETERINARIO -->
+        <LinearLayout
+            android:id="@+id/layoutClinica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilClinica"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Clínica"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvClinica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegistrar"
             android:layout_width="match_parent"
@@ -197,7 +217,6 @@
             android:textColor="@color/haru_white"
             app:cornerRadius="12dp"/>
 
-        <!-- Volver al login -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolver"
             style="@style/Widget.MaterialComponents.Button.TextButton"

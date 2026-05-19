@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <!-- Gota principal -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,4
+            C16,4 9,10.5 9,17
+            C9,21 12.1,24 16,24
+            C19.9,24 23,21 23,17
+            C23,10.5 16,4 16,4 Z"/>
+
+    <!-- Brillo interior (reflejo) -->
+    <path
+        android:fillColor="#4BBFBF"
+        android:fillAlpha="0.35"
+        android:pathData="M13,13
+            C13,13 11,15.5 11,17.5
+            C11,19 11.8,20.2 13,21
+            C13,21 11,19.5 11.5,17
+            C12,14.5 13,13 13,13 Z"/>
+
+    <!-- Ondas de agua debajo -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M10,27 Q13,25.5 16,27 Q19,28.5 22,27"/>
+
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillAlpha="0.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M12,29.5 Q14.5,28.2 16,29.5 Q17.5,30.8 19.5,29.5"/>
+
+</vector>

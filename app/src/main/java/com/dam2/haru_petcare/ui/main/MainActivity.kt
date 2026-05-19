@@ -15,6 +15,8 @@ import com.dam2.haru_petcare.ui.alertas.AlertasFragment
 import com.dam2.haru_petcare.ui.citas.CitasFragment
 import com.dam2.haru_petcare.ui.mapa.MapaFragment
 import com.dam2.haru_petcare.ui.mascotas.MascotaFragment
+import com.dam2.haru_petcare.ui.mascotas.VetMascotasFragment
+import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import com.dam2.haru_petcare.ui.auth.LoginActivity
 import com.dam2.haru_petcare.util.ThemeManager
@@ -37,51 +39,52 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarMain)
         pedirPermisoNotificaciones()
 
-        if (savedInstanceState == null) cargarFragment(MascotaFragment())
+        if (savedInstanceState == null) cargarFragment(fragmentoMascotas())
         configurarNavegacion()
         configurarMenu()
 
-        // Caso: MainActivity se crea nueva desde DetalleMascotaActivity
         val tabDestino = intent.getIntExtra("tab_destino", -1)
-        if (tabDestino != -1) {
-            binding.bottomNavView.selectedItemId = tabDestino
-        }
+        if (tabDestino != -1) binding.bottomNavView.selectedItemId = tabDestino
     }
 
-    // Caso: MainActivity ya estaba abierta, Android reutiliza la instancia
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val tabDestino = intent.getIntExtra("tab_destino", -1)
-        if (tabDestino != -1) {
-            binding.bottomNavView.selectedItemId = tabDestino
+        if (tabDestino != -1) binding.bottomNavView.selectedItemId = tabDestino
+    }
+
+    // DUENO ve sus propias mascotas; VETERINARIO y CLINICA ven todas las mascotas
+    private fun fragmentoMascotas(): Fragment =
+        if (sessionManager.getRol() == Constants.ROL_DUENO) MascotaFragment()
+        else VetMascotasFragment()
+
+    private fun configurarNavegacion() {
+        binding.bottomNavView.setOnItemSelectedListener { item ->
+            val fragment: Fragment = when (item.itemId) {
+                R.id.nav_mascotas -> fragmentoMascotas()
+                R.id.nav_citas    -> CitasFragment()
+                R.id.nav_mapa     -> MapaFragment()
+                R.id.nav_alertas  -> AlertasFragment()
+                else              -> return@setOnItemSelectedListener false
+            }
+            cargarFragment(fragment)
+            true
         }
     }
 
     private fun configurarMenu() {
         binding.toolbarMain.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_tema -> {
-                    mostrarDialogoTema()
-                    true
-                }
-                R.id.action_cerrar_sesion -> {
-                    mostrarDialogoCerrarSesion()
-                    true
-                }
+                R.id.action_tema          -> { mostrarDialogoTema(); true }
+                R.id.action_cerrar_sesion -> { mostrarDialogoCerrarSesion(); true }
                 else -> false
             }
         }
     }
 
     private fun mostrarDialogoTema() {
-        val opciones = arrayOf(
-            "Seguir ajuste del sistema",
-            "Modo claro",
-            "Modo oscuro"
-        )
-
+        val opciones = arrayOf("Seguir ajuste del sistema", "Modo claro", "Modo oscuro")
         val modoActual = ThemeManager.getModoGuardado(this)
-
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Apariencia")
             .setSingleChoiceItems(opciones, modoActual) { dialog, which ->
@@ -112,37 +115,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun configurarNavegacion() {
-        binding.bottomNavView.setOnItemSelectedListener { item ->
-            val fragment: Fragment = when (item.itemId) {
-                R.id.nav_mascotas -> MascotaFragment()
-                R.id.nav_citas    -> CitasFragment()
-                R.id.nav_mapa     -> MapaFragment()
-                R.id.nav_alertas  -> AlertasFragment()
-                else              -> return@setOnItemSelectedListener false
-            }
-            cargarFragment(fragment)
-            true
-        }
-    }
-
     private fun cargarFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
+        supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
 
     fun cerrarSesion() {
         sessionManager.cerrarSesion()
-        startActivity(
-            Intent(this, LoginActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-        )
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
+    override fun onDestroy() { super.onDestroy() }
 }
