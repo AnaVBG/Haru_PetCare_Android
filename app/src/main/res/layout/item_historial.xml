@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:textSize="11sp"
             android:layout_marginBottom="4dp"
-            style="@style/Widget.Material3.Chip.Assist"/>
+            style="@style/Widget.MaterialComponents.Chip.Action"/>
 
         <!-- Descripción -->
         <TextView

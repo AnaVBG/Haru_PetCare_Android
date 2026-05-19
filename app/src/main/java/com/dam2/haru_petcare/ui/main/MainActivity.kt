@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private val permisosNotificacionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { _ -> /* el usuario decidió — acepte o no, continuamos */ }
+    ) { _ -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +40,21 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) cargarFragment(MascotaFragment())
         configurarNavegacion()
         configurarMenu()
+
+        // Caso: MainActivity se crea nueva desde DetalleMascotaActivity
+        val tabDestino = intent.getIntExtra("tab_destino", -1)
+        if (tabDestino != -1) {
+            binding.bottomNavView.selectedItemId = tabDestino
+        }
+    }
+
+    // Caso: MainActivity ya estaba abierta, Android reutiliza la instancia
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val tabDestino = intent.getIntExtra("tab_destino", -1)
+        if (tabDestino != -1) {
+            binding.bottomNavView.selectedItemId = tabDestino
+        }
     }
 
     private fun configurarMenu() {
@@ -58,10 +73,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Diálogo con tres opciones: Sistema, Claro, Oscuro.
-     * La opción actual aparece marcada con un radio button.
-     */
     private fun mostrarDialogoTema() {
         val opciones = arrayOf(
             "Seguir ajuste del sistema",
@@ -76,8 +87,6 @@ class MainActivity : AppCompatActivity() {
             .setSingleChoiceItems(opciones, modoActual) { dialog, which ->
                 ThemeManager.cambiarModo(this, which)
                 dialog.dismiss()
-                // No hace falta recrear la Activity —
-                // AppCompatDelegate lo gestiona automáticamente
             }
             .setNegativeButton("Cancelar", null)
             .show()
@@ -92,7 +101,6 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    // Añade este método y llámalo desde onCreate()
     private fun pedirPermisoNotificaciones() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
@@ -106,18 +114,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun configurarNavegacion() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
-            // 'when' es el 'switch' de Kotlin, pero más potente
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_mascotas -> MascotaFragment()
                 R.id.nav_citas    -> CitasFragment()
                 R.id.nav_mapa     -> MapaFragment()
                 R.id.nav_alertas  -> AlertasFragment()
                 else              -> return@setOnItemSelectedListener false
-                // 'return@setOnItemSelectedListener' es un return etiquetado:
-                // sale del lambda, no de la función entera
             }
             cargarFragment(fragment)
-            true // indica al BottomNav que marque el ítem como seleccionado
+            true
         }
     }
 
@@ -132,14 +137,10 @@ class MainActivity : AppCompatActivity() {
         sessionManager.cerrarSesion()
         startActivity(
             Intent(this, LoginActivity::class.java).apply {
-                // 'apply { }' configura el Intent sin necesidad de variable temporal
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                // 'or' en Kotlin = '|' (OR bit a bit) en Java
             }
         )
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()

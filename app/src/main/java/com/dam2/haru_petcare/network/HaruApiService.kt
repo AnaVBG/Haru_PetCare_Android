@@ -1,14 +1,11 @@
 package com.dam2.haru_petcare.network
 
 import com.dam2.haru_petcare.model.*
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
-/**
- * En Kotlin las interfaces son idénticas a Java en concepto,
- * pero la sintaxis es más limpia: 'fun' en vez de tipo de retorno primero.
- */
 interface HaruApiService {
 
     // ── AUTH ──────────────────────────────────────────────────────────────
@@ -27,6 +24,16 @@ interface HaruApiService {
 
     @POST("api/mascotas/inserta")
     fun insertarMascota(@Body dto: MascotaInsertarDTO): Call<MascotaDTO>
+
+    @GET("api/mascotas/{id}")
+    fun getMascotaPorId(@Path("id") id: Long): Call<MascotaDTO>
+
+    @Multipart
+    @POST("api/mascotas/{id}/foto")
+    fun subirFotoMascota(
+        @Path("id") idMascota: Long,
+        @Part foto: MultipartBody.Part
+    ): Call<MascotaDTO>
 
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")
@@ -68,8 +75,4 @@ interface HaruApiService {
     // ── PDF ───────────────────────────────────────────────────────────────
     @GET("api/pdf/historial/{id}")
     fun descargarHistorialPdf(@Path("id") idMascota: Long): Call<ResponseBody>
-
-    @GET("api/mascotas/{id}")
-    fun getMascotaPorId(@Path("id") id: Long): Call<MascotaDTO>
-
 }

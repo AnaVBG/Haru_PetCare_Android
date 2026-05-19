@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Toolbar -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarAddMascota"
             android:layout_width="match_parent"
@@ -23,13 +22,42 @@
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/haru_white"/>
 
+        <!-- Selector de foto -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/ivFotoMascota"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_camera"
+                android:background="@color/haru_teal_light"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Foto de la mascota"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pulsa para añadir foto (opcional)"
+                android:textSize="12sp"
+                android:textColor="@color/haru_teal_dark"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Nombre -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilNombreMascota"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -49,7 +77,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Especie -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEspecie"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -69,7 +96,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Raza -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilRaza"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -89,7 +115,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Fecha de nacimiento -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilFechaNacimiento"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -103,11 +128,6 @@
                 app:endIconDrawable="@android:drawable/ic_menu_my_calendar"
                 app:endIconTint="@color/haru_teal">
 
-                <!--
-                    El campo es solo lectura (focusable=false).
-                    Al pulsar se abre el DatePicker del sistema.
-                    Evitamos que el usuario escriba fechas con formato incorrecto.
-                -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etFechaNacimiento"
                     android:layout_width="match_parent"
@@ -118,7 +138,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Botón guardar -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardarMascota"
                 android:layout_width="match_parent"

@@ -1,29 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/haru_surface">
 
-    <!-- Toolbar con título dinámico según el rol -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/haru_teal"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbarCitas"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/haru_teal"
-            app:titleTextColor="@color/haru_white"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Chips para filtrar por estado -->
     <LinearLayout
         android:id="@+id/layoutFiltros"
         android:layout_width="match_parent"
@@ -31,16 +14,8 @@
         android:orientation="horizontal"
         android:paddingHorizontal="12dp"
         android:paddingVertical="8dp"
-        android:background="@color/haru_white"
-        app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom">
+        android:background="@color/haru_white">
 
-        <!--
-            ChipGroup con filtros de estado.
-            El usuario puede filtrar las citas por PENDIENTE,
-            COMPLETADA o CANCELADA sin hacer otra llamada a la API.
-            Filtramos la lista en memoria.
-        -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,16 +78,9 @@
         </HorizontalScrollView>
     </LinearLayout>
 
-    <!-- Contenido principal -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingTop="56dp">
-        <!--
-            paddingTop="56dp" → deja espacio para el ChipGroup de filtros
-            que flota sobre el contenido
-        -->
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,7 +96,6 @@
                 android:indeterminateTint="@color/haru_teal"
                 android:visibility="gone"/>
 
-            <!-- Estado vacío -->
             <LinearLayout
                 android:id="@+id/layoutSinCitas"
                 android:layout_width="match_parent"
@@ -166,4 +133,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

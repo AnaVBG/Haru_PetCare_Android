@@ -6,35 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/haru_surface">
 
-    <!-- AppBar con título -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/haru_teal"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbarMascotas"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Mis mascotas"
-            app:titleTextColor="@color/haru_white"
-            android:background="@color/haru_teal"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Contenido principal -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- ProgressBar centrado mientras carga -->
             <ProgressBar
                 android:id="@+id/progressBarMascotas"
                 android:layout_width="wrap_content"
@@ -44,7 +24,6 @@
                 android:indeterminateTint="@color/haru_teal"
                 android:visibility="gone"/>
 
-            <!-- Mensaje cuando no hay mascotas -->
             <LinearLayout
                 android:id="@+id/layoutSinMascotas"
                 android:layout_width="match_parent"
@@ -81,7 +60,6 @@
 
             </LinearLayout>
 
-            <!-- Lista de mascotas -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMascotas"
                 android:layout_width="match_parent"
@@ -93,7 +71,6 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FAB con color marrón del logo -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAnadirMascota"
         android:layout_width="wrap_content"

@@ -1,16 +1,23 @@
 package com.dam2.haru_petcare.ui.mascotas
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.dam2.haru_petcare.databinding.ActivityAddMascotaBinding
 import com.dam2.haru_petcare.model.MascotaDTO
 import com.dam2.haru_petcare.model.MascotaInsertarDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
 import com.dam2.haru_petcare.util.SessionManager
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,9 +29,18 @@ class AddMascotaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddMascotaBinding
     private lateinit var sessionManager: SessionManager
 
-    // Guardamos la fecha seleccionada en formato ISO (YYYY-MM-DD)
-    // que es lo que espera el backend
     private var fechaSeleccionada: String = ""
+    private var uriFotoSeleccionada: Uri? = null
+
+    private val galeriaLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            uriFotoSeleccionada = it
+            binding.ivFotoMascota.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(this).load(it).centerCrop().into(binding.ivFotoMascota)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +49,7 @@ class AddMascotaActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         configurarToolbar()
+        configurarSelectorFoto()
         configurarDatePicker()
         configurarBotonGuardar()
     }
@@ -42,42 +59,30 @@ class AddMascotaActivity : AppCompatActivity() {
         binding.toolbarAddMascota.setNavigationOnClickListener { finish() }
     }
 
-    /**
-     * Configura el campo de fecha para abrir el DatePicker del sistema
-     * al pulsarlo, en vez de dejar que el usuario escriba manualmente.
-     *
-     * DatePickerDialog: diálogo nativo de Android para seleccionar fechas.
-     * Usamos Calendar para inicializarlo en la fecha actual.
-     */
+    private fun configurarSelectorFoto() {
+        binding.ivFotoMascota.setOnClickListener {
+            galeriaLauncher.launch("image/*")
+        }
+    }
+
     private fun configurarDatePicker() {
         val abrirDatePicker = View.OnClickListener {
             val calendario = Calendar.getInstance()
-
             DatePickerDialog(
                 this,
                 { _, anio, mes, dia ->
-                    // mes + 1 porque Calendar usa 0-11 para los meses
-                    // pero nosotros queremos 1-12
                     val mesFormateado = String.format("%02d", mes + 1)
                     val diaFormateado = String.format("%02d", dia)
-
-                    // Guardamos en formato ISO para el backend: YYYY-MM-DD
                     fechaSeleccionada = "$anio-$mesFormateado-$diaFormateado"
-
-                    // Mostramos en formato legible para el usuario: DD/MM/YYYY
                     binding.etFechaNacimiento.setText("$diaFormateado/$mesFormateado/$anio")
                 },
                 calendario.get(Calendar.YEAR),
                 calendario.get(Calendar.MONTH),
                 calendario.get(Calendar.DAY_OF_MONTH)
             ).also { picker ->
-                // No permitimos fechas futuras — una mascota no puede
-                // nacer en el futuro
                 picker.datePicker.maxDate = System.currentTimeMillis()
             }.show()
         }
-
-        // El DatePicker se abre tanto al pulsar el campo como el icono
         binding.etFechaNacimiento.setOnClickListener(abrirDatePicker)
         binding.tilFechaNacimiento.setEndIconOnClickListener(abrirDatePicker)
     }
@@ -91,7 +96,6 @@ class AddMascotaActivity : AppCompatActivity() {
         val especie = binding.etEspecie.text.toString().trim()
         val raza    = binding.etRaza.text.toString().trim()
 
-        // Validaciones
         limpiarErrores()
 
         if (nombre.isEmpty()) {
@@ -123,24 +127,29 @@ class AddMascotaActivity : AppCompatActivity() {
 
         api.insertarMascota(dto).enqueue(object : Callback<MascotaDTO> {
 
-            override fun onResponse(
-                call: Call<MascotaDTO>,
-                response: Response<MascotaDTO>
-            ) {
-                mostrarCargando(false)
-
+            override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
                 if (response.isSuccessful) {
                     val mascotaCreada = response.body()
-                    Toast.makeText(
-                        this@AddMascotaActivity,
-                        "¡${mascotaCreada?.nombre} añadida correctamente! 🐾",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    // Cerramos la Activity y volvemos a MascotasFragment
-                    // que recargará la lista automáticamente en onResume
-                    setResult(RESULT_OK)
-                    finish()
+                    val uri = uriFotoSeleccionada
+                    if (uri != null && mascotaCreada != null) {
+                        val id = mascotaCreada.id ?: run {
+                            mostrarCargando(false)
+                            finalizarConExito(mascotaCreada.nombre ?: "Mascota")
+                            return
+                        }
+                        subirFoto(id, uri, mascotaCreada.nombre ?: "Mascota")
+                    } else {
+                        mostrarCargando(false)
+                        Toast.makeText(
+                            this@AddMascotaActivity,
+                            "¡${mascotaCreada?.nombre} añadida correctamente! 🐾",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        setResult(RESULT_OK)
+                        finish()
+                    }
                 } else {
+                    mostrarCargando(false)
                     mostrarError("Error al guardar (${response.code()})")
                 }
             }
@@ -150,6 +159,49 @@ class AddMascotaActivity : AppCompatActivity() {
                 mostrarError("Sin conexión: ${t.message}")
             }
         })
+    }
+
+    private fun subirFoto(idMascota: Long, uri: Uri, nombreMascota: String) {
+        val inputStream = contentResolver.openInputStream(uri) ?: run {
+            mostrarCargando(false)
+            finalizarConExito(nombreMascota)
+            return
+        }
+        val bytes = inputStream.readBytes()
+        inputStream.close()
+
+        val mediaType = (contentResolver.getType(uri) ?: "image/jpeg").toMediaTypeOrNull()
+        val requestBody = bytes.toRequestBody(mediaType)
+        val part = MultipartBody.Part.createFormData("foto", "foto_mascota.jpg", requestBody)
+
+        val api = RetrofitClient
+            .getClient(sessionManager.getToken())
+            .create(HaruApiService::class.java)
+
+        api.subirFotoMascota(idMascota, part).enqueue(object : Callback<MascotaDTO> {
+            override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
+                mostrarCargando(false)
+                finalizarConExito(nombreMascota)
+            }
+
+            override fun onFailure(call: Call<MascotaDTO>, t: Throwable) {
+                mostrarCargando(false)
+                // La mascota se creó, solo falló la subida de foto
+                Toast.makeText(
+                    this@AddMascotaActivity,
+                    "¡$nombreMascota añadida! (la foto no se pudo subir)",
+                    Toast.LENGTH_LONG
+                ).show()
+                setResult(RESULT_OK)
+                finish()
+            }
+        })
+    }
+
+    private fun finalizarConExito(nombreMascota: String) {
+        Toast.makeText(this, "¡$nombreMascota añadida correctamente! 🐾", Toast.LENGTH_LONG).show()
+        setResult(RESULT_OK)
+        finish()
     }
 
     private fun limpiarErrores() {

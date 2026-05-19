@@ -13,6 +13,7 @@ import com.dam2.haru_petcare.model.HistorialMedicoDTO
 import com.dam2.haru_petcare.model.MascotaDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
+import com.dam2.haru_petcare.ui.main.MainActivity
 import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import okhttp3.ResponseBody
@@ -28,7 +29,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var historialAdapter: HistorialAdapter
 
-    // ID de la mascota recibido desde MascotasFragment via Intent
     private var idMascota: Long = -1L
     private var nombreMascota: String = ""
 
@@ -38,14 +38,12 @@ class DetalleMascotaActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         setContentView(binding.root)
 
-        // Recuperamos los datos del Intent
-        // '?:' proporciona el valor por defecto si el extra no existe
-        idMascota    = intent.getLongExtra(Constants.EXTRA_MASCOTA_ID, -1L)
+        idMascota     = intent.getLongExtra(Constants.EXTRA_MASCOTA_ID, -1L)
         nombreMascota = intent.getStringExtra("mascota_nombre") ?: "Mascota"
 
         if (idMascota == -1L) {
             Toast.makeText(this, "Error: mascota no encontrada", Toast.LENGTH_SHORT).show()
-            finish() // Cerramos si no hay ID válido
+            finish()
             return
         }
 
@@ -58,10 +56,7 @@ class DetalleMascotaActivity : AppCompatActivity() {
 
     private fun configurarToolbar() {
         setSupportActionBar(binding.toolbarDetalle)
-        // El título se muestra en el CollapsingToolbarLayout
         binding.collapsingToolbar.title = nombreMascota
-
-        // El botón de volver atrás cierra esta Activity
         binding.toolbarDetalle.setNavigationOnClickListener { finish() }
     }
 
@@ -70,8 +65,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
         binding.rvHistorial.apply {
             layoutManager = LinearLayoutManager(this@DetalleMascotaActivity)
             adapter = historialAdapter
-            // nestedScrollingEnabled = false ya está en el XML
-            // para que el scroll sea del NestedScrollView padre
         }
     }
 
@@ -81,24 +74,20 @@ class DetalleMascotaActivity : AppCompatActivity() {
         }
 
         binding.btnVerCitas.setOnClickListener {
-            // Navegamos a la pestaña de citas con el ID de esta mascota
-            // Por ahora mostramos Toast — en la Vertical 3 lo implementamos
-            Toast.makeText(this, "Citas de $nombreMascota — próximamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("tab_destino", R.id.nav_citas)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         binding.btnActivarAlerta.setOnClickListener {
-            // Vertical 5: alertas de pérdida
-            Toast.makeText(this, "Alerta de pérdida — próximamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("tab_destino", R.id.nav_alertas)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
     }
 
-    /**
-     * En esta versión mostramos los datos que ya tenemos del Intent.
-     * Cuando tengamos un endpoint GET /api/mascotas/{id} en el backend,
-     * haremos aquí la llamada Retrofit completa.
-     *
-     * Por ahora mostramos los datos básicos y cargamos la foto si hay URL.
-     */
     private fun cargarDatosMascota() {
         val api = RetrofitClient
             .getClient(sessionManager.getToken())
@@ -106,18 +95,14 @@ class DetalleMascotaActivity : AppCompatActivity() {
 
         api.getMascotaPorId(idMascota).enqueue(object : Callback<MascotaDTO> {
 
-            override fun onResponse(
-                call: Call<MascotaDTO>,
-                response: Response<MascotaDTO>
-            ) {
+            override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
                 if (response.isSuccessful) {
                     response.body()?.let { mascota ->
-                        binding.tvDetalleEspecie.text   = mascota.especie ?: "—"
-                        binding.tvDetalleRaza.text      = mascota.raza    ?: "—"
-                        binding.tvDetalleFechaNac.text  = formatearFecha(mascota.fechaNacimiento)
-                        binding.collapsingToolbar.title = mascota.nombre  ?: nombreMascota
+                        binding.tvDetalleEspecie.text  = mascota.especie ?: "—"
+                        binding.tvDetalleRaza.text     = mascota.raza    ?: "—"
+                        binding.tvDetalleFechaNac.text = formatearFecha(mascota.fechaNacimiento)
+                        binding.collapsingToolbar.title = mascota.nombre ?: nombreMascota
 
-                        // Cargar foto con Glide si hay URL
                         if (!mascota.fotoUrl.isNullOrBlank()) {
                             Glide.with(this@DetalleMascotaActivity)
                                 .load(mascota.fotoUrl)
@@ -128,9 +113,7 @@ class DetalleMascotaActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<MascotaDTO>, t: Throwable) {
-                // Los datos básicos ya los tenemos del Intent — no es crítico
-            }
+            override fun onFailure(call: Call<MascotaDTO>, t: Throwable) { }
         })
     }
 
@@ -142,10 +125,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
         } catch (e: Exception) { fechaIso }
     }
 
-    /**
-     * Carga el historial médico de la mascota.
-     * GET /api/historial/mascota/{idMascota}
-     */
     private fun cargarHistorial() {
         binding.progressBarHistorial.visibility = View.VISIBLE
 
@@ -165,14 +144,11 @@ class DetalleMascotaActivity : AppCompatActivity() {
                     val historial = response.body() ?: emptyList()
                     historialAdapter.setRegistros(historial)
 
-                    // Mostrar estado vacío si no hay registros
                     binding.tvSinHistorial.visibility =
                         if (historial.isEmpty()) View.VISIBLE else View.GONE
                     binding.rvHistorial.visibility =
                         if (historial.isEmpty()) View.GONE else View.VISIBLE
-
                 } else {
-                    binding.progressBarHistorial.visibility = View.GONE
                     Toast.makeText(
                         this@DetalleMascotaActivity,
                         "Error al cargar historial (${response.code()})",
@@ -192,13 +168,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
         })
     }
 
-    /**
-     * Descarga el PDF del historial médico y lo abre con el visor del sistema.
-     * GET /api/pdf/historial/{idMascota}
-     *
-     * El servidor devuelve bytes crudos (ResponseBody), no JSON.
-     * Los guardamos en el almacenamiento externo y los abrimos con un Intent.
-     */
     private fun descargarPdf() {
         Toast.makeText(this, "Descargando PDF...", Toast.LENGTH_SHORT).show()
         binding.btnDescargarPdf.isEnabled = false
@@ -209,58 +178,35 @@ class DetalleMascotaActivity : AppCompatActivity() {
 
         api.descargarHistorialPdf(idMascota).enqueue(object : Callback<ResponseBody> {
 
-            override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
-            ) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 binding.btnDescargarPdf.isEnabled = true
-
                 if (response.isSuccessful) {
-                    response.body()?.let { body ->
-                        guardarYAbrirPdf(body)
-                    }
+                    response.body()?.let { guardarYAbrirPdf(it) }
                 } else {
-                    Toast.makeText(
-                        this@DetalleMascotaActivity,
-                        "Error al descargar PDF",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@DetalleMascotaActivity, "Error al descargar PDF", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 binding.btnDescargarPdf.isEnabled = true
-                Toast.makeText(
-                    this@DetalleMascotaActivity,
-                    "Error de conexión: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this@DetalleMascotaActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    /**
-     * Guarda el PDF en el directorio de caché y lo abre con el visor del sistema.
-     *
-     * Usamos el directorio de caché (cacheDir) para no necesitar permisos
-     * de almacenamiento externo en Android 10+.
-     * FileProvider expone el archivo de forma segura a otras apps (el visor de PDF).
-     */
     private fun guardarYAbrirPdf(body: ResponseBody) {
         try {
             val archivo = File(cacheDir, "historial_${nombreMascota}_$idMascota.pdf")
 
-            // Escribimos los bytes recibidos en el archivo
             FileOutputStream(archivo).use { output ->
                 body.byteStream().use { input ->
                     input.copyTo(output)
                 }
             }
 
-            // Abrimos el PDF con el visor instalado en el dispositivo
             val uri = androidx.core.content.FileProvider.getUriForFile(
                 this,
-                "${packageName}.provider", // debe coincidir con el FileProvider del Manifest
+                "${packageName}.provider",
                 archivo
             )
 

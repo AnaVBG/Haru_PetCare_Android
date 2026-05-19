@@ -77,7 +77,7 @@
                     android:textColor="@color/haru_white"
                     app:chipBackgroundColor="@color/haru_brown"
                     android:clickable="false"
-                    style="@style/Widget.Material3.Chip.Assist"/>
+                    style="@style/Widget.MaterialComponents.Chip.Action"/>
 
             </LinearLayout>
 
