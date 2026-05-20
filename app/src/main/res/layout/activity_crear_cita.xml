@@ -13,7 +13,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/haru_teal"
         app:title="Nueva cita"
-        app:titleTextColor="@color/haru_white"/>
+        app:titleTextColor="@color/haru_white"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/haru_white"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,6 +28,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <!-- Nombre de la mascota (solo informativo, viene por Intent) -->
             <TextView
                 android:id="@+id/tvMascotaCrearCita"
                 android:layout_width="wrap_content"
@@ -34,6 +37,48 @@
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"
                 android:layout_marginBottom="24dp"/>
+
+            <!-- Selector de veterinario: solo visible para CLINICA -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilVeterinario"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Veterinario"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvVeterinario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Selector de mascota: solo visible para CLINICA -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMascotaSelector"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mascota"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actvMascota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -94,6 +139,15 @@
                 android:backgroundTint="@color/haru_teal"
                 android:textColor="@color/haru_white"
                 app:cornerRadius="12dp"/>
+
+            <ProgressBar
+                android:id="@+id/progressBarCita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:indeterminateTint="@color/haru_teal"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </ScrollView>

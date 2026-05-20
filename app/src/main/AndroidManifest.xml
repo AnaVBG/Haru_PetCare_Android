@@ -17,6 +17,9 @@
         android:theme="@style/Theme.HaruPetcare"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.mascotas.CrearDuenoMascotaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.citas.CrearCitaActivity"
             android:exported="false" />
         <activity

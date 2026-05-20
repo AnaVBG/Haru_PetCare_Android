@@ -1,93 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/haru_surface">
 
-    <!-- Filtros -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/haru_surface">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Selector de especie -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEspecie"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        <!-- Filtros -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Especie"
-            android:layout_marginBottom="8dp"
-            app:boxStrokeColor="@color/haru_teal"
-            app:hintTextColor="@color/haru_teal_dark">
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/haru_surface">
 
-            <AutoCompleteTextView
-                android:id="@+id/actvEspecie"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEspecie"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                android:focusable="false"/>
+                android:hint="Especie"
+                android:layout_marginBottom="8dp"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/actvEspecie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="false"/>
 
-        <!-- Búsqueda por nombre o dueño -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilBuscar"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilBuscar"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Buscar por nombre o dueño/a"
+                app:boxStrokeColor="@color/haru_teal"
+                app:hintTextColor="@color/haru_teal_dark"
+                app:startIconDrawable="@android:drawable/ic_menu_search"
+                app:startIconTint="@color/haru_teal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBuscar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <!-- ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Buscar por nombre o dueño/a"
-            app:boxStrokeColor="@color/haru_teal"
-            app:hintTextColor="@color/haru_teal_dark"
-            app:startIconDrawable="@android:drawable/ic_menu_search"
-            app:startIconTint="@color/haru_teal">
+            android:layout_gravity="center_horizontal"
+            android:indeterminateTint="@color/haru_teal"
+            android:visibility="gone"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etBuscar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"/>
+        <!-- Estado vacío -->
+        <TextView
+            android:id="@+id/tvSinResultados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="48dp"
+            android:text="Sin resultados"
+            android:textColor="@color/haru_teal_dark"
+            android:textSize="16sp"
+            android:visibility="gone"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+        <!-- Lista -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMascotas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="80dp"
+            android:clipToPadding="false"/>
 
     </LinearLayout>
 
-    <!-- ProgressBar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <!-- FAB añadir -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAnadirMascota"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:indeterminateTint="@color/haru_teal"
-        android:visibility="gone"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="Añadir mascota"
+        app:backgroundTint="@color/haru_brown"
+        app:tint="@color/haru_white"/>
 
-    <!-- Estado vacío -->
-    <TextView
-        android:id="@+id/tvSinResultados"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:text="Sin resultados"
-        android:textColor="@color/haru_teal_dark"
-        android:textSize="16sp"
-        android:visibility="gone"/>
-
-    <!-- Lista -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMascotas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:paddingBottom="16dp"
-        android:clipToPadding="false"/>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

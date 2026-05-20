@@ -18,9 +18,12 @@ interface HaruApiService {
     @PUT("api/auth/fcm/{idUsuario}")
     fun actualizarTokenFcm(@Path("idUsuario") id: Long, @Body token: String): Call<Void>
 
-    // ── CLÍNICAS ──────────────────────────────────────────────────────────
+    // ── USUARIOS ──────────────────────────────────────────────────────────
     @GET("api/usuarios/clinicas")
     fun getClincias(): Call<List<ClinicaDTO>>
+
+    @GET("api/usuarios/buscar")
+    fun buscarUsuarioPorEmail(@Query("email") email: String): Call<UsuarioDTO>
 
     // ── MASCOTAS ──────────────────────────────────────────────────────────
     @GET("api/mascotas/dueno/{id}")
@@ -28,6 +31,7 @@ interface HaruApiService {
 
     @GET("api/mascotas/todas")
     fun buscarTodasMascotas(
+        @Query("idUsuario") idUsuario: Long,
         @Query("especie") especie: String?,
         @Query("buscar") buscar: String?
     ): Call<List<MascotaDTO>>
@@ -45,6 +49,12 @@ interface HaruApiService {
         @Part foto: MultipartBody.Part
     ): Call<MascotaDTO>
 
+    @POST("api/mascotas/vincular-clinica")
+    fun vincularMascotaClinica(@Body dto: VincularMascotaClinicaDTO): Call<List<MascotaDTO>>
+
+    @POST("api/mascotas/crear-dueno-mascota")
+    fun crearDuenoConMascota(@Body dto: CrearDuenoConMascotaDTO): Call<MascotaDTO>
+
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")
     fun getHistorial(@Path("id") idMascota: Long): Call<List<HistorialMedicoDTO>>
@@ -61,6 +71,9 @@ interface HaruApiService {
 
     @PUT("api/citas/{id}/estado")
     fun cambiarEstadoCita(@Path("id") idCita: Long, @Body estado: String): Call<CitaDTO>
+
+    @GET("api/usuarios/veterinarios-clinica/{idClinica}")
+    fun getVeterinariosDeClinica(@Path("idClinica") idClinica: Long): Call<List<UsuarioDTO>>
 
     // ── MAPA ──────────────────────────────────────────────────────────────
     @GET("api/pines")

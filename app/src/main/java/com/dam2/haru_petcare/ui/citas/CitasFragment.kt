@@ -42,16 +42,9 @@ class CitasFragment : Fragment() {
         sessionManager = SessionManager(requireContext())
         esVeterinario  = sessionManager.getRol() == Constants.ROL_VETERINARIO
 
-        configurarToolbar()
         configurarAdapter()
         configurarFiltros()
         cargarCitas()
-    }
-
-    private fun configurarToolbar() {
-        // El título lo mostramos en el toolbar de la MainActivity
-        val titulo = if (esVeterinario) "Mi agenda" else "Citas"
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = titulo
     }
 
     private fun configurarAdapter() {

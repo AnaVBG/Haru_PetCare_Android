@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/haru_white">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:background="@color/haru_grey"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vincular dueño existente"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/haru_brown"
+        android:layout_marginBottom="6dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Busca al dueño por email y selecciona qué mascotas vincular"
+        android:textSize="13sp"
+        android:textColor="@color/haru_text_secondary"
+        android:layout_marginBottom="20dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEmailDueno"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email del dueño"
+        android:layout_marginBottom="12dp"
+        app:boxStrokeColor="@color/haru_teal"
+        app:hintTextColor="@color/haru_teal_dark"
+        app:endIconMode="custom"
+        app:endIconDrawable="@android:drawable/ic_menu_search"
+        app:endIconTint="@color/haru_teal">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmailDueno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionSearch"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Resultado de la búsqueda -->
+    <LinearLayout
+        android:id="@+id/layoutResultadoDueno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:strokeColor="@color/haru_teal"
+            app:strokeWidth="1dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/tvNombreDuenoEncontrado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/haru_brown"/>
+
+                <TextView
+                    android:id="@+id/tvEmailDuenoEncontrado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/haru_teal_dark"/>
+
+                <TextView
+                    android:id="@+id/tvMascotasDuenoEncontrado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/haru_text_secondary"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVincularTodas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vincular todas sus mascotas"
+            android:backgroundTint="@color/haru_teal"
+            android:textColor="@color/haru_white"
+            android:layout_marginBottom="8dp"
+            app:cornerRadius="12dp"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarBusqueda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/haru_teal"
+        android:visibility="gone"/>
+
+</LinearLayout>
