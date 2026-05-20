@@ -1,7 +1,7 @@
 package com.dam2.haru_petcare.util
 
 object Constants {
-    const val BASE_URL = "http://192.168.0.15:8080/"
+    const val BASE_URL = "harupetcarehub-production.up.railway.app"
 
     const val ROL_DUENO       = "DUENO"
     const val ROL_VETERINARIO = "VETERINARIO"
