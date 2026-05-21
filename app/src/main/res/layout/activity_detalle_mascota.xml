@@ -287,4 +287,16 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCambiarFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_camera"
+        android:contentDescription="Añadir foto"
+        app:backgroundTint="@color/haru_brown"
+        app:tint="@color/haru_white"
+        app:layout_anchor="@id/appBarDetalle"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_margin="16dp"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -42,18 +42,14 @@ interface HaruApiService {
     @GET("api/mascotas/{id}")
     fun getMascotaPorId(@Path("id") id: Long): Call<MascotaDTO>
 
-    @Multipart
-    @POST("api/mascotas/{id}/foto")
-    fun subirFotoMascota(
-        @Path("id") idMascota: Long,
-        @Part foto: MultipartBody.Part
-    ): Call<MascotaDTO>
-
     @POST("api/mascotas/vincular-clinica")
     fun vincularMascotaClinica(@Body dto: VincularMascotaClinicaDTO): Call<List<MascotaDTO>>
 
     @POST("api/mascotas/crear-dueno-mascota")
     fun crearDuenoConMascota(@Body dto: CrearDuenoConMascotaDTO): Call<MascotaDTO>
+
+    @PUT("api/mascotas/{id}/foto-url")
+    fun actualizarFotoUrl(@Path("id") idMascota: Long, @Body fotoUrl: String): Call<MascotaDTO>
 
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")
