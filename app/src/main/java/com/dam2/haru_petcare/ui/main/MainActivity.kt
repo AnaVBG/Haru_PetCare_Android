@@ -17,6 +17,7 @@ import com.dam2.haru_petcare.ui.citas.CitasFragment
 import com.dam2.haru_petcare.ui.mapa.MapaFragment
 import com.dam2.haru_petcare.ui.mascotas.MascotaFragment
 import com.dam2.haru_petcare.ui.mascotas.VetMascotasFragment
+import com.dam2.haru_petcare.ui.citas.VetCitasFragment
 import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import com.dam2.haru_petcare.ui.auth.LoginActivity
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_mascotas -> fragmentoMascotas()
-                R.id.nav_citas    -> CitasFragment()
+                R.id.nav_citas    -> if (sessionManager.getRol() == Constants.ROL_DUENO) CitasFragment() else VetCitasFragment()
                 R.id.nav_mapa     -> MapaFragment()
                 R.id.nav_alertas  -> AlertasFragment()
                 else              -> return@setOnItemSelectedListener false

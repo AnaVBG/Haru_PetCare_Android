@@ -75,6 +75,9 @@ interface HaruApiService {
     @GET("api/usuarios/veterinarios-clinica/{idClinica}")
     fun getVeterinariosDeClinica(@Path("idClinica") idClinica: Long): Call<List<UsuarioDTO>>
 
+    @GET("api/citas/clinica/{idClinica}")
+    fun getCitasClinica(@Path("idClinica") idClinica: Long): Call<List<CitaDTO>>
+
     // ── MAPA ──────────────────────────────────────────────────────────────
     @GET("api/pines")
     fun getPines(): Call<List<PinMapaDTO>>
