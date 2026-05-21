@@ -75,5 +75,11 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-messaging")   // FCM push notification
 
+    // --- Glide — carga imágenes desde URL con caché automático ---
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // --- Circleimageview — avatar circular con borde (para el item de mascota) ---
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
 
 }

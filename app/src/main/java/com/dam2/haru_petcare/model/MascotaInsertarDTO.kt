@@ -7,5 +7,6 @@ data class MascotaInsertarDTO(
     val especie: String,
     val raza: String,
     val fechaNacimiento: LocalDate,
-    val duenoId: Long
+    val duenoId: Long,
+    val fotoUrl: String? = null
 )

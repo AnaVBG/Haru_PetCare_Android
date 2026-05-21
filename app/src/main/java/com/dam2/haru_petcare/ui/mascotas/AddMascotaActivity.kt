@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -14,13 +13,18 @@ import com.dam2.haru_petcare.model.MascotaDTO
 import com.dam2.haru_petcare.model.MascotaInsertarDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
+import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.time.LocalDate
 import java.util.Calendar
 
@@ -30,15 +34,17 @@ class AddMascotaActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
 
     private var fechaSeleccionada: String = ""
-    private var uriFotoSeleccionada: Uri? = null
+    private var imagenUri: Uri? = null
 
-    private val galeriaLauncher = registerForActivityResult(
+    private val seleccionarImagenLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            uriFotoSeleccionada = it
-            binding.ivFotoMascota.scaleType = ImageView.ScaleType.CENTER_CROP
-            Glide.with(this).load(it).centerCrop().into(binding.ivFotoMascota)
+            imagenUri = it
+            Glide.with(this)
+                .load(it)
+                .centerCrop()
+                .into(binding.ivFotoPreview)
         }
     }
 
@@ -49,20 +55,14 @@ class AddMascotaActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         configurarToolbar()
-        configurarSelectorFoto()
         configurarDatePicker()
+        configurarSeleccionFoto()
         configurarBotonGuardar()
     }
 
     private fun configurarToolbar() {
         setSupportActionBar(binding.toolbarAddMascota)
         binding.toolbarAddMascota.setNavigationOnClickListener { finish() }
-    }
-
-    private fun configurarSelectorFoto() {
-        binding.ivFotoMascota.setOnClickListener {
-            galeriaLauncher.launch("image/*")
-        }
     }
 
     private fun configurarDatePicker() {
@@ -85,6 +85,14 @@ class AddMascotaActivity : AppCompatActivity() {
         }
         binding.etFechaNacimiento.setOnClickListener(abrirDatePicker)
         binding.tilFechaNacimiento.setEndIconOnClickListener(abrirDatePicker)
+    }
+
+    private fun configurarSeleccionFoto() {
+        val abrirGaleria = View.OnClickListener {
+            seleccionarImagenLauncher.launch("image/*")
+        }
+        binding.ivFotoPreview.setOnClickListener(abrirGaleria)
+        binding.fabSeleccionarFoto.setOnClickListener(abrirGaleria)
     }
 
     private fun configurarBotonGuardar() {
@@ -113,12 +121,88 @@ class AddMascotaActivity : AppCompatActivity() {
 
         mostrarCargando(true)
 
+        if (imagenUri != null) {
+            subirImagenYGuardar(nombre, especie, raza)
+        } else {
+            guardarMascota(nombre, especie, raza, fotoUrl = null)
+        }
+    }
+
+    /**
+     * Sube la imagen directamente a Cloudinary usando el preset unsigned.
+     * No se necesita API Key ni Secret — el preset lo permite sin autenticación.
+     * Usa las constantes centralizadas de Constants.kt.
+     */
+    private fun subirImagenYGuardar(nombre: String, especie: String, raza: String) {
+        val uri = imagenUri ?: return
+
+        val inputStream = contentResolver.openInputStream(uri)
+        val bytes = inputStream?.readBytes()
+        inputStream?.close()
+
+        if (bytes == null) {
+            mostrarCargando(false)
+            mostrarError("No se pudo leer la imagen seleccionada")
+            return
+        }
+
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart(
+                "file",
+                "mascota_${System.currentTimeMillis()}.jpg",
+                RequestBody.create("image/jpeg".toMediaTypeOrNull(), bytes)
+            )
+            // ✅ Usamos la constante en vez del literal hardcodeado
+            .addFormDataPart("upload_preset", Constants.CLOUDINARY_UPLOAD_PRESET)
+            .build()
+
+        val request = Request.Builder()
+            // ✅ Usamos la URL construida en Constants
+            .url(Constants.CLOUDINARY_UPLOAD_URL)
+            .post(requestBody)
+            .build()
+
+        OkHttpClient().newCall(request).enqueue(object : okhttp3.Callback {
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                val bodyStr = response.body?.string()
+
+                if (response.isSuccessful && bodyStr != null) {
+                    val secureUrl = JSONObject(bodyStr).getString("secure_url")
+                    runOnUiThread {
+                        guardarMascota(nombre, especie, raza, fotoUrl = secureUrl)
+                    }
+                } else {
+                    runOnUiThread {
+                        mostrarCargando(false)
+                        mostrarError("Error al subir la imagen (${response.code})")
+                    }
+                }
+            }
+
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                runOnUiThread {
+                    mostrarCargando(false)
+                    mostrarError("Sin conexión al subir imagen: ${e.message}")
+                }
+            }
+        })
+    }
+
+    private fun guardarMascota(
+        nombre: String,
+        especie: String,
+        raza: String,
+        fotoUrl: String?
+    ) {
         val dto = MascotaInsertarDTO(
-            nombre = nombre,
-            especie = especie,
-            raza = raza.ifEmpty { "Desconocida" },
+            nombre          = nombre,
+            especie         = especie,
+            raza            = raza.ifEmpty { "Desconocida" },
             fechaNacimiento = LocalDate.parse(fechaSeleccionada),
-            duenoId = sessionManager.getIdUsuario()
+            duenoId         = sessionManager.getIdUsuario(),
+            fotoUrl         = fotoUrl
         )
 
         val api = RetrofitClient
@@ -128,28 +212,16 @@ class AddMascotaActivity : AppCompatActivity() {
         api.insertarMascota(dto).enqueue(object : Callback<MascotaDTO> {
 
             override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
+                mostrarCargando(false)
                 if (response.isSuccessful) {
-                    val mascotaCreada = response.body()
-                    val uri = uriFotoSeleccionada
-                    if (uri != null && mascotaCreada != null) {
-                        val id = mascotaCreada.id ?: run {
-                            mostrarCargando(false)
-                            finalizarConExito(mascotaCreada.nombre ?: "Mascota")
-                            return
-                        }
-                        subirFoto(id, uri, mascotaCreada.nombre ?: "Mascota")
-                    } else {
-                        mostrarCargando(false)
-                        Toast.makeText(
-                            this@AddMascotaActivity,
-                            "¡${mascotaCreada?.nombre} añadida correctamente! 🐾",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        setResult(RESULT_OK)
-                        finish()
-                    }
+                    Toast.makeText(
+                        this@AddMascotaActivity,
+                        "¡${response.body()?.nombre} añadida correctamente! 🐾",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    setResult(RESULT_OK)
+                    finish()
                 } else {
-                    mostrarCargando(false)
                     mostrarError("Error al guardar (${response.code()})")
                 }
             }
@@ -161,58 +233,15 @@ class AddMascotaActivity : AppCompatActivity() {
         })
     }
 
-    private fun subirFoto(idMascota: Long, uri: Uri, nombreMascota: String) {
-        val inputStream = contentResolver.openInputStream(uri) ?: run {
-            mostrarCargando(false)
-            finalizarConExito(nombreMascota)
-            return
-        }
-        val bytes = inputStream.readBytes()
-        inputStream.close()
-
-        val mediaType = (contentResolver.getType(uri) ?: "image/jpeg").toMediaTypeOrNull()
-        val requestBody = bytes.toRequestBody(mediaType)
-        val part = MultipartBody.Part.createFormData("foto", "foto_mascota.jpg", requestBody)
-
-        val api = RetrofitClient
-            .getClient(sessionManager.getToken())
-            .create(HaruApiService::class.java)
-
-        api.subirFotoMascota(idMascota, part).enqueue(object : Callback<MascotaDTO> {
-            override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
-                mostrarCargando(false)
-                finalizarConExito(nombreMascota)
-            }
-
-            override fun onFailure(call: Call<MascotaDTO>, t: Throwable) {
-                mostrarCargando(false)
-                // La mascota se creó, solo falló la subida de foto
-                Toast.makeText(
-                    this@AddMascotaActivity,
-                    "¡$nombreMascota añadida! (la foto no se pudo subir)",
-                    Toast.LENGTH_LONG
-                ).show()
-                setResult(RESULT_OK)
-                finish()
-            }
-        })
-    }
-
-    private fun finalizarConExito(nombreMascota: String) {
-        Toast.makeText(this, "¡$nombreMascota añadida correctamente! 🐾", Toast.LENGTH_LONG).show()
-        setResult(RESULT_OK)
-        finish()
-    }
-
     private fun limpiarErrores() {
-        binding.tilNombreMascota.error = null
-        binding.tilEspecie.error = null
+        binding.tilNombreMascota.error   = null
+        binding.tilEspecie.error         = null
         binding.tilFechaNacimiento.error = null
     }
 
     private fun mostrarCargando(cargando: Boolean) {
         binding.progressBarAniadir.visibility = if (cargando) View.VISIBLE else View.GONE
-        binding.btnGuardarMascota.isEnabled = !cargando
+        binding.btnGuardarMascota.isEnabled   = !cargando
     }
 
     private fun mostrarError(msg: String) {

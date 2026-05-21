@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@color/haru_surface">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/haru_teal"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarAddMascota"
@@ -22,49 +22,62 @@
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/haru_white"/>
 
-        <!-- Selector de foto -->
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
-            android:paddingTop="24dp"
-            android:paddingBottom="8dp">
+            android:padding="20dp">
 
-            <ImageView
-                android:id="@+id/ivFotoMascota"
+            <!--
+                Avatar circular — el usuario lo toca para seleccionar foto.
+                Muestra la previsualización antes de guardar.
+                Si no hay foto, muestra el icono de cámara.
+            -->
+            <FrameLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:scaleType="centerCrop"
-                android:src="@android:drawable/ic_menu_camera"
-                android:background="@color/haru_teal_light"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="Foto de la mascota"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pulsa para añadir foto (opcional)"
-                android:textSize="12sp"
-                android:textColor="@color/haru_teal_dark"
-                android:layout_marginTop="8dp"/>
+                <!-- Imagen circular con borde teal -->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivFotoPreview"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_camera_placeholder"
+                    android:background="@color/haru_teal_light"
+                    app:civ_border_width="3dp"
+                    app:civ_border_color="@color/haru_teal"/>
 
-        </LinearLayout>
+                <!-- Badge de cámara en la esquina inferior derecha -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabSeleccionarFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:fabSize="mini"
+                    app:backgroundTint="@color/haru_brown"
+                    app:tint="@color/haru_white"
+                    android:contentDescription="Seleccionar foto"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            </FrameLayout>
 
+            <!-- Nombre -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilNombreMascota"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre de la mascota"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
+                android:hint="Nombre de la mascota *"
                 app:boxStrokeColor="@color/haru_teal"
                 app:hintTextColor="@color/haru_teal_dark">
 
@@ -72,18 +85,18 @@
                     android:id="@+id/etNombreMascota"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:imeOptions="actionNext"/>
-
+                    android:inputType="textCapWords"
+                    android:textColor="@color/haru_text_primary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Especie -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEspecie"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Especie (Perro, Gato...)"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="12dp"
+                android:hint="Especie (Perro, Gato...) *"
                 app:boxStrokeColor="@color/haru_teal"
                 app:hintTextColor="@color/haru_teal_dark">
 
@@ -91,18 +104,18 @@
                     android:id="@+id/etEspecie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:imeOptions="actionNext"/>
-
+                    android:inputType="textCapWords"
+                    android:textColor="@color/haru_text_primary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Raza -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilRaza"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
                 android:hint="Raza (opcional)"
-                android:layout_marginBottom="16dp"
                 app:boxStrokeColor="@color/haru_teal"
                 app:hintTextColor="@color/haru_teal_dark">
 
@@ -110,42 +123,43 @@
                     android:id="@+id/etRaza"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:imeOptions="actionNext"/>
-
+                    android:inputType="textCapWords"
+                    android:textColor="@color/haru_text_primary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Fecha de nacimiento -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilFechaNacimiento"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Fecha de nacimiento"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="24dp"
+                android:hint="Fecha de nacimiento *"
                 app:boxStrokeColor="@color/haru_teal"
                 app:hintTextColor="@color/haru_teal_dark"
                 app:endIconMode="custom"
-                app:endIconDrawable="@android:drawable/ic_menu_my_calendar"
+                app:endIconDrawable="@android:drawable/ic_menu_today"
                 app:endIconTint="@color/haru_teal">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etFechaNacimiento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:clickable="true"
-                    android:focusable="false" />
-
+                    android:cursorVisible="false"
+                    android:textColor="@color/haru_text_primary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Botón guardar -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardarMascota"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Guardar mascota"
-                android:textSize="16sp"
-                android:padding="14dp"
-                android:backgroundTint="@color/haru_teal"
                 android:textColor="@color/haru_white"
+                android:paddingVertical="14dp"
+                app:backgroundTint="@color/haru_teal"
                 app:cornerRadius="12dp"/>
 
             <ProgressBar
@@ -153,10 +167,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:indeterminateTint="@color/haru_teal"
                 android:visibility="gone"/>
 
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
