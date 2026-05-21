@@ -59,6 +59,9 @@ class MascotaAdapter(
             binding.tvInicialMascota.text = inicial
 
             if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
+                // Visible ANTES de Glide para que tenga dimensiones reales
+                binding.civFotoMascota.visibility   = View.VISIBLE
+                binding.tvInicialMascota.visibility = View.GONE
                 Glide.with(binding.root.context)
                     .load(mascota.fotoUrl)
                     .centerCrop()
@@ -70,12 +73,10 @@ class MascotaAdapter(
                             target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>,
                             isFirstResource: Boolean
                         ): Boolean {
-                            // La foto no cargó → mostramos fallback con inicial
-                            binding.civFotoMascota.visibility = View.GONE
+                            binding.civFotoMascota.visibility   = View.GONE
                             binding.tvInicialMascota.visibility = View.VISIBLE
                             return false
                         }
-
                         override fun onResourceReady(
                             resource: android.graphics.drawable.Drawable,
                             model: Any,
@@ -83,15 +84,11 @@ class MascotaAdapter(
                             dataSource: com.bumptech.glide.load.DataSource,
                             isFirstResource: Boolean
                         ): Boolean {
-                            // Foto cargada correctamente → mostramos el CircleImageView
-                            binding.civFotoMascota.visibility = View.VISIBLE
-                            binding.tvInicialMascota.visibility = View.GONE
                             return false
                         }
                     })
                     .into(binding.civFotoMascota)
             } else {
-                // Sin URL → fallback con inicial
                 binding.civFotoMascota.visibility   = View.GONE
                 binding.tvInicialMascota.visibility = View.VISIBLE
             }

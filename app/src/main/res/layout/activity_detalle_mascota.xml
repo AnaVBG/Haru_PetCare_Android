@@ -288,11 +288,11 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCambiarFoto"
+        android:id="@+id/fabEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_camera"
-        android:contentDescription="Añadir foto"
+        android:src="@drawable/ic_edit"
+        android:contentDescription="Editar mascota"
         app:backgroundTint="@color/haru_brown"
         app:tint="@color/haru_white"
         app:layout_anchor="@id/appBarDetalle"

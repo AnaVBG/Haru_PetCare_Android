@@ -43,31 +43,26 @@ class VetMascotaAdapter(
             binding.tvInicialMascota.text = inicial
 
             if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
+                binding.civFotoMascota.visibility   = View.VISIBLE
+                binding.tvInicialMascota.visibility = View.GONE
                 Glide.with(binding.root.context)
                     .load(mascota.fotoUrl)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>,
-                            isFirstResource: Boolean
+                            e: GlideException?, model: Any?,
+                            target: Target<Drawable>, isFirstResource: Boolean
                         ): Boolean {
                             binding.civFotoMascota.visibility   = View.GONE
                             binding.tvInicialMascota.visibility = View.VISIBLE
                             return false
                         }
-
                         override fun onResourceReady(
-                            resource: Drawable,
-                            model: Any,
-                            target: Target<Drawable>,
-                            dataSource: DataSource,
+                            resource: Drawable, model: Any,
+                            target: Target<Drawable>, dataSource: DataSource,
                             isFirstResource: Boolean
                         ): Boolean {
-                            binding.civFotoMascota.visibility   = View.VISIBLE
-                            binding.tvInicialMascota.visibility = View.GONE
                             return false
                         }
                     })

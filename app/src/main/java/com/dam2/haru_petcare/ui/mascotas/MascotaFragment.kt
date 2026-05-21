@@ -47,6 +47,10 @@ class MascotaFragment : Fragment() {
         }
     }
 
+    private val detalleLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { cargarMascotas() }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,7 +79,7 @@ class MascotaFragment : Fragment() {
                 putExtra(Constants.EXTRA_MASCOTA_ID, mascota.id)
                 putExtra("mascota_nombre", mascota.nombre)
             }
-            startActivity(intent)
+            detalleLauncher.launch(intent)
         }
 
         binding.rvMascotas.apply {

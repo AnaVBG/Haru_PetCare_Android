@@ -52,6 +52,9 @@ interface HaruApiService {
     @PUT("api/mascotas/{id}/foto-url")
     fun actualizarFotoUrl(@Path("id") idMascota: Long, @Body fotoUrl: RequestBody): Call<MascotaDTO>
 
+    @PUT("api/mascotas/{id}")
+    fun actualizarMascota(@Path("id") idMascota: Long, @Body dto: MascotaActualizarDTO): Call<MascotaDTO>
+
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")
     fun getHistorial(@Path("id") idMascota: Long): Call<List<HistorialMedicoDTO>>
