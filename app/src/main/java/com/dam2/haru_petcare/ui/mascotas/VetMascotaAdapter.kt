@@ -42,7 +42,7 @@ class VetMascotaAdapter(
             val inicial = mascota.nombre?.firstOrNull()?.uppercase() ?: "?"
             binding.tvInicialMascota.text = inicial
 
-            if (!mascota.fotoUrl.isNullOrBlank()) {
+            if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
                 Glide.with(binding.root.context)
                     .load(mascota.fotoUrl)
                     .centerCrop()

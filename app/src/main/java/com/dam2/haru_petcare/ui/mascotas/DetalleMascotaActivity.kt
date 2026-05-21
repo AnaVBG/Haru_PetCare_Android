@@ -19,8 +19,7 @@ import com.dam2.haru_petcare.ui.main.MainActivity
 import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -118,7 +117,7 @@ class DetalleMascotaActivity : AppCompatActivity() {
                         binding.tvDetalleFechaNac.text  = formatearFecha(mascota.fechaNacimiento)
                         binding.collapsingToolbar.title = mascota.nombre ?: nombreMascota
 
-                        if (!mascota.fotoUrl.isNullOrBlank()) {
+                        if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
                             Glide.with(this@DetalleMascotaActivity)
                                 .load(mascota.fotoUrl)
                                 .centerCrop()
@@ -189,9 +188,10 @@ class DetalleMascotaActivity : AppCompatActivity() {
     }
 
     private fun guardarUrlEnBackend(url: String) {
+        val body = url.toRequestBody("text/plain".toMediaTypeOrNull())
         RetrofitClient.getClient(sessionManager.getToken())
             .create(HaruApiService::class.java)
-            .actualizarFotoUrl(idMascota, url)
+            .actualizarFotoUrl(idMascota, body)
             .enqueue(object : Callback<MascotaDTO> {
 
                 override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {

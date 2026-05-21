@@ -5,6 +5,7 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import okhttp3.RequestBody
 
 interface HaruApiService {
 
@@ -49,7 +50,7 @@ interface HaruApiService {
     fun crearDuenoConMascota(@Body dto: CrearDuenoConMascotaDTO): Call<MascotaDTO>
 
     @PUT("api/mascotas/{id}/foto-url")
-    fun actualizarFotoUrl(@Path("id") idMascota: Long, @Body fotoUrl: String): Call<MascotaDTO>
+    fun actualizarFotoUrl(@Path("id") idMascota: Long, @Body fotoUrl: RequestBody): Call<MascotaDTO>
 
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")
