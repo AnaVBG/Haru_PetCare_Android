@@ -95,11 +95,12 @@ class LoginActivity : AppCompatActivity() {
                         // 'let { }' ejecuta el bloque con 'datos' como receptor
                         // solo si body() no era null
                         sessionManager.guardarSesion(
-                            id     = datos.idUsuario ?: -1L, // '?:' = valor por defecto si null
-                            nombre = datos.nombre   ?: "",
-                            email  = datos.email    ?: "",
-                            rol    = datos.rol      ?: "",
-                            token  = datos.token    ?: ""
+                            id       = datos.idUsuario  ?: -1L,
+                            nombre   = datos.nombre     ?: "",
+                            email    = datos.email      ?: "",
+                            rol      = datos.rol        ?: "",
+                            token    = datos.token      ?: "",
+                            telefono = datos.telefono   ?: ""
                         )
                         navegarAMain()
                     } ?: run {

@@ -270,7 +270,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_home"
+                            android:src="@drawable/ic_tema"
                             app:tint="@color/haru_teal"
                             android:layout_marginEnd="12dp"
                             android:contentDescription="Tema"/>

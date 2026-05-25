@@ -21,7 +21,7 @@
             app:collapsedTitleTextColor="@color/haru_white"
             app:expandedTitleTextColor="@color/haru_white"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-            app:expandedTitleMarginStart="80dp"
+            app:expandedTitleMarginStart="20dp"
             app:expandedTitleMarginBottom="16dp">
 
             <!-- Foto de fondo -->
