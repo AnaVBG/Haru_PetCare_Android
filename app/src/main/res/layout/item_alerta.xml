@@ -86,16 +86,18 @@
 
             </LinearLayout>
 
-            <!-- Chip PERDIDA -->
-            <com.google.android.material.chip.Chip
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PERDIDA"
                 android:textSize="10sp"
+                android:textStyle="bold"
                 android:textColor="@color/haru_white"
-                app:chipBackgroundColor="@color/haru_brown"
-                android:clickable="false"
-                style="@style/Widget.Material3.Chip.Assist"/>
+                android:background="@drawable/bg_badge_perdida"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
         </LinearLayout>
 
@@ -167,7 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="✅ Mascota encontrada"
+            android:text="Mascota encontrada"
             android:textSize="13sp"
             android:backgroundTint="@color/haru_teal"
             android:textColor="@color/haru_white"
