@@ -2,23 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_mascotas"
-        android:icon="@android:drawable/ic_menu_myplaces"
-        android:title="Mascotas"/>
+        android:id="@+id/nav_inicio"
+        android:icon="@drawable/ic_home"
+        android:title="Inicio"/>
 
     <item
-        android:id="@+id/nav_citas"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Citas"/>
+        android:id="@+id/nav_salud"
+        android:icon="@drawable/ic_heart_rate"
+        android:title="Salud"/>
 
     <item
         android:id="@+id/nav_mapa"
-        android:icon="@android:drawable/ic_menu_mapmode"
+        android:icon="@drawable/ic_map"
         android:title="Mapa"/>
 
     <item
         android:id="@+id/nav_alertas"
-        android:icon="@android:drawable/ic_dialog_alert"
+        android:icon="@drawable/ic_bell"
         android:title="Alertas"/>
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@drawable/ic_user_circle"
+        android:title="Perfil"/>
 
 </menu>
