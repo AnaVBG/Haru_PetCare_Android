@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/haru_surface">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <ProgressBar
+                android:id="@+id/progressBarHistorialTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:indeterminateTint="@color/haru_teal"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvSinHistorialTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No hay registros médicos todavía"
+                android:textSize="14sp"
+                android:textColor="@color/haru_grey"
+                android:gravity="center"
+                android:padding="48dp"
+                android:visibility="gone"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistorialTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:paddingBottom="16dp"/>
+
+            <!-- Botón exportar PDF al final de la lista -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExportarPdfTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="Exportar historial PDF"
+                android:textColor="@color/haru_white"
+                android:backgroundTint="@color/haru_brown"
+                android:padding="14dp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_plus"
+                app:iconTint="@color/haru_white"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

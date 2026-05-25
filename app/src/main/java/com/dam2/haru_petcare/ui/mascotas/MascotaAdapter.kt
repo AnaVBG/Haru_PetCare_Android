@@ -5,18 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ItemMascotaBinding
 import com.dam2.haru_petcare.model.MascotaDTO
 
 class MascotaAdapter(
-    private val onClick: (MascotaDTO) -> Unit
+    private val onMascotaClick: (MascotaDTO) -> Unit
 ) : RecyclerView.Adapter<MascotaAdapter.MascotaViewHolder>() {
 
-    private var lista: List<MascotaDTO> = emptyList()
+    private val mascotas = mutableListOf<MascotaDTO>()
 
     fun setMascotas(nuevaLista: List<MascotaDTO>) {
-        lista = nuevaLista
+        mascotas.clear()
+        mascotas.addAll(nuevaLista)
         notifyDataSetChanged()
     }
 
@@ -28,10 +30,10 @@ class MascotaAdapter(
     }
 
     override fun onBindViewHolder(holder: MascotaViewHolder, position: Int) {
-        holder.bind(lista[position])
+        holder.bind(mascotas[position])
     }
 
-    override fun getItemCount() = lista.size
+    override fun getItemCount() = mascotas.size
 
     inner class MascotaViewHolder(
         private val binding: ItemMascotaBinding
@@ -39,59 +41,33 @@ class MascotaAdapter(
 
         fun bind(mascota: MascotaDTO) {
             binding.tvNombreMascota.text  = mascota.nombre  ?: "Sin nombre"
-            binding.tvEspecieMascota.text = "🐾 ${mascota.especie ?: "—"}"
-            binding.tvRazaMascota.text    = mascota.raza    ?: "Desconocida"
+            binding.tvEspecieMascota.text = mascota.especie ?: ""
+            binding.tvRazaMascota.text    = mascota.raza    ?: "Raza desconocida"
 
-            cargarAvatar(mascota)
-
-            binding.root.setOnClickListener { onClick(mascota) }
-        }
-
-        /**
-         * Carga la foto si hay URL; si no, muestra el círculo teal con la inicial.
-         *
-         * Glide usa listener para saber si la carga tuvo éxito:
-         * - Éxito  → mostramos civFotoMascota, ocultamos la inicial
-         * - Fallo  → ocultamos civFotoMascota, mostramos la inicial
-         */
-        private fun cargarAvatar(mascota: MascotaDTO) {
             val inicial = mascota.nombre?.firstOrNull()?.uppercase() ?: "?"
             binding.tvInicialMascota.text = inicial
 
-            if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
-                // Visible ANTES de Glide para que tenga dimensiones reales
-                binding.civFotoMascota.visibility   = View.VISIBLE
+            if (!mascota.fotoUrl.isNullOrBlank()) {
+                // Hay foto — la cargamos con Glide en círculo
+                // y ocultamos el fallback de la inicial
+                binding.ivFotoMascota.visibility = View.VISIBLE
+                binding.viewFondoAvatar.visibility = View.GONE
                 binding.tvInicialMascota.visibility = View.GONE
+
                 Glide.with(binding.root.context)
                     .load(mascota.fotoUrl)
-                    .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
-                        override fun onLoadFailed(
-                            e: com.bumptech.glide.load.engine.GlideException?,
-                            model: Any?,
-                            target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            binding.civFotoMascota.visibility   = View.GONE
-                            binding.tvInicialMascota.visibility = View.VISIBLE
-                            return false
-                        }
-                        override fun onResourceReady(
-                            resource: android.graphics.drawable.Drawable,
-                            model: Any,
-                            target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>,
-                            dataSource: com.bumptech.glide.load.DataSource,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
-                        }
-                    })
-                    .into(binding.civFotoMascota)
+                    .transform(CircleCrop())
+                    .placeholder(R.drawable.bg_avatar_circle)
+                    .error(R.drawable.bg_avatar_circle)
+                    .into(binding.ivFotoMascota)
             } else {
-                binding.civFotoMascota.visibility   = View.GONE
+                // Sin foto — mostramos el círculo teal con la inicial
+                binding.ivFotoMascota.visibility = View.GONE
+                binding.viewFondoAvatar.visibility = View.VISIBLE
                 binding.tvInicialMascota.visibility = View.VISIBLE
             }
+
+            binding.root.setOnClickListener { onMascotaClick(mascota) }
         }
     }
 }

@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ItemAlertaBinding
 import com.dam2.haru_petcare.model.AlertaPerdidaDTO
 
@@ -47,19 +50,35 @@ class AlertaAdapter(
                 ?: "Sin descripción adicional"
             binding.tvFechaAlerta.text         = formatearFecha(alerta.fechaAlerta)
 
+            cargarFotoMascota(alerta)
             configurarBotonLlamar(alerta)
             configurarBotonResolver(alerta)
         }
 
-        /**
-         * Botón llamar: abre el marcador de teléfono con el número del dueño.
-         * Solo visible si el dueño tiene teléfono registrado.
-         *
-         * Usamos ACTION_DIAL en vez de ACTION_CALL porque:
-         * - ACTION_DIAL abre el marcador y deja que el usuario confirme
-         * - ACTION_CALL haría la llamada directamente pero requiere
-         *   el permiso CALL_PHONE, que Google Play exige justificar
-         */
+        private fun cargarFotoMascota(alerta: AlertaPerdidaDTO) {
+            val inicial = alerta.nombreMascota?.firstOrNull()?.uppercase() ?: "?"
+            binding.tvInicialMascotaAlerta.text = inicial
+
+            if (!alerta.fotoUrlMascota.isNullOrBlank()) {
+                // Hay foto — la cargamos con Glide en círculo
+                binding.ivFotoMascotaAlerta.visibility = View.VISIBLE
+                binding.viewFondoAvatarAlerta.visibility = View.GONE
+                binding.tvInicialMascotaAlerta.visibility = View.GONE
+
+                Glide.with(binding.root.context)
+                    .load(alerta.fotoUrlMascota)
+                    .transform(CircleCrop())
+                    .placeholder(R.drawable.bg_avatar_alerta)
+                    .error(R.drawable.bg_avatar_alerta)
+                    .into(binding.ivFotoMascotaAlerta)
+            } else {
+                // Sin foto — fondo marrón con inicial
+                binding.ivFotoMascotaAlerta.visibility = View.GONE
+                binding.viewFondoAvatarAlerta.visibility = View.VISIBLE
+                binding.tvInicialMascotaAlerta.visibility = View.VISIBLE
+            }
+        }
+
         private fun configurarBotonLlamar(alerta: AlertaPerdidaDTO) {
             val telefono = alerta.telefonoDueno
             if (!telefono.isNullOrBlank()) {
@@ -75,35 +94,22 @@ class AlertaAdapter(
             }
         }
 
-        /**
-         * Botón "Mascota encontrada": solo visible si la alerta
-         * pertenece al usuario logueado.
-         *
-         * Comparamos alerta.idUsuario con idUsuarioLogueado que viene
-         * de SessionManager en AlertasFragment. Si no coinciden, el botón
-         * se oculta — un vecino no puede resolver la alerta de otro.
-         */
         private fun configurarBotonResolver(alerta: AlertaPerdidaDTO) {
-            val esSuAlerta = alerta.idUsuario == idUsuarioLogueado
-
+            val esPropia = alerta.idUsuario == idUsuarioLogueado
             binding.btnMascotaEncontrada.visibility =
-                if (esSuAlerta) View.VISIBLE else View.GONE
+                if (esPropia) View.VISIBLE else View.GONE
 
-            if (esSuAlerta) {
-                binding.btnMascotaEncontrada.setOnClickListener {
-                    onResolverAlerta(alerta)
-                }
+            binding.btnMascotaEncontrada.setOnClickListener {
+                onResolverAlerta(alerta)
             }
         }
 
-        private fun formatearFecha(fechaIso: String?): String {
-            if (fechaIso == null) return "Fecha desconocida"
+        private fun formatearFecha(fecha: String?): String {
+            if (fecha == null) return "—"
             return try {
-                val partes = fechaIso.split("T")[0].split("-")
+                val partes = fecha.substring(0, 10).split("-")
                 "${partes[2]}/${partes[1]}/${partes[0]}"
-            } catch (e: Exception) {
-                fechaIso
-            }
+            } catch (e: Exception) { fecha }
         }
     }
 }

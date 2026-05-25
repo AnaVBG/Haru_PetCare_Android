@@ -19,10 +19,9 @@
         android:gravity="center_vertical">
 
         <!--
-            Avatar: capas apiladas en un FrameLayout.
-            Capa 1 (fondo): círculo teal con la inicial — siempre visible.
-            Capa 2 (encima): CircleImageView con la foto real.
-            Si no hay foto, la capa 2 es invisible y se ve la inicial.
+            FrameLayout con dos capas:
+            1. ImageView con la foto real cargada por Glide
+            2. TextView con la inicial — visible solo si no hay foto
         -->
         <FrameLayout
             android:id="@+id/flAvatar"
@@ -30,8 +29,20 @@
             android:layout_height="56dp"
             android:layout_marginEnd="16dp">
 
-            <!-- Fondo circular teal con la inicial (fallback) -->
+            <!-- Foto real de la mascota -->
+            <ImageView
+                android:id="@+id/ivFotoMascota"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/bg_avatar_circle"
+                android:clipToOutline="true"
+                android:contentDescription="Foto de la mascota"
+                android:visibility="gone"/>
+
+            <!-- Fallback: fondo circular con inicial -->
             <View
+                android:id="@+id/viewFondoAvatar"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:background="@drawable/bg_avatar_circle"/>
@@ -45,23 +56,8 @@
                 android:textStyle="bold"
                 android:textColor="@color/haru_white"/>
 
-            <!--
-                CircleImageView encima del fallback.
-                Empieza invisible (GONE). El Adapter lo hace VISIBLE
-                solo cuando Glide carga la imagen con éxito.
-                El borde teal conecta visualmente con el fondo.
-            -->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civFotoMascota"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:visibility="gone"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/haru_teal"/>
-
         </FrameLayout>
 
-        <!-- Datos de la mascota -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -94,7 +90,6 @@
 
         </LinearLayout>
 
-        <!-- Flecha -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

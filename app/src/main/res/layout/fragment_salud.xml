@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/haru_surface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarSalud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/haru_teal"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarSalud"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/haru_teal"
+            app:titleTextColor="@color/haru_white"
+            app:subtitleTextColor="#CCffffff"/>
+
+        <!--
+            Selector horizontal de mascotas.
+            Visible solo cuando el dueño tiene más de una mascota.
+            Si solo tiene una se oculta y se selecciona automáticamente.
+        -->
+        <HorizontalScrollView
+            android:id="@+id/scrollSelectorMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:background="@color/haru_teal"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/layoutChipsMascotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingEnd="0dp"/>
+
+        </HorizontalScrollView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutSalud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/haru_teal"
+            app:tabTextColor="#99ffffff"
+            app:tabSelectedTextColor="@color/haru_white"
+            app:tabIndicatorColor="@color/haru_white"
+            app:tabIndicatorHeight="3dp"
+            app:tabRippleColor="@color/haru_teal"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Estado de carga mientras se obtienen las mascotas -->
+    <ProgressBar
+        android:id="@+id/progressBarSaludMascotas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/haru_teal"
+        android:visibility="gone"/>
+
+    <!-- Estado vacío: el dueño no tiene mascotas -->
+    <LinearLayout
+        android:id="@+id/layoutSinMascotasSalud"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="48dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🐾"
+            android:textSize="56sp"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añade una mascota desde Inicio para ver su historial de salud"
+            android:textSize="15sp"
+            android:textColor="@color/haru_text_secondary"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerSalud"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

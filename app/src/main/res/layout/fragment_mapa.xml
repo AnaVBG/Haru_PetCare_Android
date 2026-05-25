@@ -12,13 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <!-- Panel superior flotante: título + leyenda con iconos SVG -->
+    <!-- Panel superior flotante con título y leyenda -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="12dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="6dp"
+        app:strokeColor="@color/haru_teal_light"
+        app:strokeWidth="1dp"
         app:layout_anchor="@id/mapFragment"
         app:layout_anchorGravity="top">
 
@@ -36,139 +39,94 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="8dp"/>
 
-            <!-- Leyenda: 4 columnas con icono + texto para cada tipo de pin -->
+            <!-- Leyenda de tipos de pin -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- FUENTE -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_pin_fuente"
-                        android:contentDescription="Fuente"
-                        app:tint="@color/pin_fuente"
-                        android:layout_marginEnd="4dp"/>
-
+                    android:layout_marginEnd="4dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/haru_teal_light"
+                    app:strokeWidth="1dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Fuente"
+                        android:text="💧 Fuente"
                         android:textSize="11sp"
-                        android:textColor="@color/haru_text_secondary"/>
-                </LinearLayout>
+                        android:textColor="@color/haru_teal_dark"
+                        android:gravity="center"
+                        android:padding="6dp"/>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- PARQUE -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_pin_parque"
-                        android:contentDescription="Parque"
-                        app:tint="@color/pin_parque"
-                        android:layout_marginEnd="4dp"/>
-
+                    android:layout_marginEnd="4dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/haru_teal_light"
+                    app:strokeWidth="1dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Parque"
+                        android:text="🗑️ Papelera"
                         android:textSize="11sp"
-                        android:textColor="@color/haru_text_secondary"/>
-                </LinearLayout>
+                        android:textColor="@color/haru_text_secondary"
+                        android:gravity="center"
+                        android:padding="6dp"/>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- PAPELERA -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_pin_papelera"
-                        android:contentDescription="Papelera"
-                        app:tint="@color/pin_papelera"
-                        android:layout_marginEnd="4dp"/>
-
+                    android:layout_marginEnd="4dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/haru_teal_light"
+                    app:strokeWidth="1dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Papelera"
+                        android:text="⚠️ Peligro"
                         android:textSize="11sp"
-                        android:textColor="@color/haru_text_secondary"/>
-                </LinearLayout>
+                        android:textColor="@color/haru_text_secondary"
+                        android:gravity="center"
+                        android:padding="6dp"/>
+                </com.google.android.material.card.MaterialCardView>
 
-                <!-- PELIGRO -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_pin_peligro"
-                        android:contentDescription="Peligro"
-                        app:tint="@color/pin_peligro"
-                        android:layout_marginEnd="4dp"/>
-
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/haru_teal_light"
+                    app:strokeWidth="1dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Peligro"
+                        android:text="🌳 Parque"
                         android:textSize="11sp"
-                        android:textColor="@color/haru_text_secondary"/>
-                </LinearLayout>
+                        android:textColor="@color/haru_text_secondary"
+                        android:gravity="center"
+                        android:padding="6dp"/>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
-
-    <!-- FAB añadir pin -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAnadirPin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:src="@android:drawable/ic_input_add"
-        android:contentDescription="Añadir pin"
-        app:backgroundTint="@color/haru_brown"
-        app:tint="@color/haru_white"/>
-
-    <!-- FAB mi ubicación -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabMiUbicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="92dp"
-        app:fabSize="mini"
-        android:src="@android:drawable/ic_menu_mylocation"
-        android:contentDescription="Mi ubicación"
-        app:backgroundTint="@color/haru_teal"
-        app:tint="@color/haru_white"/>
 
     <!-- ProgressBar mientras carga los pines -->
     <ProgressBar
@@ -178,5 +136,31 @@
         android:layout_gravity="center"
         android:indeterminateTint="@color/haru_teal"
         android:visibility="gone"/>
+
+    <!-- FAB secundario: centrar en mi ubicación -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMiUbicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="92dp"
+        app:fabSize="mini"
+        android:src="@drawable/ic_map"
+        android:contentDescription="Mi ubicación"
+        app:backgroundTint="@color/haru_teal"
+        app:tint="@color/haru_white"/>
+
+    <!-- FAB principal: añadir pin -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAnadirPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_plus"
+        android:contentDescription="Añadir pin"
+        app:backgroundTint="@color/haru_brown"
+        app:tint="@color/haru_white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
