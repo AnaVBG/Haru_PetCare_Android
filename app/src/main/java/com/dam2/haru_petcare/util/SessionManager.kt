@@ -35,7 +35,7 @@ class SessionManager(context: Context) {
             putString(KEY_ROL,        rol)
             putString(KEY_TOKEN,      token)
             putString(KEY_TELEFONO,   telefono)
-            apply()
+            commit()  // ← SYNC: garantiza escritura antes de navegar a MainActivity
         }
     }
 

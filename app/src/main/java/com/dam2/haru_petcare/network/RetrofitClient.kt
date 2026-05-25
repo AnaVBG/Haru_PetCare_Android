@@ -1,4 +1,3 @@
-// RetrofitClient.kt — versión corregida con adaptador de fechas
 package com.dam2.haru_petcare.network
 
 import com.dam2.haru_petcare.util.Constants
@@ -24,16 +23,6 @@ object RetrofitClient {
             .build()
     }
 
-    /**
-     * Gson personalizado con adaptadores para LocalDate y LocalDateTime.
-     *
-     * Por defecto Gson no sabe cómo serializar las clases de fecha
-     * de Java 8+. Sin estos adaptadores, las fechas llegan al backend
-     * como null o como un objeto raro que Spring no puede parsear.
-     *
-     * JsonSerializer: convierte LocalDate → String JSON ("2024-03-15")
-     * JsonDeserializer: convierte String JSON → LocalDate
-     */
     private fun buildGson() = GsonBuilder()
         .registerTypeAdapter(LocalDate::class.java,
             JsonSerializer<LocalDate> { src, _, _ ->
@@ -58,7 +47,7 @@ object RetrofitClient {
         }
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
-                val request = if (token != null) {
+                val request = if (!token.isNullOrBlank()) {  // ← filtra null Y string vacío
                     chain.request().newBuilder()
                         .header("Authorization", "Bearer $token")
                         .build()
