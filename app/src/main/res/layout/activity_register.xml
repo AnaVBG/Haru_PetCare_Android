@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Crea tu cuenta"
-            android:textSize="16sp"
+            android:textSize="19sp"
             android:textColor="@color/haru_teal_dark"
             android:layout_marginBottom="32dp"/>
 
@@ -124,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tipo de cuenta"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textColor="@color/haru_teal_dark"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🐾 Dueño"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:cornerRadius="8dp"
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🩺 Veterinario"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:cornerRadius="8dp"/>
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="🏥 Clínica"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:cornerRadius="8dp"/>
@@ -210,7 +210,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Crear cuenta"
-            android:textSize="16sp"
+            android:textSize="19sp"
             android:padding="14dp"
             android:layout_marginBottom="12dp"
             android:backgroundTint="@color/haru_teal"

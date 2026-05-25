@@ -54,7 +54,7 @@
                 android:id="@+id/tvNombrePerfil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="21sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"/>
 
@@ -62,7 +62,7 @@
                 android:id="@+id/tvEmailPerfil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="@color/haru_teal_dark"
                 android:layout_marginTop="2dp"/>
 
@@ -70,7 +70,7 @@
                 android:id="@+id/tvRolPerfil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="@color/haru_teal"
                 android:textStyle="bold"
                 android:layout_marginTop="4dp"/>
@@ -90,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Apariencia"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/haru_teal_dark"
         android:layout_marginBottom="10dp"/>
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sistema"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/haru_teal_dark"
             app:strokeColor="@color/haru_teal"
             app:cornerRadius="8dp"/>
@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Claro"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/haru_teal_dark"
             app:strokeColor="@color/haru_teal"
             app:cornerRadius="8dp"/>
@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Oscuro"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/haru_teal_dark"
             app:strokeColor="@color/haru_teal"
             app:cornerRadius="8dp"/>

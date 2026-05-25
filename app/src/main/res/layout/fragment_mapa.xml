@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mapa comunitario"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"
                 android:layout_marginBottom="8dp"/>
@@ -60,7 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="💧 Fuente"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textColor="@color/haru_teal_dark"
                         android:gravity="center"
                         android:padding="6dp"/>
@@ -79,7 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="🗑️ Papelera"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textColor="@color/haru_text_secondary"
                         android:gravity="center"
                         android:padding="6dp"/>
@@ -98,7 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="⚠️ Peligro"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textColor="@color/haru_text_secondary"
                         android:gravity="center"
                         android:padding="6dp"/>
@@ -116,7 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="🌳 Parque"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         android:textColor="@color/haru_text_secondary"
                         android:gravity="center"
                         android:padding="6dp"/>

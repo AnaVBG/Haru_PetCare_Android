@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     android:textStyle="bold"
                     android:textColor="@color/haru_white"/>
 
@@ -72,7 +72,7 @@
                     android:id="@+id/tvNombreMascotaAlerta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     android:textColor="@color/haru_brown"/>
 
@@ -80,7 +80,7 @@
                     android:id="@+id/tvDuenoAlerta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="@color/haru_text_secondary"
                     android:layout_marginTop="2dp"/>
 
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="PERDIDA"
-                android:textSize="10sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_white"
                 android:background="@drawable/bg_badge_perdida"
@@ -106,7 +106,7 @@
             android:id="@+id/tvMensajeAlerta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:textColor="@color/haru_text_primary"
             android:layout_marginBottom="10dp"/>
 
@@ -134,14 +134,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fecha"
-                    android:textSize="11sp"
+                    android:textSize="14sp"
                     android:textColor="@color/haru_grey"/>
 
                 <TextView
                     android:id="@+id/tvFechaAlerta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="@color/haru_text_primary"/>
 
@@ -153,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Llamar"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:cornerRadius="8dp"
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Mascota encontrada"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:backgroundTint="@color/haru_teal"
             android:textColor="@color/haru_white"
             app:cornerRadius="8dp"

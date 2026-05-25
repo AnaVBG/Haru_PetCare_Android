@@ -84,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Datos"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/haru_brown"
                         android:layout_marginBottom="12dp"/>
@@ -102,14 +102,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Especie"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/haru_grey"/>
 
                         <TextView
                             android:id="@+id/tvDetalleEspecie"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/haru_text_primary"/>
 
@@ -133,14 +133,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Raza"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/haru_grey"/>
 
                         <TextView
                             android:id="@+id/tvDetalleRaza"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/haru_text_primary"/>
 
@@ -164,14 +164,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Fecha de nacimiento"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/haru_grey"/>
 
                         <TextView
                             android:id="@+id/tvDetalleFechaNac"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/haru_text_primary"/>
 
@@ -209,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Historial médico"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/haru_brown"/>
 
@@ -219,7 +219,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="PDF"
-                            android:textSize="11sp"
+                            android:textSize="14sp"
                             android:textColor="@color/haru_teal_dark"
                             app:strokeColor="@color/haru_teal"
                             app:cornerRadius="8dp"
@@ -247,7 +247,7 @@
                         android:layout_height="wrap_content"
                         android:text="No hay registros médicos todavía"
                         android:textColor="@color/haru_grey"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:gravity="center"
                         android:padding="24dp"
                         android:visibility="gone"/>

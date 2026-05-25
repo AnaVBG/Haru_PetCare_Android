@@ -57,7 +57,7 @@
                     android:id="@+id/tvNombrePerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     android:textStyle="bold"
                     android:textColor="@color/haru_text_primary"/>
 
@@ -65,7 +65,7 @@
                     android:id="@+id/tvRolPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="@color/haru_grey"
                     android:layout_marginTop="4dp"/>
 
@@ -91,7 +91,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Datos de la cuenta"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/haru_brown"
                         android:layout_marginBottom="12dp"/>
@@ -122,14 +122,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Correo electrónico"
-                                android:textSize="11sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/haru_grey"/>
 
                             <TextView
                                 android:id="@+id/tvEmailPerfil"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="14sp"
+                                android:textSize="17sp"
                                 android:textColor="@color/haru_text_primary"/>
 
                         </LinearLayout>
@@ -167,14 +167,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Teléfono"
-                                android:textSize="11sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/haru_grey"/>
 
                             <TextView
                                 android:id="@+id/tvTelefonoPerfil"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="14sp"
+                                android:textSize="17sp"
                                 android:textColor="@color/haru_text_primary"/>
 
                         </LinearLayout>
@@ -212,14 +212,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Tipo de cuenta"
-                                android:textSize="11sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/haru_grey"/>
 
                             <TextView
                                 android:id="@+id/tvTipoCuentaPerfil"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="14sp"
+                                android:textSize="17sp"
                                 android:textColor="@color/haru_text_primary"/>
 
                         </LinearLayout>
@@ -250,7 +250,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ajustes"
-                        android:textSize="13sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/haru_brown"
                         android:layout_marginBottom="12dp"/>
@@ -280,7 +280,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Tema de la aplicación"
-                            android:textSize="14sp"
+                            android:textSize="17sp"
                             android:textColor="@color/haru_text_primary"/>
 
                         <ImageView

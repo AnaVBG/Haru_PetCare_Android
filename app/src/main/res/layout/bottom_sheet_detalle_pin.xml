@@ -56,7 +56,7 @@
                 android:id="@+id/tvTipoPin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="21sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"/>
 
@@ -64,7 +64,7 @@
                 android:id="@+id/tvUsuarioPin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="@color/haru_text_secondary"
                 android:layout_marginTop="2dp"/>
 
@@ -77,7 +77,7 @@
         android:id="@+id/tvDescripcionPin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="17sp"
         android:textColor="@color/haru_text_primary"
         android:lineSpacingExtra="3dp"
         android:layout_marginBottom="20dp"/>

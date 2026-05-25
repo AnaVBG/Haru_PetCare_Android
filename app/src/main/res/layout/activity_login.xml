@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Petcare"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="#AAFFFFFF"
                 android:letterSpacing="0.05"/>
 
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Inicia sesión para cuidar a tus mascotas"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textColor="@color/haru_text_secondary"
                 android:layout_marginBottom="28dp"/>
 
@@ -180,7 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:text="Iniciar sesión"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.03"
                 android:layout_marginBottom="20dp"
@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:text="  o  "
                     android:textColor="@color/haru_text_secondary"
-                    android:textSize="13sp"/>
+                    android:textSize="16sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -226,7 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:text="¿No tienes cuenta? Regístrate"
-                android:textSize="14sp"
+                android:textSize="17sp"
                 android:textColor="@color/haru_teal_dark"
                 app:strokeColor="@color/haru_teal"
                 app:strokeWidth="1.5dp"

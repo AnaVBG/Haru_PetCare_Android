@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="🚨 Activar alerta de pérdida"
-        android:textSize="18sp"
+        android:textSize="21sp"
         android:textStyle="bold"
         android:textColor="@color/haru_brown"
         android:layout_marginBottom="4dp"/>
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Se notificará a todos los usuarios en un radio de 5km"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/haru_text_secondary"
         android:layout_marginBottom="20dp"/>
 
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="¿Qué mascota se ha perdido?"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/haru_teal_dark"
         android:textStyle="bold"
         android:layout_marginBottom="8dp"/>
@@ -77,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enviar alerta ahora"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:padding="14dp"
         android:backgroundTint="@color/haru_brown"

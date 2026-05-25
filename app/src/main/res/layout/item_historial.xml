@@ -48,7 +48,7 @@
             android:id="@+id/chipTipoRegistro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
+            android:textSize="14sp"
             android:layout_marginBottom="4dp"
             style="@style/Widget.MaterialComponents.Chip.Action"/>
 
@@ -57,7 +57,7 @@
             android:id="@+id/tvDescripcionHistorial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:textColor="@color/haru_text_primary"
             android:layout_marginBottom="4dp"/>
 
@@ -66,7 +66,7 @@
             android:id="@+id/tvFechaHistorial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/haru_grey"/>
 
     </LinearLayout>

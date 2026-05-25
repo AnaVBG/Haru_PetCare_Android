@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vincular dueño existente"
-        android:textSize="18sp"
+        android:textSize="21sp"
         android:textStyle="bold"
         android:textColor="@color/haru_brown"
         android:layout_marginBottom="6dp"/>
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Busca al dueño por email y selecciona qué mascotas vincular"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/haru_text_secondary"
         android:layout_marginBottom="20dp"/>
 
@@ -81,7 +81,7 @@
                     android:id="@+id/tvNombreDuenoEncontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/haru_brown"/>
 
@@ -89,14 +89,14 @@
                     android:id="@+id/tvEmailDuenoEncontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="16sp"
                     android:textColor="@color/haru_teal_dark"/>
 
                 <TextView
                     android:id="@+id/tvMascotasDuenoEncontrado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:textColor="@color/haru_text_secondary"
                     android:layout_marginTop="4dp"/>
 

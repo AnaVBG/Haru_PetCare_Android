@@ -33,7 +33,7 @@
                 android:id="@+id/tvMascotaCrearCita"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="23sp"
                 android:textStyle="bold"
                 android:textColor="@color/haru_brown"
                 android:layout_marginBottom="24dp"/>
