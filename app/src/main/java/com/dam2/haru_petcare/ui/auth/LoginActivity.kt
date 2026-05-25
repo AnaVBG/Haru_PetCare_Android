@@ -99,8 +99,8 @@ class LoginActivity : AppCompatActivity() {
                             nombre   = datos.nombre     ?: "",
                             email    = datos.email      ?: "",
                             rol      = datos.rol        ?: "",
-                            token    = datos.token      ?: "",
-                            telefono = datos.telefono   ?: ""
+                            telefono = datos.telefono   ?: "",
+                            token    = datos.token      ?: ""
                         )
                         navegarAMain()
                     } ?: run {

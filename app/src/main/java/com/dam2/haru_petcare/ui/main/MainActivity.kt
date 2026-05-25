@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbarMain)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         pedirPermisoNotificaciones()
 
         if (savedInstanceState == null) {
@@ -67,24 +68,19 @@ class MainActivity : AppCompatActivity() {
     private fun configurarNavegacion() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
-                R.id.nav_inicio  -> {
-                    supportActionBar?.title = "Inicio"
+                R.id.nav_inicio -> {
                     MascotaFragment()
                 }
-                R.id.nav_salud   -> {
-                    supportActionBar?.title = "Salud"
+                R.id.nav_salud -> {
                     SaludFragment()
                 }
-                R.id.nav_mapa    -> {
-                    supportActionBar?.title = "Mapa comunitario"
+                R.id.nav_mapa -> {
                     MapaFragment()
                 }
                 R.id.nav_alertas -> {
-                    supportActionBar?.title = "Alertas"
                     AlertasFragment()
                 }
-                R.id.nav_perfil  -> {
-                    supportActionBar?.title = "Mi perfil"
+                R.id.nav_perfil -> {
                     PerfilFragment()
                 }
                 else -> return@setOnItemSelectedListener false
