@@ -45,7 +45,7 @@
                 android:id="@+id/toolbarDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_home"
+                app:navigationIcon="@drawable/ic_arrow_back"
                 app:navigationIconTint="@color/haru_white"
                 app:layout_collapseMode="pin"/>
 
