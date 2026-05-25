@@ -67,6 +67,7 @@ class DesparasitacionesTabFragment : Fragment() {
     }
 
     private fun configurarRecyclerView() {
+        desparAdapter = HistorialAdapter()
         binding.rvDesparTab.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDesparTab.adapter = desparAdapter
         binding.rvDesparTab.isNestedScrollingEnabled = false
