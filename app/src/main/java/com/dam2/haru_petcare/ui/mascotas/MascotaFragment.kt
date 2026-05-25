@@ -239,8 +239,8 @@ class MascotaFragment : Fragment() {
         tvEstado: android.widget.TextView
     ) {
         // El backend devuelve fechaCita como "2025-05-28T10:00:00"
-        val fecha = LocalDate.parse(cita.fechaCita.substring(0, 10))
-        val hora  = cita.fechaCita.substring(11, 16)
+        val fecha = LocalDate.parse(cita.fechaCita?.substring(0, 10) ?: return)
+        val hora  = cita.fechaCita?.substring(11, 16) ?: "--:--"
 
         val formateadorMes = DateTimeFormatter.ofPattern("MMM", Locale("es", "ES"))
 

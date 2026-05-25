@@ -72,7 +72,7 @@ class SaludFragment : Fragment() {
     // ── CARGA DE MASCOTAS DEL DUEÑO ───────────────────────────────────────────
 
     private fun cargarMascotas() {
-        val idDueno = sessionManager.getIdUsuario()
+        val idDueno = sessionManager.getId()
 
         binding.progressBarSaludMascotas.visibility = View.VISIBLE
         binding.layoutSinMascotasSalud.visibility = View.GONE
@@ -83,6 +83,8 @@ class SaludFragment : Fragment() {
                 call: Call<List<MascotaDTO>>,
                 response: Response<List<MascotaDTO>>
             ) {
+                if (!isAdded || _binding == null) return
+
                 binding.progressBarSaludMascotas.visibility = View.GONE
 
                 if (!response.isSuccessful) {
@@ -93,28 +95,23 @@ class SaludFragment : Fragment() {
                 listaMascotas = response.body() ?: emptyList()
 
                 when {
-                    // Sin mascotas → estado vacío
                     listaMascotas.isEmpty() -> {
                         binding.layoutSinMascotasSalud.visibility = View.VISIBLE
                     }
-
-                    // Una sola mascota → la seleccionamos automáticamente
                     listaMascotas.size == 1 -> {
                         binding.scrollSelectorMascota.visibility = View.GONE
                         seleccionarMascota(listaMascotas[0])
                     }
-
-                    // Varias mascotas → mostramos el selector horizontal
                     else -> {
                         binding.scrollSelectorMascota.visibility = View.VISIBLE
                         construirChipsMascotas(listaMascotas)
-                        // Seleccionamos la primera por defecto
                         seleccionarMascota(listaMascotas[0])
                     }
                 }
             }
 
             override fun onFailure(call: Call<List<MascotaDTO>>, t: Throwable) {
+                if (!isAdded || _binding == null) return
                 binding.progressBarSaludMascotas.visibility = View.GONE
                 mostrarError("Sin conexión: ${t.message}")
             }

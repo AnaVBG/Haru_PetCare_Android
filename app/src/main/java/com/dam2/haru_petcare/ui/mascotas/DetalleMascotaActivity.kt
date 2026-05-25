@@ -104,7 +104,7 @@ class DetalleMascotaActivity : AppCompatActivity() {
 
         binding.btnVerCitas.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java).apply {
-                putExtra("tab_destino", R.id.nav_citas)
+                putExtra("tab_destino", R.id.nav_salud)
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             })
         }

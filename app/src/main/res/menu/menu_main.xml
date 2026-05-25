@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_perfil"
-        android:title="Mi perfil"
-        android:icon="@drawable/ic_person"
-        app:showAsAction="always"/>
+        android:id="@+id/action_tema"
+        android:title="Tema"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_cerrar_sesion"
+        android:title="Cerrar sesión"
+        android:icon="@drawable/ic_user_circle"
+        app:showAsAction="never"/>
 
 </menu>

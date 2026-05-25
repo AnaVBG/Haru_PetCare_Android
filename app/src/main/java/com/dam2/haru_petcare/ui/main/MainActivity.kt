@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun configurarMenu() {
         binding.toolbarMain.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id. -> {
+                R.id.action_tema -> {
                     mostrarDialogoTema()
                     true
                 }

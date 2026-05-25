@@ -65,15 +65,19 @@ class PerfilFragment : Fragment() {
     }
 
     private fun mostrarDialogoTema() {
-        val opciones = arrayOf("Sistema", "Claro", "Oscuro")
-        val actual   = ThemeManager.obtenerTema(requireContext())
+        val opciones = arrayOf(
+            "Seguir ajuste del sistema",
+            "Modo claro",
+            "Modo oscuro"
+        )
+        val modoActual = ThemeManager.getModoGuardado(requireContext())
         AlertDialog.Builder(requireContext())
-            .setTitle("Tema")
-            .setSingleChoiceItems(opciones, actual) { dialogo, seleccion ->
-                ThemeManager.aplicarTema(seleccion)
-                ThemeManager.guardarTema(requireContext(), seleccion)
-                dialogo.dismiss()
+            .setTitle("Apariencia")
+            .setSingleChoiceItems(opciones, modoActual) { dialog, which ->
+                ThemeManager.cambiarModo(requireContext(), which)
+                dialog.dismiss()
             }
+            .setNegativeButton("Cancelar", null)
             .show()
     }
 

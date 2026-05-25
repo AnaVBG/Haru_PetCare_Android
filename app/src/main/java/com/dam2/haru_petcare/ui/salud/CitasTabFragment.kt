@@ -58,11 +58,9 @@ class CitasTabFragment : Fragment() {
             esVeterinario   = false,
             onCambiarEstado = { _, _ -> }
         )
-        binding.rvCitasTab.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = citaAdapter
-            nestedScrollingEnabled = false
-        }
+        binding.rvCitasTab.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCitasTab.adapter = citaAdapter
+        binding.rvCitasTab.isNestedScrollingEnabled = false
     }
 
     private fun cargarCitas() {
