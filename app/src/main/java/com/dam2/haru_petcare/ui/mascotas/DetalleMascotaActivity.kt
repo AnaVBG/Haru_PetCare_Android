@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ActivityDetalleMascotaBinding
+import com.dam2.haru_petcare.databinding.BottomSheetAnadirHistorialBinding
 import com.dam2.haru_petcare.databinding.BottomSheetEditarMascotaBinding
+import com.dam2.haru_petcare.model.HistorialInsertarDTO
 import com.dam2.haru_petcare.model.HistorialMedicoDTO
 import com.dam2.haru_petcare.model.MascotaActualizarDTO
 import com.dam2.haru_petcare.model.MascotaDTO
@@ -115,6 +117,14 @@ class DetalleMascotaActivity : AppCompatActivity() {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             })
         }
+
+        val rol = sessionManager.getRol()
+        if (rol == "VETERINARIO" || rol == "CLINICA") {
+            binding.btnAnadirHistorial.visibility = View.VISIBLE
+            binding.btnAnadirHistorial.setOnClickListener {
+                abrirBottomSheetAnadirHistorial()
+            }
+        }
     }
 
     private fun cargarDatosMascota() {
@@ -157,7 +167,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
         dialog.setContentView(bs.root)
         dialog.setOnDismissListener { editarBinding = null }
 
-        // Pre-rellenar campos
         bs.etNombreEditar.setText(mascota.nombre)
         bs.etEspecieEditar.setText(mascota.especie)
         bs.etRazaEditar.setText(mascota.raza)
@@ -167,19 +176,24 @@ class DetalleMascotaActivity : AppCompatActivity() {
             if (p.size == 3) bs.etFechaNacEditar.setText("${p[2]}/${p[1]}/${p[0]}")
         }
 
-        // Foto actual
         bs.tvInicialEditar.text = mascota.nombre?.firstOrNull()?.uppercase() ?: "?"
         if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
             Glide.with(this).load(mascota.fotoUrl).centerCrop()
                 .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
                     override fun onLoadFailed(e: com.bumptech.glide.load.engine.GlideException?, model: Any?,
-                                              target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>, isFirstResource: Boolean): Boolean {
-                        bs.civFotoEditar.visibility = View.GONE; bs.tvInicialEditar.visibility = View.VISIBLE; return false
+                                              target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>,
+                                              isFirstResource: Boolean): Boolean {
+                        bs.civFotoEditar.visibility = View.GONE
+                        bs.tvInicialEditar.visibility = View.VISIBLE
+                        return false
                     }
                     override fun onResourceReady(resource: android.graphics.drawable.Drawable, model: Any,
                                                  target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>,
-                                                 dataSource: com.bumptech.glide.load.DataSource, isFirstResource: Boolean): Boolean {
-                        bs.civFotoEditar.visibility = View.VISIBLE; bs.tvInicialEditar.visibility = View.GONE; return false
+                                                 dataSource: com.bumptech.glide.load.DataSource,
+                                                 isFirstResource: Boolean): Boolean {
+                        bs.civFotoEditar.visibility = View.VISIBLE
+                        bs.tvInicialEditar.visibility = View.GONE
+                        return false
                     }
                 }).into(bs.civFotoEditar)
         } else {
@@ -187,7 +201,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
             bs.tvInicialEditar.visibility = View.VISIBLE
         }
 
-        // Date picker
         val abrirDatePicker = View.OnClickListener {
             val cal = Calendar.getInstance()
             DatePickerDialog(this, { _, y, m, d ->
@@ -201,12 +214,10 @@ class DetalleMascotaActivity : AppCompatActivity() {
         }
         bs.etFechaNacEditar.setOnClickListener(abrirDatePicker)
 
-        // Cambiar foto
         bs.fabCambiarFotoEditar.setOnClickListener {
             seleccionarFotoLauncher.launch("image/*")
         }
 
-        // Guardar
         bs.btnGuardarEditar.setOnClickListener {
             val nombre  = bs.etNombreEditar.text.toString().trim()
             val especie = bs.etEspecieEditar.text.toString().trim()
@@ -238,7 +249,8 @@ class DetalleMascotaActivity : AppCompatActivity() {
         editarBinding?.fabCambiarFotoEditar?.isEnabled = !cargando
     }
 
-    private fun subirFotoYActualizar(uri: Uri, nombre: String, especie: String, raza: String, dialog: BottomSheetDialog) {
+    private fun subirFotoYActualizar(uri: Uri, nombre: String, especie: String, raza: String,
+                                     dialog: BottomSheetDialog) {
         val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
         if (bytes == null) {
             mostrarCargandoEditar(false)
@@ -315,6 +327,64 @@ class DetalleMascotaActivity : AppCompatActivity() {
 
     // ── Historial ─────────────────────────────────────────────────────────
 
+    private fun abrirBottomSheetAnadirHistorial() {
+        val dialog = BottomSheetDialog(this)
+        val bs = BottomSheetAnadirHistorialBinding.inflate(layoutInflater)
+        dialog.setContentView(bs.root)
+
+        val tipos = listOf("Vacuna", "Desparasitación", "Consulta", "Cirugía", "Análisis", "Otro")
+        bs.actvTipo.setAdapter(
+            android.widget.ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, tipos)
+        )
+
+        bs.btnGuardarHistorial.setOnClickListener {
+            val tipo = bs.actvTipo.text.toString().trim()
+            val descripcion = bs.etDescripcion.text?.toString()?.trim() ?: ""
+
+            bs.tilTipo.error = null
+            bs.tilDescripcion.error = null
+
+            if (tipo.isEmpty()) { bs.tilTipo.error = "Selecciona el tipo"; return@setOnClickListener }
+            if (descripcion.isEmpty()) { bs.tilDescripcion.error = "Escribe una descripción"; return@setOnClickListener }
+
+            bs.progressBarHistorialAdd.visibility = View.VISIBLE
+            bs.btnGuardarHistorial.isEnabled = false
+
+            val dto = HistorialInsertarDTO(
+                tipoRegistro = tipo,
+                descripcion  = descripcion,
+                idMascota    = idMascota
+            )
+
+            RetrofitClient.getClient(sessionManager.getToken())
+                .create(HaruApiService::class.java)
+                .crearRegistroHistorial(dto)
+                .enqueue(object : Callback<HistorialMedicoDTO> {
+                    override fun onResponse(call: Call<HistorialMedicoDTO>, response: Response<HistorialMedicoDTO>) {
+                        bs.progressBarHistorialAdd.visibility = View.GONE
+                        bs.btnGuardarHistorial.isEnabled = true
+                        if (response.isSuccessful) {
+                            dialog.dismiss()
+                            Toast.makeText(this@DetalleMascotaActivity,
+                                "Registro añadido", Toast.LENGTH_SHORT).show()
+                            cargarHistorial()
+                        } else {
+                            Toast.makeText(this@DetalleMascotaActivity,
+                                "Error al guardar (${response.code()})", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<HistorialMedicoDTO>, t: Throwable) {
+                        bs.progressBarHistorialAdd.visibility = View.GONE
+                        bs.btnGuardarHistorial.isEnabled = true
+                        Toast.makeText(this@DetalleMascotaActivity,
+                            "Sin conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                    }
+                })
+        }
+
+        dialog.show()
+    }
+
     private fun cargarHistorial() {
         binding.progressBarHistorial.visibility = View.VISIBLE
         RetrofitClient.getClient(sessionManager.getToken())
@@ -353,11 +423,13 @@ class DetalleMascotaActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     binding.btnDescargarPdf.isEnabled = true
                     if (response.isSuccessful) response.body()?.let { guardarYAbrirPdf(it) }
-                    else Toast.makeText(this@DetalleMascotaActivity, "Error al descargar PDF", Toast.LENGTH_SHORT).show()
+                    else Toast.makeText(this@DetalleMascotaActivity,
+                        "Error al descargar PDF", Toast.LENGTH_SHORT).show()
                 }
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     binding.btnDescargarPdf.isEnabled = true
-                    Toast.makeText(this@DetalleMascotaActivity, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@DetalleMascotaActivity,
+                        "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
                 }
             })
     }
@@ -366,7 +438,8 @@ class DetalleMascotaActivity : AppCompatActivity() {
         try {
             val archivo = File(cacheDir, "historial_${nombreMascota}_$idMascota.pdf")
             FileOutputStream(archivo).use { out -> body.byteStream().use { it.copyTo(out) } }
-            val uri = androidx.core.content.FileProvider.getUriForFile(this, "${packageName}.provider", archivo)
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this, "${packageName}.provider", archivo)
             startActivity(Intent.createChooser(
                 Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(uri, "application/pdf")

@@ -6,19 +6,50 @@
     android:layout_height="match_parent"
     android:background="@color/haru_surface">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@color/haru_teal"
+        app:elevation="0dp">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarVetCitas"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/haru_teal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mi agenda"
+                android:textSize="13sp"
+                android:textColor="#CCffffff"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gestión de citas"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/haru_white"/>
+
+        </LinearLayout>
+
+        <!-- Chips de filtro — sin scroll flags quedan fijos -->
         <LinearLayout
             android:id="@+id/layoutFiltros"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:background="@color/haru_white"
             android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp"
-            android:background="@color/haru_white">
+            android:paddingVertical="8dp">
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -82,63 +113,67 @@
             </HorizontalScrollView>
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBarCitas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:indeterminateTint="@color/haru_teal"
+                android:visibility="gone"/>
 
             <LinearLayout
+                android:id="@+id/layoutSinCitas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="48dp"
+                android:visibility="gone">
 
-                <ProgressBar
-                    android:id="@+id/progressBarCitas"
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_calendar_event"
+                    android:tint="@color/haru_teal"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="Sin citas"/>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="48dp"
-                    android:indeterminateTint="@color/haru_teal"
-                    android:visibility="gone"/>
-
-                <LinearLayout
-                    android:id="@+id/layoutSinCitas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="48dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📅"
-                        android:textSize="56sp"
-                        android:layout_marginBottom="16dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No hay citas en la agenda"
-                        android:textSize="19sp"
-                        android:textColor="@color/haru_text_secondary"
-                        android:gravity="center"/>
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCitas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:paddingBottom="80dp"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"/>
+                    android:text="No hay citas en la agenda"
+                    android:textSize="16sp"
+                    android:textColor="@color/haru_text_secondary"
+                    android:gravity="center"/>
 
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCitas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:paddingBottom="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAnadirCita"
@@ -146,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/ic_plus"
         android:contentDescription="Añadir cita"
         app:backgroundTint="@color/haru_brown"
         app:tint="@color/haru_white"/>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Añadir registro médico"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/haru_brown"
+        android:layout_marginBottom="20dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTipo"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo de registro"
+        app:boxStrokeColor="@color/haru_teal"
+        android:layout_marginBottom="16dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDescripcion"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción"
+        app:boxStrokeColor="@color/haru_teal"
+        android:layout_marginBottom="24dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textCapSentences"
+            android:minLines="3"
+            android:gravity="top"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarHistorialAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/haru_teal"
+        android:visibility="gone"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGuardarHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar registro"
+        android:backgroundTint="@color/haru_teal"
+        android:textColor="@color/haru_white"
+        android:padding="14dp"
+        app:cornerRadius="12dp"/>
+
+</LinearLayout>

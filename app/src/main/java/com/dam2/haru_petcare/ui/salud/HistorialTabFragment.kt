@@ -9,12 +9,15 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dam2.haru_petcare.databinding.BottomSheetAnadirHistorialBinding
 import com.dam2.haru_petcare.databinding.FragmentHistorialTabBinding
+import com.dam2.haru_petcare.model.HistorialInsertarDTO
 import com.dam2.haru_petcare.model.HistorialMedicoDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
 import com.dam2.haru_petcare.ui.mascotas.HistorialAdapter
 import com.dam2.haru_petcare.util.SessionManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,8 +72,14 @@ class HistorialTabFragment : Fragment() {
         configurarRecyclerView()
         cargarHistorial()
 
-        binding.btnExportarPdfTab.setOnClickListener {
-            descargarPdf()
+        binding.btnExportarPdfTab.setOnClickListener { descargarPdf() }
+
+        val rol = sessionManager.getRol()
+        if (rol == "VETERINARIO" || rol == "CLINICA") {
+            binding.fabAnadirHistorialTab.visibility = View.VISIBLE
+            binding.fabAnadirHistorialTab.setOnClickListener {
+                abrirBottomSheetAnadirHistorial()
+            }
         }
     }
 
@@ -94,6 +103,7 @@ class HistorialTabFragment : Fragment() {
                 call: Call<List<HistorialMedicoDTO>>,
                 response: Response<List<HistorialMedicoDTO>>
             ) {
+                if (_binding == null) return
                 binding.progressBarHistorialTab.visibility = View.GONE
 
                 if (!response.isSuccessful) {
@@ -116,10 +126,65 @@ class HistorialTabFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<HistorialMedicoDTO>>, t: Throwable) {
+                if (_binding == null) return
                 binding.progressBarHistorialTab.visibility = View.GONE
                 mostrarError("Sin conexión: ${t.message}")
             }
         })
+    }
+
+    private fun abrirBottomSheetAnadirHistorial() {
+        val dialog = BottomSheetDialog(requireContext())
+        val bs = BottomSheetAnadirHistorialBinding.inflate(layoutInflater)
+        dialog.setContentView(bs.root)
+
+        val tipos = listOf("Vacuna", "Desparasitación", "Consulta", "Cirugía", "Análisis", "Otro")
+        bs.actvTipo.setAdapter(
+            android.widget.ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, tipos)
+        )
+
+        bs.btnGuardarHistorial.setOnClickListener {
+            val tipo = bs.actvTipo.text.toString().trim()
+            val descripcion = bs.etDescripcion.text?.toString()?.trim() ?: ""
+
+            bs.tilTipo.error = null
+            bs.tilDescripcion.error = null
+
+            if (tipo.isEmpty()) { bs.tilTipo.error = "Selecciona el tipo"; return@setOnClickListener }
+            if (descripcion.isEmpty()) { bs.tilDescripcion.error = "Escribe una descripción"; return@setOnClickListener }
+
+            bs.progressBarHistorialAdd.visibility = View.VISIBLE
+            bs.btnGuardarHistorial.isEnabled = false
+
+            val dto = HistorialInsertarDTO(
+                tipoRegistro = tipo,
+                descripcion  = descripcion,
+                idMascota    = idMascota
+            )
+
+            api.crearRegistroHistorial(dto).enqueue(object : Callback<HistorialMedicoDTO> {
+                override fun onResponse(call: Call<HistorialMedicoDTO>, response: Response<HistorialMedicoDTO>) {
+                    if (_binding == null) return
+                    bs.progressBarHistorialAdd.visibility = View.GONE
+                    bs.btnGuardarHistorial.isEnabled = true
+                    if (response.isSuccessful) {
+                        dialog.dismiss()
+                        mostrarError("Registro añadido")
+                        cargarHistorial()
+                    } else {
+                        mostrarError("Error al guardar (${response.code()})")
+                    }
+                }
+                override fun onFailure(call: Call<HistorialMedicoDTO>, t: Throwable) {
+                    if (_binding == null) return
+                    bs.progressBarHistorialAdd.visibility = View.GONE
+                    bs.btnGuardarHistorial.isEnabled = true
+                    mostrarError("Sin conexión: ${t.message}")
+                }
+            })
+        }
+
+        dialog.show()
     }
 
     private fun descargarPdf() {
@@ -127,19 +192,17 @@ class HistorialTabFragment : Fragment() {
         Toast.makeText(requireContext(), "Descargando PDF...", Toast.LENGTH_SHORT).show()
 
         api.descargarHistorialPdf(idMascota).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
-            ) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (_binding == null) return
                 binding.btnExportarPdfTab.isEnabled = true
                 if (response.isSuccessful) {
-                    response.body()?.let { body -> guardarYAbrirPdf(body) }
+                    response.body()?.let { guardarYAbrirPdf(it) }
                 } else {
                     mostrarError("Error al descargar PDF (${response.code()})")
                 }
             }
-
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                if (_binding == null) return
                 binding.btnExportarPdfTab.isEnabled = true
                 mostrarError("Sin conexión: ${t.message}")
             }
@@ -148,18 +211,10 @@ class HistorialTabFragment : Fragment() {
 
     private fun guardarYAbrirPdf(body: ResponseBody) {
         try {
-            val archivo = File(
-                requireContext().cacheDir,
-                "historial_${idMascota}.pdf"
-            )
-            archivo.outputStream().use { output ->
-                body.byteStream().copyTo(output)
-            }
+            val archivo = File(requireContext().cacheDir, "historial_${idMascota}.pdf")
+            archivo.outputStream().use { output -> body.byteStream().copyTo(output) }
             val uri = FileProvider.getUriForFile(
-                requireContext(),
-                "${requireContext().packageName}.provider",
-                archivo
-            )
+                requireContext(), "${requireContext().packageName}.provider", archivo)
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(uri, "application/pdf")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

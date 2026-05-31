@@ -59,6 +59,9 @@ interface HaruApiService {
     @GET("api/historial/mascota/{id}")
     fun getHistorial(@Path("id") idMascota: Long): Call<List<HistorialMedicoDTO>>
 
+    @POST("api/historial")
+    fun crearRegistroHistorial(@Body dto: HistorialInsertarDTO): Call<HistorialMedicoDTO>
+
     // ── CITAS ─────────────────────────────────────────────────────────────
     @GET("api/citas/dueno/{id}")
     fun getCitasDueno(@Path("id") idDueno: Long): Call<List<CitaDTO>>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+    <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,5 +63,17 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAnadirHistorialTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_plus"
+        android:contentDescription="Añadir registro"
+        app:backgroundTint="@color/haru_teal"
+        app:tint="@color/haru_white"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
