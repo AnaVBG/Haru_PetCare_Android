@@ -286,7 +286,7 @@
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:src="@drawable/ic_plus"
+                            android:src="@drawable/ic_tema"
                             app:tint="@color/haru_grey"
                             android:contentDescription="Ir"/>
 

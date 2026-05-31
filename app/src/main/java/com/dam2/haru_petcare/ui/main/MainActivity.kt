@@ -16,6 +16,7 @@ import com.dam2.haru_petcare.ui.alertas.AlertasFragment
 import com.dam2.haru_petcare.ui.auth.LoginActivity
 import com.dam2.haru_petcare.ui.mascotas.MascotaFragment
 import com.dam2.haru_petcare.ui.mapa.MapaFragment
+import com.dam2.haru_petcare.ui.mascotas.VetMascotasFragment
 import com.dam2.haru_petcare.ui.perfil.PerfilFragment
 import com.dam2.haru_petcare.ui.salud.SaludFragment
 import com.dam2.haru_petcare.util.SessionManager
@@ -41,7 +42,9 @@ class MainActivity : AppCompatActivity() {
         pedirPermisoNotificaciones()
 
         if (savedInstanceState == null) {
-            cargarFragment(MascotaFragment())
+            val rol = sessionManager.getRol()
+            val fragmentoInicio = if (rol == "CLINICA" || rol == "VETERINARIO") VetMascotasFragment() else MascotaFragment()
+            cargarFragment(fragmentoInicio)
             supportActionBar?.title = "Inicio"
         }
 
@@ -69,7 +72,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.nav_inicio -> {
-                    MascotaFragment()
+                    val rol = sessionManager.getRol()
+                    if (rol == "CLINICA" || rol == "VETERINARIO") VetMascotasFragment() else MascotaFragment()
                 }
                 R.id.nav_salud -> {
                     SaludFragment()

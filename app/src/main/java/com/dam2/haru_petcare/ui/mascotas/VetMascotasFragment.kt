@@ -58,6 +58,8 @@ class VetMascotasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sessionManager = SessionManager(requireContext())
 
+        binding.toolbarVetMascotas.title = "Inicio"
+
         configurarAdapter()
         configurarEspecieDropdown()
         configurarBusqueda()

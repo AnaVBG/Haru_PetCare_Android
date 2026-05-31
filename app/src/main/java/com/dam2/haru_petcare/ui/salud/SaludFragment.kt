@@ -72,13 +72,14 @@ class SaludFragment : Fragment() {
     // ── CARGA DE MASCOTAS DEL DUEÑO ───────────────────────────────────────────
 
     private fun cargarMascotas() {
-        val idDueno = sessionManager.getId()
+        val idUsuario = sessionManager.getId()
+        val rol = sessionManager.getRol()
 
         binding.progressBarSaludMascotas.visibility = View.VISIBLE
         binding.layoutSinMascotasSalud.visibility = View.GONE
         binding.viewPagerSalud.visibility = View.GONE
 
-        api.getMascotasPorDueno(idDueno).enqueue(object : Callback<List<MascotaDTO>> {
+        val callback = object : Callback<List<MascotaDTO>> {
             override fun onResponse(
                 call: Call<List<MascotaDTO>>,
                 response: Response<List<MascotaDTO>>
@@ -115,7 +116,13 @@ class SaludFragment : Fragment() {
                 binding.progressBarSaludMascotas.visibility = View.GONE
                 mostrarError("Sin conexión: ${t.message}")
             }
-        })
+        }
+
+        if (rol == "VETERINARIO" || rol == "CLINICA") {
+            api.buscarTodasMascotas(idUsuario, null, null).enqueue(callback)
+        } else {
+            api.getMascotasPorDueno(idUsuario).enqueue(callback)
+        }
     }
 
     // ── SELECTOR HORIZONTAL DE MASCOTAS ──────────────────────────────────────

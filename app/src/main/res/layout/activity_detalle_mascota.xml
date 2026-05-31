@@ -306,7 +306,7 @@
         android:id="@+id/fabEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_plus"
+        android:src="@drawable/ic_edit"
         android:contentDescription="Editar mascota"
         app:backgroundTint="@color/haru_brown"
         app:tint="@color/haru_white"

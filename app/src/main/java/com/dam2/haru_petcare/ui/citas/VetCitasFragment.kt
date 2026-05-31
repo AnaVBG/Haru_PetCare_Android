@@ -48,6 +48,8 @@ class VetCitasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sessionManager = SessionManager(requireContext())
 
+        binding.toolbarVetCitas.title = "Agenda"
+
         configurarAdapter()
         configurarFiltros()
         cargarCitas()
