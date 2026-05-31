@@ -47,16 +47,34 @@ object RetrofitClient {
         }
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
-                val request = if (!token.isNullOrBlank()) {  // ← filtra null Y string vacío
+                val request = if (!token.isNullOrBlank()) {
                     chain.request().newBuilder()
                         .header("Authorization", "Bearer $token")
                         .build()
                 } else {
                     chain.request()
                 }
-                chain.proceed(request)
+                val response = chain.proceed(request)
+                if (response.code == 401) {
+                    response.close()
+                    manejarSesionExpirada()
+                }
+                response
             }
             .addInterceptor(logging)
             .build()
+    }
+
+    private fun manejarSesionExpirada() {
+        val context = com.dam2.haru_petcare.HaruApp.instance
+        com.dam2.haru_petcare.util.SessionManager(context).cerrarSesion()
+        val intent = android.content.Intent(
+            context,
+            com.dam2.haru_petcare.ui.auth.LoginActivity::class.java
+        ).apply {
+            flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
+                    android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        context.startActivity(intent)
     }
 }

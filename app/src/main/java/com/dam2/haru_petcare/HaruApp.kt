@@ -3,13 +3,16 @@ package com.dam2.haru_petcare
 import android.app.Application
 import com.dam2.haru_petcare.util.ThemeManager
 
-/**
- * En Kotlin, 'class' hereda con ':' en vez de 'extends'.
- * No hay llaves de constructor si no añadimos nada al onCreate.
- */
 class HaruApp : Application() {
+
+    companion object {
+        lateinit var instance: HaruApp
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
         ThemeManager.aplicarTemaGuardado(this)
     }
 }
