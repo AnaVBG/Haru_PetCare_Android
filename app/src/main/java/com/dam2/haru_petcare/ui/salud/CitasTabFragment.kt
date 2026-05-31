@@ -16,6 +16,7 @@ import com.dam2.haru_petcare.util.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.dam2.haru_petcare.util.Constants
 
 class CitasTabFragment : Fragment() {
 
@@ -77,13 +78,18 @@ class CitasTabFragment : Fragment() {
     }
 
     private fun cargarCitas() {
-        if (idMascota == -1L) return
-
         binding.progressBarCitasTab.visibility = View.VISIBLE
         binding.tvSinCitasTab.visibility = View.GONE
         binding.rvCitasTab.visibility = View.GONE
 
-        api.getCitasDueno(sessionManager.getIdUsuario()).enqueue(object : Callback<List<CitaDTO>> {
+        val idUsuario = sessionManager.getIdUsuario()
+        val call: Call<List<CitaDTO>> = when (sessionManager.getRol()) {
+            Constants.ROL_VETERINARIO -> api.getAgendaVeterinario(idUsuario)
+            Constants.ROL_CLINICA     -> api.getCitasClinica(idUsuario)
+            else                      -> api.getCitasDueno(idUsuario)
+        }
+
+        call.enqueue(object : Callback<List<CitaDTO>> {
             override fun onResponse(
                 call: Call<List<CitaDTO>>,
                 response: Response<List<CitaDTO>>

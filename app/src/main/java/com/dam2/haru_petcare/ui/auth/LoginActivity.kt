@@ -102,6 +102,16 @@ class LoginActivity : AppCompatActivity() {
                             telefono = datos.telefono   ?: "",
                             token    = datos.token      ?: ""
                         )
+                        com.google.firebase.messaging.FirebaseMessaging.getInstance().token
+                            .addOnSuccessListener { token ->
+                                val apiConToken = RetrofitClient.getClient(datos.token ?: "")
+                                    .create(HaruApiService::class.java)
+                                apiConToken.actualizarTokenFcm(datos.idUsuario ?: -1L, token)
+                                    .enqueue(object : retrofit2.Callback<Void> {
+                                        override fun onResponse(call: retrofit2.Call<Void>, response: retrofit2.Response<Void>) {}
+                                        override fun onFailure(call: retrofit2.Call<Void>, t: Throwable) {}
+                                    })
+                            }
                         navegarAMain()
                     } ?: run {
                         // Si body() era null pese a isSuccessful (raro pero posible)
