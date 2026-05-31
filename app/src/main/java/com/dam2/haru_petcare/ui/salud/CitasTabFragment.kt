@@ -26,10 +26,23 @@ class CitasTabFragment : Fragment() {
     private lateinit var sessionManager: SessionManager
     private lateinit var citaAdapter: CitaAdapter
 
+    private var idMascota: Long = -1L
+
     companion object {
-        fun newInstance(): CitasTabFragment {
-            return CitasTabFragment()
+        private const val ARG_ID_MASCOTA = "id_mascota"
+
+        fun newInstance(idMascota: Long): CitasTabFragment {
+            return CitasTabFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_ID_MASCOTA, idMascota)
+                }
+            }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        idMascota = arguments?.getLong(ARG_ID_MASCOTA, -1L) ?: -1L
     }
 
     override fun onCreateView(
@@ -64,15 +77,13 @@ class CitasTabFragment : Fragment() {
     }
 
     private fun cargarCitas() {
-        // Cogemos el idDueno directamente de sesión — no hace falta
-        // que lo pase el adapter porque el usuario siempre es el mismo
-        val idDueno = sessionManager.getIdUsuario()
+        if (idMascota == -1L) return
 
         binding.progressBarCitasTab.visibility = View.VISIBLE
         binding.tvSinCitasTab.visibility = View.GONE
         binding.rvCitasTab.visibility = View.GONE
 
-        api.getCitasDueno(idDueno).enqueue(object : Callback<List<CitaDTO>> {
+        api.getCitasDueno(sessionManager.getIdUsuario()).enqueue(object : Callback<List<CitaDTO>> {
             override fun onResponse(
                 call: Call<List<CitaDTO>>,
                 response: Response<List<CitaDTO>>
@@ -84,7 +95,8 @@ class CitasTabFragment : Fragment() {
                     return
                 }
 
-                val citas = response.body() ?: emptyList()
+                val citas = (response.body() ?: emptyList())
+                    .filter { it.idMascota == idMascota }
 
                 if (citas.isEmpty()) {
                     binding.tvSinCitasTab.visibility = View.VISIBLE

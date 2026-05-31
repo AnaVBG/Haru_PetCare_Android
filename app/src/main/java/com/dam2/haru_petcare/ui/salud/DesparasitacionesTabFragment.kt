@@ -93,7 +93,14 @@ class DesparasitacionesTabFragment : Fragment() {
                 }
 
                 val despar = (response.body() ?: emptyList())
-                    .filter { it.tipoRegistro?.uppercase() == "DESPARASITACION" }
+                    .filter {
+                        val tipo = it.tipoRegistro ?: return@filter false
+                        val normalizado = java.text.Normalizer
+                            .normalize(tipo, java.text.Normalizer.Form.NFD)
+                            .replace(Regex("\\p{InCombiningDiacriticalMarks}"), "")
+                            .uppercase()
+                        normalizado == "DESPARASITACION"
+                    }
 
                 if (despar.isEmpty()) {
                     binding.tvSinDesparTab.visibility = View.VISIBLE

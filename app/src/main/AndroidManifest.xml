@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- PERMISOS DE RED -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- PERMISOS DE UBICACIÓN (Dejamos listos para el futuro) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- PERMISOS DE NOTIFICACIONES -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
+        android:name=".HaruApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,17 +34,13 @@
         <activity
             android:name=".ui.mascotas.DetalleMascotaActivity"
             android:exported="false"
-            android:theme="@style/Theme.HaruPetcare" /> <!-- CAMBIO 1: A true para que funcione tu IP local -->
-        <!--
- IMPORTANTE: He quitado android:name=".HaruApp" temporalmente.
-             Si ya tienes esa clase creada, vuélvela a poner. Si no, la app crashea nada más abrir.
-        -->
+            android:theme="@style/Theme.HaruPetcare" />
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.LoginActivity"
-            android:exported="true"> <!-- CAMBIO 2: A true. OBLIGATORIO para el MAIN/LAUNCHER -->
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,17 +59,17 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider> <!-- Servicio FCM -->
+        </provider>
         <service
             android:name=".service.HaruFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service> <!-- Canal de notificaciones por defecto -->
+        </service>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="haru_alertas_channel" /> <!-- Color e icono por defecto de las notificaciones -->
+            android:value="haru_alertas_channel" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/haru_brown" />

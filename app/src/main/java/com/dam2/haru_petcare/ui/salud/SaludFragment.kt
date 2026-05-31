@@ -42,9 +42,9 @@ class SaludFragment : Fragment() {
             }
         }
 
-        const val TAB_HISTORIAL         = 0
-        const val TAB_CITAS             = 1
-        const val TAB_VACUNAS           = 2
+        const val TAB_HISTORIAL = 0
+        const val TAB_CITAS = 1
+        const val TAB_VACUNAS = 2
         const val TAB_DESPARASITACIONES = 3
     }
 
@@ -199,11 +199,11 @@ class SaludFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayoutSalud, binding.viewPagerSalud) { tab, position ->
             tab.text = when (position) {
-                TAB_HISTORIAL         -> "Historial"
-                TAB_CITAS             -> "Citas"
-                TAB_VACUNAS           -> "Vacunas"
+                TAB_HISTORIAL -> "Historial"
+                TAB_CITAS -> "Citas"
+                TAB_VACUNAS -> "Vacunas"
                 TAB_DESPARASITACIONES -> "Despar."
-                else                  -> ""
+                else -> ""
             }
         }.attach()
 
@@ -233,11 +233,11 @@ class SaludPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            SaludFragment.TAB_HISTORIAL         -> HistorialTabFragment.newInstance(idMascota)
-            SaludFragment.TAB_CITAS -> CitasTabFragment.newInstance()
-            SaludFragment.TAB_VACUNAS           -> VacunasTabFragment.newInstance(idMascota)
+            SaludFragment.TAB_HISTORIAL -> HistorialTabFragment.newInstance(idMascota)
+            SaludFragment.TAB_CITAS -> CitasTabFragment.newInstance(idMascota)
+            SaludFragment.TAB_VACUNAS -> VacunasTabFragment.newInstance(idMascota)
             SaludFragment.TAB_DESPARASITACIONES -> DesparasitacionesTabFragment.newInstance(idMascota)
-            else                                -> HistorialTabFragment.newInstance(idMascota)
+            else -> HistorialTabFragment.newInstance(idMascota)
         }
     }
 }

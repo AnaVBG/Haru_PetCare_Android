@@ -42,10 +42,15 @@ class MainActivity : AppCompatActivity() {
         pedirPermisoNotificaciones()
 
         if (savedInstanceState == null) {
-            val rol = sessionManager.getRol()
-            val fragmentoInicio = if (rol == "CLINICA" || rol == "VETERINARIO") VetMascotasFragment() else MascotaFragment()
-            cargarFragment(fragmentoInicio)
-            supportActionBar?.title = "Inicio"
+            val tabDestino = intent.getIntExtra("tab_destino", -1)
+            if (tabDestino != -1) {
+                binding.bottomNavView.selectedItemId = tabDestino
+            } else {
+                val rol = sessionManager.getRol()
+                val fragmentoInicio = if (rol == "CLINICA" || rol == "VETERINARIO") VetMascotasFragment() else MascotaFragment()
+                cargarFragment(fragmentoInicio)
+                supportActionBar?.title = "Inicio"
+            }
         }
 
         configurarNavegacion()
