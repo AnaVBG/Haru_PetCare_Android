@@ -37,10 +37,10 @@ class PerfilFragment : Fragment() {
     }
 
     private fun mostrarDatosPerfil() {
-        val nombre   = sessionManager.getNombre() ?: "Usuario"
-        val email    = sessionManager.getEmail()  ?: "-"
+        val nombre = sessionManager.getNombre() ?: "Usuario"
+        val email = sessionManager.getEmail() ?: "-"
         val telefono = sessionManager.getTelefono() ?: "-"
-        val rol      = sessionManager.getRol()    ?: "DUENO"
+        val rol = sessionManager.getRol() ?: "DUENO"
 
         // Inicial del nombre para el avatar
         binding.tvAvatarInicial.text = nombre.firstOrNull()?.uppercaseChar()?.toString() ?: "U"
@@ -48,10 +48,17 @@ class PerfilFragment : Fragment() {
         binding.tvNombrePerfil.text     = nombre
         binding.tvEmailPerfil.text      = email
         binding.tvTelefonoPerfil.text   = telefono
-        binding.tvTipoCuentaPerfil.text = if (rol == "VETERINARIO") "Veterinario" else "Dueño de mascotas"
+        binding.tvTipoCuentaPerfil.text = when (rol) {
+            "VETERINARIO" -> "Veterinario"
+            "CLINICA" -> "Clínica"
+            else -> "Dueño de mascotas"
+        }
 
-        // Texto del rol bajo el nombre
-        binding.tvRolPerfil.text = if (rol == "VETERINARIO") "Cuenta veterinaria" else "Cuenta personal"
+        binding.tvRolPerfil.text = when (rol) {
+            "VETERINARIO" -> "Cuenta veterinaria"
+            "CLINICA" -> "Cuenta clínica"
+            else -> "Cuenta personal"
+        }
     }
 
     private fun configurarListeners() {
