@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dam2.haru_petcare.databinding.ItemHistorialBinding
 import com.dam2.haru_petcare.model.HistorialMedicoDTO
+import java.text.Normalizer
 
 class HistorialAdapter : RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder>() {
 
@@ -41,7 +42,13 @@ class HistorialAdapter : RecyclerView.Adapter<HistorialAdapter.HistorialViewHold
             val isDark = (itemView.context.resources.configuration.uiMode and
                     Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
-            val estilo = when (registro.tipoRegistro?.uppercase()) {
+            // Eliminamos acentos antes de comparar para que "Cirugía" == "CIRUGIA", etc.
+            val tipo = registro.tipoRegistro
+                ?.let { Normalizer.normalize(it, Normalizer.Form.NFD) }
+                ?.replace(Regex("\\p{InCombiningDiacriticalMarks}+"), "")
+                ?.uppercase()
+
+            val estilo = when (tipo) {
                 "VACUNA" -> if (isDark)
                     ChipEstilo("#1A4444", "#5ECFCF") else ChipEstilo("#9DE2E2", "#1A6A6A")
                 "CIRUGIA" -> if (isDark)
