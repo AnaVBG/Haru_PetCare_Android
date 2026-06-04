@@ -103,10 +103,10 @@ class LoginActivity : AppCompatActivity() {
                             token    = datos.token      ?: ""
                         )
                         com.google.firebase.messaging.FirebaseMessaging.getInstance().token
-                            .addOnSuccessListener { token ->
+                            .addOnSuccessListener { fcmToken ->
                                 val apiConToken = RetrofitClient.getClient(datos.token ?: "")
                                     .create(HaruApiService::class.java)
-                                apiConToken.actualizarTokenFcm(datos.idUsuario ?: -1L, token)
+                                apiConToken.actualizarTokenFcm(datos.idUsuario ?: -1L, fcmToken)
                                     .enqueue(object : retrofit2.Callback<Void> {
                                         override fun onResponse(call: retrofit2.Call<Void>, response: retrofit2.Response<Void>) {}
                                         override fun onFailure(call: retrofit2.Call<Void>, t: Throwable) {}
