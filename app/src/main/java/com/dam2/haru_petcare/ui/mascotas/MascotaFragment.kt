@@ -260,6 +260,17 @@ class MascotaFragment : Fragment() {
             else         -> R.drawable.bg_badge_pendiente
         }
         tvEstado.setBackgroundResource(colorFondo)
+
+        val isDark = (requireContext().resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+        val colorTexto = when (cita.estado?.uppercase()) {
+            "COMPLETADA" -> if (isDark) "#81C784" else "#2E7D32"
+            "CANCELADA"  -> if (isDark) "#EF9A9A" else "#C62828"
+            else         -> if (isDark) "#5BB8B8" else "#6B4A00"
+        }
+        tvEstado.setTextColor(android.graphics.Color.parseColor(colorTexto))
     }
 
     // ── ACCESOS RÁPIDOS ───────────────────────────────────────────────────────

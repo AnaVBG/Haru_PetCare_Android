@@ -122,6 +122,7 @@ class CitasTabFragment : Fragment() {
 
                 val citas = (response.body() ?: emptyList())
                     .filter { it.idMascota == idMascota }
+                    .sortedByDescending { it.fechaCita }
 
                 if (citas.isEmpty()) {
                     binding.tvSinCitasTab.visibility = View.VISIBLE

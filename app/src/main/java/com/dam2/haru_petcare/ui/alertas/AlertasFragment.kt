@@ -114,7 +114,8 @@ class AlertasFragment : Fragment() {
                 binding.progressBarAlertas.visibility = View.GONE
 
                 if (response.isSuccessful) {
-                    val alertas = response.body() ?: emptyList()
+                    val alertas = (response.body() ?: emptyList())
+                        .sortedByDescending { it.fechaAlerta }
                     adapter.setAlertas(alertas)
 
                     binding.layoutSinAlertas.visibility =
