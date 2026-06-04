@@ -207,7 +207,7 @@ class VetMascotasFragment : Fragment() {
     }
 
     private fun configurarAdapter() {
-        adapter = VetMascotaAdapter { mascota ->
+        adapter = VetMascotaAdapter(this) { mascota ->
             val intent = Intent(requireContext(), DetalleMascotaActivity::class.java).apply {
                 putExtra(Constants.EXTRA_MASCOTA_ID, mascota.id)
                 putExtra("mascota_nombre", mascota.nombre)

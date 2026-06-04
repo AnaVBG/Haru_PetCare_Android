@@ -4,17 +4,19 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ItemVetMascotaBinding
 import com.dam2.haru_petcare.model.MascotaDTO
 
 class VetMascotaAdapter(
+    private val fragment: Fragment,
     private val onClick: (MascotaDTO) -> Unit
 ) : RecyclerView.Adapter<VetMascotaAdapter.ViewHolder>() {
 
@@ -45,10 +47,11 @@ class VetMascotaAdapter(
             if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
                 binding.civFotoMascota.visibility   = View.VISIBLE
                 binding.tvInicialMascota.visibility = View.GONE
-                Glide.with(binding.root.context)
+                Glide.with(fragment)
                     .load(mascota.fotoUrl)
                     .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.bg_avatar_circle)
+                    .error(R.drawable.bg_avatar_circle)
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?, model: Any?,
