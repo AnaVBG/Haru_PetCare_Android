@@ -19,6 +19,9 @@ interface HaruApiService {
     @PUT("api/auth/fcm/{idUsuario}")
     fun actualizarTokenFcm(@Path("idUsuario") id: Long, @Body token: String): Call<Void>
 
+    @PUT("api/auth/logout/{idUsuario}")
+    fun cerrarSesion(@Path("idUsuario") idUsuario: Long): Call<Void>
+
     // ── USUARIOS ──────────────────────────────────────────────────────────
     @GET("api/usuarios/clinicas")
     fun getClincias(): Call<List<ClinicaDTO>>

@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.ActivityMainBinding
+import com.dam2.haru_petcare.network.HaruApiService
+import com.dam2.haru_petcare.network.RetrofitClient
 import com.dam2.haru_petcare.ui.alertas.AlertasFragment
 import com.dam2.haru_petcare.ui.auth.LoginActivity
 import com.dam2.haru_petcare.ui.mascotas.MascotaFragment
@@ -144,6 +146,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun cerrarSesion() {
+        val api = RetrofitClient.getClient(sessionManager.getToken())
+            .create(HaruApiService::class.java)
+        api.cerrarSesion(sessionManager.getIdUsuario())
+            .enqueue(object : retrofit2.Callback<Void> {
+                override fun onResponse(call: retrofit2.Call<Void>, response: retrofit2.Response<Void>) {}
+                override fun onFailure(call: retrofit2.Call<Void>, t: Throwable) {}
+            })
         sessionManager.cerrarSesion()
         startActivity(
             Intent(this, LoginActivity::class.java).apply {
