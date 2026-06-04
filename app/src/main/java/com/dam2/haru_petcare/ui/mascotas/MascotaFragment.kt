@@ -180,10 +180,13 @@ class MascotaFragment : Fragment() {
                 val hoy = LocalDate.now()
                 val proximasCitas = (response.body() ?: emptyList())
                     .filter { cita ->
-                        val fechaCita = LocalDate.parse(
-                            cita.fechaCita?.substring(0, 10)
-                        )
-                        !fechaCita.isBefore(hoy)
+                        try {
+                            val fecha = cita.fechaCita ?: return@filter false
+                            val fechaCita = LocalDate.parse(fecha.substring(0, 10))
+                            !fechaCita.isBefore(hoy)
+                        } catch (e: Exception) {
+                            false
+                        }
                     }
                     .sortedBy { it.fechaCita }
                     .take(2)
