@@ -17,7 +17,7 @@ import com.dam2.haru_petcare.model.CitaInsertarDTO
 import com.dam2.haru_petcare.model.UsuarioDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
-import com.dam2.haru_petcare.ui.salud.CitaAdapter
+import com.dam2.haru_petcare.model.CitaActualizarDTO
 import com.dam2.haru_petcare.util.Constants
 import com.dam2.haru_petcare.util.SessionManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -84,14 +84,14 @@ class CitasTabFragment : Fragment() {
             binding.fabCrearCitaTab.setOnClickListener { abrirBottomSheetCrearCita() }
         }
 
-        configurarRecyclerView()
+        configurarRecyclerView(esVet)
         cargarCitas()
     }
 
-    private fun configurarRecyclerView() {
+    private fun configurarRecyclerView(esVet: Boolean) {
         citaAdapter = CitaAdapter(
-            esVeterinario   = false,
-            onCambiarEstado = { _, _ -> }
+            esVeterinario   = esVet,
+            onEditarCita    = { cita -> abrirBottomSheetEditarCita(cita) }
         )
         binding.rvCitasTab.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCitasTab.adapter = citaAdapter
@@ -254,6 +254,105 @@ class CitasTabFragment : Fragment() {
                     if (response.isSuccessful) {
                         Toast.makeText(requireContext(),
                             "Cita creada correctamente", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                        cargarCitas()
+                    } else {
+                        Toast.makeText(requireContext(),
+                            "Error al guardar (${response.code()})", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<CitaDTO>, t: Throwable) {
+                    if (!isAdded || _binding == null) return
+                    bs.btnGuardarCita.isEnabled     = true
+                    bs.progressBarAnadir.visibility = View.GONE
+                    Toast.makeText(requireContext(),
+                        "Sin conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+        }
+
+        dialog.show()
+    }
+
+    private fun abrirBottomSheetEditarCita(cita: CitaDTO) {
+        val dialog = BottomSheetDialog(requireContext())
+        val bs = BottomSheetNuevaCitaBinding.inflate(layoutInflater)
+        dialog.setContentView(bs.root)
+
+        // Modo edición
+        bs.tvTituloCita.text = "Editar cita"
+        bs.tilMascota.visibility = View.GONE
+        bs.tilVeterinario.visibility = View.GONE
+
+        // Rellenar datos actuales
+        bs.etMotivo.setText(cita.motivo ?: "")
+        cita.fechaCita?.let { iso ->
+            try {
+                val p = iso.split("T")
+                val f = p[0].split("-")
+                val h = p[1].substring(0, 5)
+                bs.tvFechaHora.text = "${f[2]}/${f[1]}/${f[0]} a las $h"
+            } catch (_: Exception) {}
+        }
+        var fechaHoraSeleccionada: String? = cita.fechaCita
+
+        // Dropdown de estado
+        bs.tilEstado.visibility = View.VISIBLE
+        val estados = listOf("PENDIENTE", "COMPLETADA", "CANCELADA")
+        val etiquetas = listOf("Pendiente", "Completada", "Cancelada")
+        bs.actvEstado.setAdapter(
+            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, etiquetas)
+        )
+        val indiceActual = estados.indexOf(cita.estado)
+        if (indiceActual >= 0) bs.actvEstado.setText(etiquetas[indiceActual], false)
+        var estadoSeleccionado: String = cita.estado ?: "PENDIENTE"
+        bs.actvEstado.setOnItemClickListener { _, _, pos, _ ->
+            estadoSeleccionado = estados[pos]
+        }
+
+        // Selector de fecha/hora
+        bs.cardFechaHora.setOnClickListener {
+            val cal = Calendar.getInstance()
+            DatePickerDialog(requireContext(), { _, year, month, day ->
+                TimePickerDialog(requireContext(), { _, hour, minute ->
+                    fechaHoraSeleccionada = String.format(
+                        "%04d-%02d-%02dT%02d:%02d:00", year, month + 1, day, hour, minute
+                    )
+                    bs.tvFechaHora.text = String.format(
+                        "%02d/%02d/%04d a las %02d:%02d", day, month + 1, year, hour, minute
+                    )
+                }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+            }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
+        bs.btnCancelarCita.setOnClickListener { dialog.dismiss() }
+
+        bs.btnGuardarCita.text = "Guardar cambios"
+        bs.btnGuardarCita.setOnClickListener {
+            val motivo = bs.etMotivo.text?.toString()?.trim()
+            if (motivo.isNullOrBlank()) {
+                bs.tilMotivo.error = "El motivo es obligatorio"
+                return@setOnClickListener
+            }
+            bs.tilMotivo.error = null
+
+            bs.btnGuardarCita.isEnabled     = false
+            bs.progressBarAnadir.visibility = View.VISIBLE
+
+            api.actualizarCita(
+                cita.id!!,
+                CitaActualizarDTO(
+                    fechaCita = fechaHoraSeleccionada,
+                    motivo    = motivo,
+                    estado    = estadoSeleccionado
+                )
+            ).enqueue(object : Callback<CitaDTO> {
+                override fun onResponse(call: Call<CitaDTO>, response: Response<CitaDTO>) {
+                    if (!isAdded || _binding == null) return
+                    bs.btnGuardarCita.isEnabled     = true
+                    bs.progressBarAnadir.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        Toast.makeText(requireContext(), "Cita actualizada", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                         cargarCitas()
                     } else {

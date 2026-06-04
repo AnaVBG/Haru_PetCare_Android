@@ -11,7 +11,7 @@ import com.dam2.haru_petcare.model.CitaDTO
 
 class CitaAdapter(
     private val esVeterinario: Boolean,
-    private val onCambiarEstado: (CitaDTO, String) -> Unit
+    private val onEditarCita: ((CitaDTO) -> Unit)? = null   // ← añade esto
 ) : RecyclerView.Adapter<CitaAdapter.CitaViewHolder>() {
 
     // Lista completa recibida de la API (no se modifica)
@@ -63,7 +63,14 @@ class CitaAdapter(
             binding.tvFechaCita.text         = formatearFechaHora(cita.fechaCita)
 
             aplicarEstiloEstado(cita.estado)
-            configurarBotonesVeterinario(cita)
+
+            if (esVeterinario && onEditarCita != null) {
+                binding.root.isClickable = true
+                binding.root.setOnClickListener { onEditarCita.invoke(cita) }
+            } else {
+                binding.root.isClickable = false
+                binding.root.setOnClickListener(null)
+            }
         }
 
         /**
@@ -103,27 +110,6 @@ class CitaAdapter(
             binding.chipEstadoCita.chipBackgroundColor =
                 ColorStateList.valueOf(Color.parseColor(colorChipFondo))
             binding.chipEstadoCita.setTextColor(Color.parseColor(colorChipTexto))
-        }
-
-        /**
-         * Muestra los botones de acción solo si:
-         * 1. El usuario es veterinario
-         * 2. La cita está en estado PENDIENTE (no tiene sentido actuar sobre ya cerradas)
-         */
-        private fun configurarBotonesVeterinario(cita: CitaDTO) {
-            val mostrarBotones = esVeterinario && cita.estado == "PENDIENTE"
-            binding.layoutBotonesVeterinario.visibility =
-                if (mostrarBotones) View.VISIBLE else View.GONE
-
-            if (mostrarBotones) {
-                binding.btnCompletar.setOnClickListener {
-                    // Propagamos la acción al Fragment para que haga la llamada Retrofit
-                    onCambiarEstado(cita, "COMPLETADA")
-                }
-                binding.btnCancelar.setOnClickListener {
-                    onCambiarEstado(cita, "CANCELADA")
-                }
-            }
         }
 
         /**

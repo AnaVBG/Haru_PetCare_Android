@@ -75,8 +75,8 @@ interface HaruApiService {
     @POST("api/citas")
     fun crearCita(@Body dto: CitaInsertarDTO): Call<CitaDTO>
 
-    @PUT("api/citas/{id}/estado")
-    fun cambiarEstadoCita(@Path("id") idCita: Long, @Body estado: String): Call<CitaDTO>
+    @PUT("api/citas/{id}")
+    fun actualizarCita(@Path("id") idCita: Long, @Body dto: CitaActualizarDTO): Call<CitaDTO>
 
     @GET("api/usuarios/veterinarios-clinica/{idClinica}")
     fun getVeterinariosDeClinica(@Path("idClinica") idClinica: Long): Call<List<UsuarioDTO>>

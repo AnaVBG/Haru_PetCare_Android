@@ -17,6 +17,7 @@
         android:background="@color/haru_grey"/>
 
     <TextView
+        android:id="@+id/tvTituloCita"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nueva cita"
@@ -83,6 +84,27 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:maxLines="3"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Estado — solo visible al editar -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEstado"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Estado"
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/haru_brown"
+        app:hintTextColor="@color/haru_brown"
+        android:visibility="gone">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvEstado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
