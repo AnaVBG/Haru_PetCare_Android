@@ -21,9 +21,6 @@
             android:name=".ui.mascotas.CrearDuenoMascotaActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.citas.CrearCitaActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.mascotas.AddMascotaActivity"
             android:exported="false" />
 

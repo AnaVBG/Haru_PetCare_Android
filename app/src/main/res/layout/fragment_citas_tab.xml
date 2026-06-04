@@ -16,8 +16,8 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <!-- Banner informativo: el usuario no puede crear citas -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBannerCitas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -67,7 +67,7 @@
                 android:id="@+id/tvSinCitasTab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No tienes citas registradas"
+                android:text="No hay citas registradas"
                 android:textSize="17sp"
                 android:textColor="@color/haru_grey"
                 android:gravity="center"
@@ -80,10 +80,22 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:clipToPadding="false"
-                android:paddingBottom="24dp"/>
+                android:paddingBottom="80dp"/>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCrearCitaTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
+        android:visibility="gone"
+        android:contentDescription="Nueva cita"
+        app:backgroundTint="@color/haru_brown"
+        app:tint="@color/white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -184,17 +184,14 @@ class SaludFragment : Fragment() {
 
     private fun seleccionarMascota(mascota: MascotaDTO) {
         mascotaSeleccionada = mascota
-
         binding.toolbarSalud.subtitle = mascota.nombre ?: ""
-        configurarViewPager(mascota.id ?: return)
-
+        configurarViewPager(mascota.id ?: return, mascota.duenoId ?: -1L)
         binding.viewPagerSalud.visibility = View.VISIBLE
     }
 
-    private fun configurarViewPager(idMascota: Long) {
+    private fun configurarViewPager(idMascota: Long, duenoId: Long = -1L) {
         val tabInicial = arguments?.getInt(ARG_TAB, 0) ?: 0
-
-        val adapter = SaludPagerAdapter(this, idMascota)
+        val adapter = SaludPagerAdapter(this, idMascota, duenoId)
         binding.viewPagerSalud.adapter = adapter
 
         TabLayoutMediator(binding.tabLayoutSalud, binding.viewPagerSalud) { tab, position ->
@@ -226,18 +223,19 @@ class SaludFragment : Fragment() {
 
 class SaludPagerAdapter(
     fragment: Fragment,
-    private val idMascota: Long
+    private val idMascota: Long,
+    private val duenoId: Long      // ← CAMBIO: añadir este parámetro
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 4
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            SaludFragment.TAB_HISTORIAL -> HistorialTabFragment.newInstance(idMascota)
-            SaludFragment.TAB_CITAS -> CitasTabFragment.newInstance(idMascota)
-            SaludFragment.TAB_VACUNAS -> VacunasTabFragment.newInstance(idMascota)
-            SaludFragment.TAB_DESPARASITACIONES -> DesparasitacionesTabFragment.newInstance(idMascota)
-            else -> HistorialTabFragment.newInstance(idMascota)
+            SaludFragment.TAB_HISTORIAL          -> HistorialTabFragment.newInstance(idMascota)
+            SaludFragment.TAB_CITAS              -> CitasTabFragment.newInstance(idMascota, duenoId)  // ← CAMBIO
+            SaludFragment.TAB_VACUNAS            -> VacunasTabFragment.newInstance(idMascota)
+            SaludFragment.TAB_DESPARASITACIONES  -> DesparasitacionesTabFragment.newInstance(idMascota)
+            else                                 -> HistorialTabFragment.newInstance(idMascota)
         }
     }
 }

@@ -1,5 +1,6 @@
-package com.dam2.haru_petcare.ui.citas
+package com.dam2.haru_petcare.ui.salud
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dam2.haru_petcare.databinding.ItemCitaBinding
 import com.dam2.haru_petcare.model.CitaDTO
-import com.dam2.haru_petcare.util.Constants
 
 class CitaAdapter(
     private val esVeterinario: Boolean,
@@ -101,7 +101,7 @@ class CitaAdapter(
             binding.viewEstadoColor.setBackgroundColor(Color.parseColor(colorFranja))
             binding.chipEstadoCita.text = textoChip
             binding.chipEstadoCita.chipBackgroundColor =
-                android.content.res.ColorStateList.valueOf(Color.parseColor(colorChipFondo))
+                ColorStateList.valueOf(Color.parseColor(colorChipFondo))
             binding.chipEstadoCita.setTextColor(Color.parseColor(colorChipTexto))
         }
 
