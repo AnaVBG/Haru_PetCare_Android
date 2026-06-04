@@ -1,5 +1,6 @@
 package com.dam2.haru_petcare.ui.mascotas
 
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.dam2.haru_petcare.model.HistorialMedicoDTO
 class HistorialAdapter : RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder>() {
 
     private val registros = mutableListOf<HistorialMedicoDTO>()
+    private data class ChipEstilo(val fondo: String, val texto: String)
 
     fun setRegistros(nuevaLista: List<HistorialMedicoDTO>) {
         registros.clear()
@@ -34,38 +36,41 @@ class HistorialAdapter : RecyclerView.Adapter<HistorialAdapter.HistorialViewHold
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(registro: HistorialMedicoDTO) {
-            // Chip con el tipo de registro (vacuna, consulta, cirugía...)
             binding.chipTipoRegistro.text = registro.tipoRegistro ?: "Registro"
 
-            // Color del chip según el tipo de registro
-            val chipColor = when (registro.tipoRegistro?.uppercase()) {
-                "VACUNA"   -> android.graphics.Color.parseColor("#E0F5F5") // teal claro
-                "CIRUGIA"  -> android.graphics.Color.parseColor("#FDECEA") // rojo claro
-                "CONSULTA" -> android.graphics.Color.parseColor("#FFF8E1") // amarillo claro
-                else       -> android.graphics.Color.parseColor("#F5F5F5") // gris
+            val isDark = (itemView.context.resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+            val estilo = when (registro.tipoRegistro?.uppercase()) {
+                "VACUNA" -> if (isDark)
+                    ChipEstilo("#1A4444", "#5ECFCF") else ChipEstilo("#9DE2E2", "#1A6A6A")
+                "CIRUGIA" -> if (isDark)
+                    ChipEstilo("#3D1A18", "#FF9B96") else ChipEstilo("#FFBDBA", "#7A1A10")
+                "CONSULTA" -> if (isDark)
+                    ChipEstilo("#3D3000", "#FFD060") else ChipEstilo("#FFE08A", "#6B4A00")
+                "DESPARASITACION" -> if (isDark)
+                    ChipEstilo("#1A3320", "#81C784") else ChipEstilo("#C8E6C9", "#2E6B30")
+                "ANALISIS" -> if (isDark)
+                    ChipEstilo("#2A1F40", "#CE93D8") else ChipEstilo("#D1C4E9", "#4A2E80")
+                else -> if (isDark)
+                    ChipEstilo("#2A2A2A", "#A0AAAA") else ChipEstilo("#D0D0D0", "#3A3A3A")
             }
+
             binding.chipTipoRegistro.chipBackgroundColor =
-                android.content.res.ColorStateList.valueOf(chipColor)
+                android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor(estilo.fondo))
+            binding.chipTipoRegistro.setTextColor(android.graphics.Color.parseColor(estilo.texto))
 
             binding.tvDescripcionHistorial.text = registro.descripcion ?: "Sin descripción"
-
-            // Formateamos la fecha: "2024-03-15T10:30:00" → "15/03/2024"
             binding.tvFechaHistorial.text = formatearFecha(registro.fechaRegistro)
         }
 
-        /**
-         * Convierte "2024-03-15T10:30:00" en "15/03/2024".
-         * Usamos split y substring para evitar dependencias de parsing de fechas.
-         */
         private fun formatearFecha(fechaIso: String?): String {
             if (fechaIso == null) return "Fecha desconocida"
             return try {
-                // "2024-03-15T10:30:00" → tomamos solo la parte de la fecha
                 val partes = fechaIso.split("T")[0].split("-")
-                // Reordenamos de YYYY-MM-DD a DD/MM/YYYY
                 "${partes[2]}/${partes[1]}/${partes[0]}"
             } catch (e: Exception) {
-                fechaIso // Si falla, mostramos la fecha tal como viene
+                fechaIso
             }
         }
     }

@@ -67,7 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="@color/haru_grey"/>
+            android:textStyle="bold"
+            android:textColor="@color/haru_teal_dark"/>
 
     </LinearLayout>
 </LinearLayout>

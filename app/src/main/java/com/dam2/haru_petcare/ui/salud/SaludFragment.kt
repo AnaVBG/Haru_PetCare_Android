@@ -133,8 +133,8 @@ class SaludFragment : Fragment() {
         mascotas.forEachIndexed { index, mascota ->
             val chip = TextView(requireContext()).apply {
                 text = mascota.nombre
-                textSize = 13f
-                setPadding(24, 10, 24, 10)
+                textSize = 14f
+                setPadding(28, 12, 28, 12)
                 isClickable = true
                 isFocusable = true
 
@@ -162,7 +162,7 @@ class SaludFragment : Fragment() {
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                marginEnd = 8
+                marginEnd = 10
             }
             binding.layoutChipsMascotas.addView(chip, params)
         }
