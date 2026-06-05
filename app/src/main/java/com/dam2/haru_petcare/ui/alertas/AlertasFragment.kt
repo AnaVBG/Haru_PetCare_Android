@@ -22,6 +22,7 @@ import com.dam2.haru_petcare.model.MascotaDTO
 import com.dam2.haru_petcare.network.HaruApiService
 import com.dam2.haru_petcare.network.RetrofitClient
 import com.dam2.haru_petcare.util.SessionManager
+import com.dam2.haru_petcare.model.UbicacionDTO
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -79,6 +80,7 @@ class AlertasFragment : Fragment() {
         binding.btnEmergencia.setOnClickListener {
             pedirPermisosYMostrarBottomSheet()
         }
+        actualizarUbicacionEnServidor()
     }
 
     private fun configurarAdapter() {
@@ -93,10 +95,26 @@ class AlertasFragment : Fragment() {
         }
     }
 
-    /**
-     * Carga todas las alertas activas.
-     * GET /api/alertas/activas
-     */
+    @SuppressLint("MissingPermission")
+    private fun actualizarUbicacionEnServidor() {
+        val tienePermiso = ContextCompat.checkSelfPermission(
+            requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!tienePermiso) return
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (!isAdded || location == null) return@addOnSuccessListener
+            val dto = UbicacionDTO(lat = location.latitude, lng = location.longitude)
+            RetrofitClient.getClient(sessionManager.getToken())
+                .create(HaruApiService::class.java)
+                .actualizarUbicacion(sessionManager.getIdUsuario(), dto)
+                .enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {}
+                    override fun onFailure(call: Call<Void>, t: Throwable) {}
+                })
+        }
+    }
+
     private fun cargarAlertas() {
         binding.progressBarAlertas.visibility = View.VISIBLE
 

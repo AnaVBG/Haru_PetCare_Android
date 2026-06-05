@@ -29,6 +29,9 @@ interface HaruApiService {
     @GET("api/usuarios/buscar")
     fun buscarUsuarioPorEmail(@Query("email") email: String): Call<UsuarioDTO>
 
+    @PUT("api/usuarios/{id}/ubicacion")
+    fun actualizarUbicacion(@Path("id") idUsuario: Long, @Body dto: UbicacionDTO): Call<Void>
+
     // ── MASCOTAS ──────────────────────────────────────────────────────────
     @GET("api/mascotas/dueno/{id}")
     fun getMascotasPorDueno(@Path("id") idDueno: Long): Call<List<MascotaDTO>>
@@ -57,6 +60,9 @@ interface HaruApiService {
 
     @PUT("api/mascotas/{id}")
     fun actualizarMascota(@Path("id") idMascota: Long, @Body dto: MascotaActualizarDTO): Call<MascotaDTO>
+
+    @DELETE("api/mascotas/{id}")
+    fun eliminarMascota(@Path("id") idMascota: Long): Call<Void>
 
     // ── HISTORIAL ─────────────────────────────────────────────────────────
     @GET("api/historial/mascota/{id}")

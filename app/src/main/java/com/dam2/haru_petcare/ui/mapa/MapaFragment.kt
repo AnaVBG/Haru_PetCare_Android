@@ -12,12 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dam2.haru_petcare.R
 import com.dam2.haru_petcare.databinding.BottomSheetCrearPinBinding
 import com.dam2.haru_petcare.databinding.BottomSheetDetallePinBinding
 import com.dam2.haru_petcare.databinding.FragmentMapaBinding
+import com.dam2.haru_petcare.model.AlertaPerdidaDTO
 import com.dam2.haru_petcare.model.PinInsertarDTO
 import com.dam2.haru_petcare.model.PinMapaDTO
 import com.dam2.haru_petcare.network.HaruApiService
@@ -51,6 +53,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     private var miUbicacion: Location? = null
     private val markerPinMap = mutableMapOf<Marker, PinMapaDTO>()
+    private val markerAlertaMap = mutableMapOf<Marker, AlertaPerdidaDTO>()
 
     private val permisosUbicacionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -61,8 +64,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         else Toast.makeText(requireContext(), "Permiso denegado", Toast.LENGTH_SHORT).show()
     }
 
-    // ── Datos visuales por tipo de pin ────────────────────────────────────
-    // Cada tipo tiene: iconoRes (drawable SVG), colorFondo (color del círculo), etiqueta
     private data class PinVisual(val iconoRes: Int, val colorFondo: Int, val etiqueta: String)
 
     private fun visualParaTipo(tipo: String?): PinVisual = when (tipo?.uppercase()) {
@@ -73,7 +74,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         else       -> PinVisual(R.drawable.ic_pin_fuente,   R.color.pin_fuente_bg,   "Punto de interés")
     }
 
-    // ── Colores del marcador en el mapa (círculo de fondo del pin) ────────
     private fun colorMarkerParaTipo(tipo: String?): Int = when (tipo?.uppercase()) {
         "FUENTE"   -> R.color.pin_fuente
         "PARQUE"   -> R.color.pin_parque
@@ -81,8 +81,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         "PELIGRO"  -> R.color.pin_peligro
         else       -> R.color.haru_teal
     }
-
-    // ─────────────────────────────────────────────────────────────────────
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -112,14 +110,17 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
         map.setOnMarkerClickListener { marker ->
             val pin = markerPinMap[marker]
-            if (pin != null) mostrarBottomSheetDetalle(pin)
+            val alerta = markerAlertaMap[marker]
+            when {
+                pin    != null -> mostrarBottomSheetDetalle(pin)
+                alerta != null -> mostrarDialogoAlerta(alerta)
+            }
             true
         }
 
         map.setOnMapLongClickListener { latLng ->
             posicionElegida = latLng
             marcadorTemporal?.remove()
-            // Marcador temporal con ícono neutro mientras el usuario elige el tipo
             marcadorTemporal = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
@@ -166,7 +167,9 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
                 if (response.isSuccessful) {
                     googleMap?.clear()
                     markerPinMap.clear()
+                    markerAlertaMap.clear()
                     response.body()?.forEach { anadirPinAlMapa(it) }
+                    cargarAlertasEnMapa()
                 }
             }
             override fun onFailure(call: Call<List<PinMapaDTO>>, t: Throwable) {
@@ -176,14 +179,43 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         })
     }
 
-    /**
-     * Coloca un marcador en el mapa usando el ícono SVG vectorial
-     * correcto para cada tipo de pin, en lugar de los marcadores
-     * de color genérico de defaultMarker(hue).
-     *
-     * bitmapDescriptorFromVector convierte el VectorDrawable en un
-     * Bitmap que Google Maps puede renderizar como ícono de marcador.
-     */
+    private fun cargarAlertasEnMapa() {
+        val api = RetrofitClient.getClient(sessionManager.getToken()).create(HaruApiService::class.java)
+        api.getAlertasActivas().enqueue(object : Callback<List<AlertaPerdidaDTO>> {
+            override fun onResponse(call: Call<List<AlertaPerdidaDTO>>, response: Response<List<AlertaPerdidaDTO>>) {
+                if (!isAdded) return
+                response.body()?.forEach { alerta ->
+                    val lat = alerta.ultimaUbicacionLat ?: return@forEach
+                    val lng = alerta.ultimaUbicacionLng ?: return@forEach
+                    val marker = googleMap?.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(lat, lng))
+                            .title(alerta.nombreMascota ?: "Mascota perdida")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    ) ?: return@forEach
+                    markerAlertaMap[marker] = alerta
+                }
+            }
+            override fun onFailure(call: Call<List<AlertaPerdidaDTO>>, t: Throwable) { }
+        })
+    }
+
+    private fun mostrarDialogoAlerta(alerta: AlertaPerdidaDTO) {
+        val mensaje = buildString {
+            appendLine("Mascota: ${alerta.nombreMascota ?: "Desconocida"}")
+            appendLine("Dueño: ${alerta.nombreDueno ?: "Desconocido"}")
+            appendLine("Contacto: ${alerta.telefonoDueno ?: "No disponible"}")
+            alerta.mensajeAdicional?.takeIf { it.isNotBlank() }?.let {
+                append("\n$it")
+            }
+        }
+        AlertDialog.Builder(requireContext())
+            .setTitle("Mascota perdida")
+            .setMessage(mensaje.trim())
+            .setPositiveButton("Cerrar", null)
+            .show()
+    }
+
     private fun anadirPinAlMapa(pin: PinMapaDTO) {
         val posicion = LatLng(pin.latitud ?: return, pin.longitud ?: return)
         val visual = visualParaTipo(pin.tipo)
@@ -191,7 +223,7 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         val icono: BitmapDescriptor = bitmapDescriptorFromVector(
             iconoRes = visual.iconoRes,
             colorFondoRes = colorMarkerParaTipo(pin.tipo),
-            tamanoPx = 96  // 96px = tamaño cómodo en el mapa a densidades normales
+            tamanoPx = 96
         )
 
         val marker = googleMap?.addMarker(
@@ -199,36 +231,22 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
                 .position(posicion)
                 .title(visual.etiqueta)
                 .icon(icono)
-                .anchor(0.5f, 1.0f) // El punto del pin apunta exactamente a la coordenada
+                .anchor(0.5f, 1.0f)
         )
         marker?.let { markerPinMap[it] = pin }
     }
 
-    /**
-     * Convierte un VectorDrawable (XML en res/drawable) en un BitmapDescriptor
-     * que Google Maps acepta como ícono de marcador.
-     *
-     * El marcador tiene forma de círculo de color con el ícono blanco dentro,
-     * igual que el diseño del sistema Haru.
-     *
-     * @param iconoRes      ID del drawable SVG (ej. R.drawable.ic_pin_fuente)
-     * @param colorFondoRes ID del color de fondo del círculo (ej. R.color.pin_fuente)
-     * @param tamanoPx      Tamaño del marcador en píxeles físicos del dispositivo
-     */
     private fun bitmapDescriptorFromVector(iconoRes: Int, colorFondoRes: Int, tamanoPx: Int): BitmapDescriptor {
         val context = requireContext()
 
-        // 1. Creamos el bitmap del tamaño deseado
         val bitmap = Bitmap.createBitmap(tamanoPx, tamanoPx, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        // 2. Dibujamos el círculo de fondo con el color del tipo
         val circulo = ContextCompat.getDrawable(context, R.drawable.bg_pin_fuente)!!.mutate()
         circulo.setTint(ContextCompat.getColor(context, colorFondoRes))
         circulo.setBounds(0, 0, tamanoPx, tamanoPx)
         circulo.draw(canvas)
 
-        // 3. Dibujamos el ícono SVG centrado (con padding del 25%)
         val padding = (tamanoPx * 0.22).toInt()
         val icono = ContextCompat.getDrawable(context, iconoRes)!!.mutate()
         icono.setTint(ContextCompat.getColor(context, R.color.haru_brown))
@@ -286,16 +304,13 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
 
         val visual = visualParaTipo(pin.tipo)
 
-        // Setear el ícono SVG en el ImageView
         bsBinding.ivIconoPin.setImageResource(visual.iconoRes)
         bsBinding.ivIconoPin.setColorFilter(
             ContextCompat.getColor(requireContext(), colorMarkerParaTipo(pin.tipo))
         )
 
-        // Setear el color del fondo circular del ícono
         bsBinding.flIconoPin.backgroundTintList =
             ContextCompat.getColorStateList(requireContext(), colorMarkerParaTipo(pin.tipo).let {
-                // Usamos la versión clara (bg) para el fondo del círculo en el bottom sheet
                 when (pin.tipo?.uppercase()) {
                     "FUENTE"   -> R.color.pin_fuente_bg
                     "PARQUE"   -> R.color.pin_parque_bg
@@ -310,7 +325,6 @@ class MapaFragment : Fragment(), OnMapReadyCallback {
         bsBinding.tvDescripcionPin.text = pin.descripcion?.takeIf { it.isNotBlank() }
             ?: "Sin descripción adicional"
 
-        // Botón borrar solo si es nuestro pin
         if (pin.idUsuario == sessionManager.getIdUsuario()) {
             bsBinding.btnBorrarPin.visibility = View.VISIBLE
             bsBinding.btnBorrarPin.setOnClickListener {
