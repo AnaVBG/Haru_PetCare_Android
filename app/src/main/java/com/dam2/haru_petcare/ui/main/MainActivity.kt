@@ -161,6 +161,14 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val tabDestino = intent.getIntExtra("tab_destino", -1)
+        if (tabDestino != -1) {
+            binding.bottomNavView.selectedItemId = tabDestino
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
     }

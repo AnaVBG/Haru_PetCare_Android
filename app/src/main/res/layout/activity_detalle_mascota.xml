@@ -288,7 +288,7 @@
                 android:id="@+id/btnActivarAlerta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="10dp"
                 android:text="Activar alerta de pérdida"
                 android:backgroundTint="@color/haru_brown"
                 android:textColor="@color/haru_white"
@@ -296,6 +296,19 @@
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_bell"
                 app:iconTint="@color/haru_white"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEliminarMascota"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="Eliminar mascota"
+                android:textColor="@color/haru_error"
+                app:strokeColor="@color/haru_error"
+                app:cornerRadius="12dp"
+                android:padding="14dp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

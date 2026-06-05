@@ -7,13 +7,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dam2.haru_petcare.R
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import com.dam2.haru_petcare.databinding.ActivityDetalleMascotaBinding
 import com.dam2.haru_petcare.databinding.BottomSheetAnadirHistorialBinding
 import com.dam2.haru_petcare.databinding.BottomSheetEditarMascotaBinding
@@ -49,7 +47,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
     private var editarBinding: BottomSheetEditarMascotaBinding? = null
     private var fotoUriEditar: Uri? = null
     private var fechaSeleccionadaEditar: String = ""
-    private val MENU_ELIMINAR_ID = 1001
 
     private val seleccionarFotoLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -84,56 +81,6 @@ class DetalleMascotaActivity : AppCompatActivity() {
         configurarBotones()
         cargarDatosMascota()
         cargarHistorial()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (sessionManager.getRol() == "DUENO") {
-            menu.add(Menu.NONE, MENU_ELIMINAR_ID, Menu.NONE, "Eliminar mascota")
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        }
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == MENU_ELIMINAR_ID) {
-            mostrarDialogoEliminar()
-            true
-        } else super.onOptionsItemSelected(item)
-    }
-
-    private fun mostrarDialogoEliminar() {
-        AlertDialog.Builder(this)
-            .setTitle("Eliminar mascota")
-            .setMessage("¿Seguro que quieres eliminar a $nombreMascota? Esta acción no se puede deshacer.")
-            .setPositiveButton("Eliminar") { _, _ -> eliminarMascota() }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
-    private fun eliminarMascota() {
-        binding.btnDescargarPdf.isEnabled = false
-        RetrofitClient.getClient(sessionManager.getToken())
-            .create(HaruApiService::class.java)
-            .eliminarMascota(idMascota)
-            .enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@DetalleMascotaActivity,
-                            "$nombreMascota eliminada", Toast.LENGTH_SHORT).show()
-                        setResult(RESULT_OK)
-                        finish()
-                    } else {
-                        binding.btnDescargarPdf.isEnabled = true
-                        Toast.makeText(this@DetalleMascotaActivity,
-                            "Error al eliminar (${response.code()})", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    binding.btnDescargarPdf.isEnabled = true
-                    Toast.makeText(this@DetalleMascotaActivity,
-                        "Sin conexión: ${t.message}", Toast.LENGTH_LONG).show()
-                }
-            })
     }
 
     private fun configurarToolbar() {
@@ -173,40 +120,55 @@ class DetalleMascotaActivity : AppCompatActivity() {
         }
 
         val rol = sessionManager.getRol()
+
         if (rol == "VETERINARIO" || rol == "CLINICA") {
             binding.btnAnadirHistorial.visibility = View.VISIBLE
             binding.btnAnadirHistorial.setOnClickListener {
                 abrirBottomSheetAnadirHistorial()
             }
         }
+
+        if (rol == "DUENO") {
+            binding.btnEliminarMascota.visibility = View.VISIBLE
+            binding.btnEliminarMascota.setOnClickListener {
+                mostrarDialogoEliminar()
+            }
+        }
     }
 
-    private fun cargarDatosMascota() {
+    private fun mostrarDialogoEliminar() {
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar mascota")
+            .setMessage("¿Seguro que quieres eliminar a $nombreMascota? Esta acción no se puede deshacer.")
+            .setPositiveButton("Eliminar") { _, _ -> eliminarMascota() }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun eliminarMascota() {
+        binding.btnEliminarMascota.isEnabled = false
         RetrofitClient.getClient(sessionManager.getToken())
             .create(HaruApiService::class.java)
-            .getMascotaPorId(idMascota)
-            .enqueue(object : Callback<MascotaDTO> {
-                override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
+            .eliminarMascota(idMascota)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        response.body()?.let { actualizarUiConMascota(it) }
+                        Toast.makeText(this@DetalleMascotaActivity,
+                            "$nombreMascota eliminada", Toast.LENGTH_SHORT).show()
+                        setResult(RESULT_OK)
+                        finish()
+                    } else {
+                        binding.btnEliminarMascota.isEnabled = true
+                        Toast.makeText(this@DetalleMascotaActivity,
+                            "Error al eliminar (${response.code()})", Toast.LENGTH_SHORT).show()
                     }
                 }
-                override fun onFailure(call: Call<MascotaDTO>, t: Throwable) {}
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    binding.btnEliminarMascota.isEnabled = true
+                    Toast.makeText(this@DetalleMascotaActivity,
+                        "Sin conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                }
             })
-    }
-
-    private fun actualizarUiConMascota(mascota: MascotaDTO) {
-        mascotaActual = mascota
-        nombreMascota = mascota.nombre ?: nombreMascota
-
-        binding.tvDetalleEspecie.text   = mascota.especie ?: "—"
-        binding.tvDetalleRaza.text      = mascota.raza    ?: "—"
-        binding.tvDetalleFechaNac.text  = formatearFecha(mascota.fechaNacimiento)
-        binding.collapsingToolbar.title = mascota.nombre ?: nombreMascota
-
-        if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
-            Glide.with(this).load(mascota.fotoUrl).centerCrop().into(binding.ivFotoMascota)
-        }
     }
 
     // ── Bottom sheet editar ────────────────────────────────────────────────
@@ -503,6 +465,34 @@ class DetalleMascotaActivity : AppCompatActivity() {
             ))
         } catch (e: Exception) {
             Toast.makeText(this, "Error al abrir el PDF: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun cargarDatosMascota() {
+        RetrofitClient.getClient(sessionManager.getToken())
+            .create(HaruApiService::class.java)
+            .getMascotaPorId(idMascota)
+            .enqueue(object : Callback<MascotaDTO> {
+                override fun onResponse(call: Call<MascotaDTO>, response: Response<MascotaDTO>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { actualizarUiConMascota(it) }
+                    }
+                }
+                override fun onFailure(call: Call<MascotaDTO>, t: Throwable) {}
+            })
+    }
+
+    private fun actualizarUiConMascota(mascota: MascotaDTO) {
+        mascotaActual = mascota
+        nombreMascota = mascota.nombre ?: nombreMascota
+
+        binding.tvDetalleEspecie.text   = mascota.especie ?: "—"
+        binding.tvDetalleRaza.text      = mascota.raza    ?: "—"
+        binding.tvDetalleFechaNac.text  = formatearFecha(mascota.fechaNacimiento)
+        binding.collapsingToolbar.title = mascota.nombre ?: nombreMascota
+
+        if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
+            Glide.with(this).load(mascota.fotoUrl).centerCrop().into(binding.ivFotoMascota)
         }
     }
 
