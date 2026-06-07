@@ -169,7 +169,7 @@ class HistorialTabFragment : Fragment() {
                     bs.btnGuardarHistorial.isEnabled = true
                     if (response.isSuccessful) {
                         dialog.dismiss()
-                        mostrarError("Registro añadido")
+                        Toast.makeText(requireContext(), "Registro añadido correctamente", Toast.LENGTH_SHORT).show()
                         cargarHistorial()
                     } else {
                         mostrarError("Error al guardar (${response.code()})")

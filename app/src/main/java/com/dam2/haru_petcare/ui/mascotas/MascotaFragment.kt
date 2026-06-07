@@ -64,7 +64,6 @@ class MascotaFragment : Fragment() {
         configurarSaludo()
         configurarAdapter()
         configurarAccesosRapidos()
-        cargarMascotas()
         cargarProximasCitas()
 
         binding.fabAnadirMascota.setOnClickListener {

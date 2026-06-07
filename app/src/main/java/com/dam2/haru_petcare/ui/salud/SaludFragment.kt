@@ -175,9 +175,7 @@ class SaludFragment : Fragment() {
 
     private fun desactivarChip(chip: TextView) {
         chip.setBackgroundResource(R.drawable.bg_chip_mascota_inactivo)
-        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.haru_white).also {
-            chip.setTextColor(0xCCFFFFFF.toInt())
-        })
+        chip.setTextColor(0xCCFFFFFF.toInt())
     }
 
     // ── SELECCIÓN DE MASCOTA Y CARGA DE TABS ─────────────────────────────────

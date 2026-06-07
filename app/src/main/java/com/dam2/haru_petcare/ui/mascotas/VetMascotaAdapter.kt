@@ -16,7 +16,7 @@ import com.dam2.haru_petcare.databinding.ItemVetMascotaBinding
 import com.dam2.haru_petcare.model.MascotaDTO
 
 class VetMascotaAdapter(
-    private val fragment: Fragment,
+    private val context: Context,
     private val onClick: (MascotaDTO) -> Unit
 ) : RecyclerView.Adapter<VetMascotaAdapter.ViewHolder>() {
 
@@ -47,7 +47,7 @@ class VetMascotaAdapter(
             if (!mascota.fotoUrl.isNullOrBlank() && mascota.fotoUrl.startsWith("http")) {
                 binding.civFotoMascota.visibility   = View.VISIBLE
                 binding.tvInicialMascota.visibility = View.GONE
-                Glide.with(fragment)
+                Glide.with(context)                         // ← CAMBIO
                     .load(mascota.fotoUrl)
                     .centerCrop()
                     .placeholder(R.drawable.bg_avatar_circle)

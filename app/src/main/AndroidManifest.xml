@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HaruPetcare"
-        android:usesCleartextTraffic="true">
+        >
         <activity
             android:name=".ui.mascotas.CrearDuenoMascotaActivity"
             android:exported="false" />

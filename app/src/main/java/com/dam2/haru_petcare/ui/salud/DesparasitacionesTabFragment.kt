@@ -85,6 +85,7 @@ class DesparasitacionesTabFragment : Fragment() {
                 call: Call<List<HistorialMedicoDTO>>,
                 response: Response<List<HistorialMedicoDTO>>
             ) {
+                if (!isAdded || _binding == null) return
                 binding.progressBarDesparTab.visibility = View.GONE
 
                 if (!response.isSuccessful) {

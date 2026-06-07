@@ -85,6 +85,7 @@ class VacunasTabFragment : Fragment() {
                 call: Call<List<HistorialMedicoDTO>>,
                 response: Response<List<HistorialMedicoDTO>>
             ) {
+                if (!isAdded || _binding == null) return
                 binding.progressBarVacunasTab.visibility = View.GONE
 
                 if (!response.isSuccessful) {
