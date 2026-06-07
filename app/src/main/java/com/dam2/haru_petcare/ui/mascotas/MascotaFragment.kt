@@ -242,7 +242,7 @@ class MascotaFragment : Fragment() {
     ) {
         // El backend devuelve fechaCita como "2025-05-28T10:00:00"
         val fecha = LocalDate.parse(cita.fechaCita?.substring(0, 10) ?: return)
-        val hora  = cita.fechaCita?.substring(11, 16) ?: "--:--"
+        val hora = if ((cita.fechaCita?.length ?: 0) >= 16) cita.fechaCita!!.substring(11, 16) else "--:--"
 
         val formateadorMes = DateTimeFormatter.ofPattern("MMM", Locale("es", "ES"))
 

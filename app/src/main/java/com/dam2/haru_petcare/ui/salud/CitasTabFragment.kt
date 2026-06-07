@@ -341,7 +341,7 @@ class CitasTabFragment : Fragment() {
             bs.progressBarAnadir.visibility = View.VISIBLE
 
             api.actualizarCita(
-                cita.id!!,
+                cita.id ?: return@setOnClickListener,
                 CitaActualizarDTO(
                     fechaCita = fechaHoraSeleccionada,
                     motivo    = motivo,

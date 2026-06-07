@@ -2,6 +2,8 @@ package com.dam2.haru_petcare.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -53,6 +55,26 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val pass = s.toString()
+                when {
+                    pass.isEmpty()          -> binding.tvRequisitosPassword.visibility = View.GONE
+                    !validarPassword(pass)  -> binding.tvRequisitosPassword.visibility = View.VISIBLE
+                    else                    -> binding.tvRequisitosPassword.visibility = View.GONE
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
+    private fun validarPassword(password: String): Boolean {
+        val tieneUppercase = password.any { it.isUpperCase() }
+        val tieneNumero    = password.any { it.isDigit() }
+        val tieneEspecial  = password.any { "!@#\$%^&*()_+-=[]{}|;':\",./<>?".contains(it) }
+        return tieneUppercase && tieneNumero && tieneEspecial
     }
 
     private fun cargarClinicas() {
@@ -103,6 +125,11 @@ class RegisterActivity : AppCompatActivity() {
         }
         if (password.isEmpty()) { binding.tilPassword.error = "La contraseña es obligatoria"; return }
         if (password.length < 6) { binding.tilPassword.error = "Mínimo 6 caracteres"; return }
+        if (!validarPassword(password)) {
+            binding.tilPassword.error = "La contraseña no cumple los requisitos"
+            binding.tvRequisitosPassword.visibility = View.VISIBLE
+            return
+        }
         if (password != confirmarPassword) {
             binding.tilConfirmarPassword.error = "Las contraseñas no coinciden"; return
         }
@@ -114,12 +141,12 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val dto = UsuarioRegistroDTO(
-            nombre     = nombre,
-            email      = email,
-            password   = password,
-            rol        = rol,
-            telefono   = telefono,
-            idClinica  = if (rol == Constants.ROL_VETERINARIO) idClinicaSeleccionada else null
+            nombre    = nombre,
+            email     = email,
+            password  = password,
+            rol       = rol,
+            telefono  = telefono,
+            idClinica = if (rol == Constants.ROL_VETERINARIO) idClinicaSeleccionada else null
         )
 
         mostrarCargando(true)

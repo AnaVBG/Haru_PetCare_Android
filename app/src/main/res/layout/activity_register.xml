@@ -101,6 +101,16 @@
                 android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvRequisitosPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• Una letra mayúscula\n• Un número\n• Un carácter especial (!@#\$%...)"
+            android:textSize="12sp"
+            android:textColor="@color/haru_error"
+            android:visibility="gone"
+            android:paddingTop="4dp"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilConfirmarPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

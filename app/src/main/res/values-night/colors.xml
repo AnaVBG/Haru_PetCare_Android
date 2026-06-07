@@ -3,21 +3,36 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- AppBar oscuro, casi negro con tinte teal sutil -->
-    <color name="haru_teal">#1A2424</color>
-    <!-- Teal suave solo para acentos: fechas, iconos, títulos de sección -->
-    <color name="haru_teal_dark">#5BB8B8</color>
-    <!-- Dividers y fondos sutiles -->
-    <color name="haru_teal_light">#1A2E2E</color>
+    <!-- AppBar, toolbars: teal oscuro visible (no negro) -->
+    <color name="haru_teal">#1A3D3D</color>
 
-    <color name="haru_brown">#5BB8B8</color>
-    <color name="haru_brown_light">#C4937A</color>
+    <!-- Acentos: iconos activos, fechas, títulos de sección -->
+    <color name="haru_teal_dark">#4DD0D0</color>
 
-    <!-- Superficies oscuras -->
+    <!-- Divisores, bordes de cards, fondos sutiles -->
+    <color name="haru_teal_light">#1E3030</color>
+
+    <!-- Alertas/emergencias: terracota cálido (diferente del teal) -->
+    <color name="haru_brown">#C47060</color>
+
+    <!-- Acento cálido secundario -->
+    <color name="haru_brown_light">#D49080</color>
+
+    <!-- Superficie de cards, bottom sheets -->
     <color name="haru_white">#1E1E1E</color>
+
+    <!-- Fondo principal -->
     <color name="haru_surface">#121212</color>
 
-    <color name="haru_grey">#666E6E</color>
-    <color name="haru_text_primary">#E8E8E8</color>
-    <color name="haru_text_secondary">#A0AAAA</color>
+    <!-- Texto neutro, hints, placeholders -->
+    <color name="haru_grey">#7A9090</color>
+
+    <!-- Texto principal -->
+    <color name="haru_text_primary">#EFEFEF</color>
+
+    <!-- Texto secundario -->
+    <color name="haru_text_secondary">#9AB0B0</color>
+
+    <!-- Error -->
+    <color name="haru_error">#FF6B6B</color>
 </resources>
