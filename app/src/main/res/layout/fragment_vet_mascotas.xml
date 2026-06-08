@@ -16,7 +16,8 @@
             android:id="@+id/toolbarVetMascotas"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/haru_teal"/>
+            android:background="@color/haru_teal"
+            app:titleTextColor="@color/haru_on_primary"/>
 
         <LinearLayout
             android:layout_width="match_parent"
