@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/haru_teal"
             app:title="Mi perfil"
-            app:titleTextColor="@color/haru_white"/>
+            app:titleTextColor="@color/haru_on_primary"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -49,7 +49,7 @@
                     android:gravity="center"
                     android:textSize="32sp"
                     android:textStyle="bold"
-                    android:textColor="@color/haru_white"
+                    android:textColor="@color/haru_on_primary"
                     android:background="@drawable/bg_avatar_circle"
                     android:layout_marginBottom="12dp"/>
 
@@ -304,7 +304,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="32dp"
                 android:text="Cerrar sesión"
-                android:textColor="@color/haru_white"
+                android:textColor="@color/haru_on_primary"
                 android:backgroundTint="@color/haru_brown"
                 android:padding="14dp"
                 app:cornerRadius="12dp"/>

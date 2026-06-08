@@ -47,7 +47,7 @@
                 android:gravity="center"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="@color/haru_white"/>
+                android:textColor="@color/haru_on_primary"/>
 
         </FrameLayout>
 

@@ -149,7 +149,7 @@
         android:src="@drawable/ic_map"
         android:contentDescription="Mi ubicación"
         app:backgroundTint="@color/haru_teal"
-        app:tint="@color/haru_white"/>
+        app:tint="@color/haru_on_primary"/>
 
     <!-- FAB principal: añadir pin -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -161,6 +161,6 @@
         android:src="@drawable/ic_plus"
         android:contentDescription="Añadir pin"
         app:backgroundTint="@color/haru_brown"
-        app:tint="@color/haru_white"/>
+        app:tint="@color/haru_on_primary"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

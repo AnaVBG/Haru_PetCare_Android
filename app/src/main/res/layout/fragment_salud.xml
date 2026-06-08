@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/haru_teal"
-            app:titleTextColor="@color/haru_white"
+            app:titleTextColor="@color/haru_on_primary"
             app:subtitleTextColor="#CCffffff"/>
 
         <!--
@@ -51,8 +51,8 @@
             android:layout_height="wrap_content"
             android:background="@color/haru_teal"
             app:tabTextColor="#99ffffff"
-            app:tabSelectedTextColor="@color/haru_white"
-            app:tabIndicatorColor="@color/haru_white"
+            app:tabSelectedTextColor="@color/haru_on_primary"
+            app:tabIndicatorColor="@color/haru_on_primary"
             app:tabIndicatorHeight="3dp"
             app:tabRippleColor="@color/haru_teal"
             app:tabMode="fixed"

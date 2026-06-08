@@ -16,4 +16,5 @@
     <color name="haru_text_primary">#1A1A1A</color>
     <color name="haru_text_secondary">#5C6B6B</color>
     <color name="haru_error">#B00020</color>
+    <color name="haru_on_primary">#FFFFFF</color>
 </resources>

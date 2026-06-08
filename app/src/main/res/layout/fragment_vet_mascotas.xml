@@ -38,7 +38,7 @@
                 android:text="Mascotas registradas"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="@color/haru_white"/>
+                android:textColor="@color/haru_on_primary"/>
 
         </LinearLayout>
 
@@ -166,6 +166,6 @@
         android:src="@drawable/ic_plus"
         android:contentDescription="Añadir mascota"
         app:backgroundTint="@color/haru_brown"
-        app:tint="@color/haru_white"/>
+        app:tint="@color/haru_on_primary"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

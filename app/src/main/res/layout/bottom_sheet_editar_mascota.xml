@@ -51,7 +51,7 @@
                 android:gravity="center"
                 android:textSize="36sp"
                 android:textStyle="bold"
-                android:textColor="@color/haru_white"/>
+                android:textColor="@color/haru_on_primary"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/civFotoEditar"
@@ -68,7 +68,7 @@
                 android:src="@android:drawable/ic_menu_camera"
                 app:backgroundTint="@color/haru_brown"
                 app:fabSize="mini"
-                app:tint="@color/haru_white"/>
+                app:tint="@color/haru_on_primary"/>
 
         </FrameLayout>
 
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:text="Guardar cambios"
             android:backgroundTint="@color/haru_teal"
-            android:textColor="@color/haru_white"
+            android:textColor="@color/haru_on_primary"
             android:padding="14dp"
             app:cornerRadius="12dp"/>
 

@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:text="Vincular todas sus mascotas"
             android:backgroundTint="@color/haru_teal"
-            android:textColor="@color/haru_white"
+            android:textColor="@color/haru_on_primary"
             android:layout_marginBottom="8dp"
             app:cornerRadius="12dp"/>
 

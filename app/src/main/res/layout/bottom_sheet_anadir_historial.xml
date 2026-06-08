@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:text="Guardar registro"
         android:backgroundTint="@color/haru_teal"
-        android:textColor="@color/haru_white"
+        android:textColor="@color/haru_on_primary"
         android:padding="14dp"
         app:cornerRadius="12dp"/>
 
